@@ -1,0 +1,133 @@
+extends ../../home/views/navbar.pug
+
+block content
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        each project in tbl_project
+                            <center>
+                                <h1>APPLICATION FORM</h1>
+                                <h5>Type of Application: Barangay</h5>
+                                <h4>
+                                    value=project.varchar_projectName
+                                </h4>
+                                <small>
+                                    value="(" + project.text_projectObjective + ")"
+                                </small>
+                            </center>
+                        
+                        <div class="clearfix"></div>
+                    </div>
+                    <form id="regForm" action="apply/barangay" method="POST" class="form-horizontal form-label-left">
+                        <div class="x_content">
+                            <!-- Smart Wizard -->
+
+                            <div id="wizard" class="form_wizard wizard_horizontal">
+                                <ul class="wizard_steps">
+                                    <li>
+                                        <a href="#basicinfotab">
+                                            <span class="step_no">1</span>
+                                            <span class="step_descr"> Step 1<br />
+                                                <small>Basic Information</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#summary">
+                                            <span class="step_no">2</span>
+                                            <span class="step_descr"> Step 2<br />
+                                                <small>Summary of Application</small>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab" id="basicinfotab">
+                                    <hr/>
+                                    <h3>BASIC INFORMATION</h3>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4 col-sm-12">
+                                            <label for="ap-slots" class="form-control-label">Slots:</label>
+                                                <input type="number" id="ap-slots" onchange="getslots()" name="apply_slots" placeholder="Slots" class="names col-sm-11 form-control ">
+                                        </div>
+                                        <div class="form-group col-md-8 col-sm-12">
+                                            <label for="ap-reason" class="form-control-label">Reason:<small>(why you need the benefits)</small></label>
+                                                <textarea rows="8" id="ap-reason" onchange="getreason()" name="apply_reason" placeholder="Please type here ..." class="names col-sm-11 form-control " style="resize:none;"></textarea>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                //- END OF FIRST TAB
+
+                                //- SUMMARY OF APPLICATION
+                                <div class="tab" id="summary">
+                                    <hr/>
+                                            <form class="form-horizontal form-label-left">
+                                                <div class="x_panel">
+                                                    <div class="x_title">
+                                                        <h2>Summary of Application <small></small></h2>
+                                                        <div class="clearfix"></div>
+                                                        <small>These are the information about the application you want to register.</small>
+                                                    </div>
+                                                    <div class="x_content">
+                                                        <table class="table table-hover">
+                                                        <thead>
+                                                            <tr>
+                                                            <th>Basic Information</th>
+                                                            <th>   </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                            <th scope="row">Slots:</th>
+                                                            <td>
+                                                                <div id="result-slots"><div>
+                                                            </td>
+                                                            </tr>
+                                                            <tr>
+                                                            <th scope="row">Reason:</th>
+                                                            <td><div id="result-reason"></div></td>
+                                                            </tr>
+                                                            <tr>
+                                                            <th scope="row"></th>
+                                                            <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                </div> 
+                                //- END OF SUMMARY OF APPLICATION
+
+                            </div>
+                            <!-- End SmartWizard Content -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    //- SCRIPT FOR TABS
+    script.
+        //- SCRIPT FOR SUMMARY OF APPLICATION
+        function getslots() {
+            var slot = document.getElementById("ap-slots").value;
+            console.log(slot);
+
+            if(slot!=0){
+                document.getElementById("result-slots").innerHTML = slot;
+            }
+        }
+
+        function getreason() {
+            var reason = document.getElementById("ap-reason").value;
+            console.log(reason);
+
+            if(reason!=0){
+                document.getElementById("result-reason").innerHTML = reason;
+            }
+        }

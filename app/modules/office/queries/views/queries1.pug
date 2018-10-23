@@ -1,0 +1,495 @@
+extends ../../home/views/navbar.pug
+
+block content
+    //- <!-- page content -->
+    <div class="right_col" role="main">
+        <form method="" action="">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x-title">
+                        <div class="noPrint"  id="noPRINT">
+                            //- a(href=`/budget/projects` class="btn btn-danger btn-lg pull-right fa"): span.fa.fa-times-circle  
+                            <button id="printReceiptButton" type="button" class= "btn float-right pull-right  btn-lg btn-inverse fa fa-print">&nbsp;&nbsp; Print Receipt
+                            //- <button id="signReceiptButton" type="button" class= "btn float-right btn-lg btn-inverse pull-right fa fa-pencil">&nbsp;&nbsp; Sign Receipt
+                        </div> 
+                        <h1>Queries</h1>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x-content">
+                        <div class="form-row noPrint">
+                            <div class="form-group has-feedback col-lg-12 col-md-12 col-sx-12 col-xs-12">
+                                <label class="control-label"> Query Search </label>
+                                <select class="form-control has-feedback-left" id='query-select'>
+                                    <option value='Ongoing'> Ongoing Projects </option>
+                                    <option value='Finished'> Finished Project </option>
+                                    <option value='Created'> Created Project </option>
+                                    <option value='Releasing'> Releasing  Project </option>
+                                    <option value='AppOngProj'> Number of Approved Applications on Ongoing Projects </option>
+                                    <option value='ReceivedBrgy'> Number of Received Benefits on Releasing Projects </option>
+                                    <option value='IntentBrgy-received'> Number of Intent Statement Submitted per Barangay </option>
+                                    <option value='IntentBrgy-acknow'> Number of Intent Statement Acknowledged per Barangay </option>
+                                    <option value='IntentBrgy-solved'> Number of Intent Statement Solved per Barangay </option>
+                                    //- <option value='Finished'> Finished Project </option>
+                                </select>
+                                <span class="fa fa-search form-control-feedback left" aria-hidden="true"></span>
+                            </div>
+                        </div>
+
+                        //- ========= ONGOING PROJECT =======
+                        <div id='ongoingProj' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>ONGOING PROJECTS</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each ongoingproj in tbl_ongoingproject
+                                                                        <tr><td>
+                                                                            value=ongoingproj.varchar_projectName
+                                                                        </td></tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         //- ========= FINISHED PROJECT =======
+                        <div id='finishedproj' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>FINISHED PROJECTS</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Closed Date</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each finishedproj in tbl_finishedproject
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=finishedproj.varchar_projectName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=finishedproj.date_actualClosing
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        //- ========= CREATED  PROJECT =======
+                        <div id='createdproj' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>CREATED PROJECTS</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Date Created</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each createdproj in tbl_createdproject
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=createdproj.varchar_projectName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=createdproj.date_createdDate
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         //- ========= RELEASING  PROJECT =======
+                        <div id='releasingproj' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>RELEASING PROJECTS</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each releasingproj in tbl_releasingproject
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=releasingproj.varchar_projectName
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        //- ========= APP ONGOING  PROJECT =======
+                        <div id='appongoing' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>Number of Approved Applications on Ongoing Projects</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Number</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each appongoing in tbl_appongoing
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=appongoing.varchar_projectName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=appongoing.int_count
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        //- ========= BENE RELEASING  PROJECT =======
+                        <div id='receivedbene' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>Number of Received Benefits on Releasing Projects</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Date Created</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each received in tbl_receivedbene
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=received.varchar_projectName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=received.int_count
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        //- ========= INTENT BRGY RECEIVED  PROJECT =======
+                        <div id='intentbrgy' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>Number of Intent Statement Submitted per Barangay</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Date Created</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each releasecount in tbl_releasecounts
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=releasecount.varchar_barangayName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=releasecount.int_count
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        //- ========= INTENT BRGY ACKNOWLEDGED  PROJECT =======
+                        <div id='intentbrgy-ack' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>Number of Intent Statement Acknowledged per Barangay</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Number</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each releasecount in tbl_acknowledgedcount
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=releasecount.varchar_barangayName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=releasecount.int_count
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        //- ========= INTENT BRGY RECEIVED  PROJECT =======
+                        <div id='intentbrgy-solved' class="form-row" style="display:none">
+                            <div class="x_panel" style="margin-top: 15px">
+                                <div class="x-title">
+                                    <h4>Number of Intent Statement Solved per Barangay</h4>
+                                    <div class="clearfix"></div>
+                                    <hr style="margin-top: 0"/>
+                                </div>
+                                <div class="x-content">
+                                    <div class="content-wrapper">
+                                        <div class="container-fluid">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <div class="card-body">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="" cellspacing="0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Project Name</th>
+                                                                        <th>Number</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    each releasecount in tbl_solvedcount
+                                                                        <tr>
+                                                                            <td>
+                                                                                value=releasecount.varchar_barangayName
+                                                                            </td>
+                                                                            <td>
+                                                                                value=releasecount.int_count
+                                                                            </td>
+                                                                        </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/assets/jquery/jquery-3.3.1.jquery.min.js"></script>
+    <script src="/assets/js/jquery.multi-select.js"></script>
+    script(src='/assets/js/jspdf.js')
+    script(src='/assets/js/printjs.min.js')
+    
+
+    script.
+
+        $('document').ready(function() {
+            $('#query-select').on('click', function() {
+                var selectedVal = $(this).val()
+
+                if(selectedVal == 'Ongoing') {
+                    $('#ongoingProj').show();
+                    $('#finishedproj, #createdproj, #releasingproj, #intentbrgy, #receivedbene, #appongoing, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'Finished') {
+                    $('#finishedproj').show();
+                    $('#ongoingProj, #createdproj, #releasingproj, #intentbrgy, #receivedbene, #appongoing, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'Created') {
+                    $('#createdproj').show();
+                    $('#ongoingProj, #finishedproj, #releasingproj, #intentbrgy, #receivedbene, #appongoing, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'Releasing') {
+                    $('#releasingproj').show();
+                    $('#ongoingProj, #createdproj, #finishedproj, #intentbrgy, #receivedbene, #appongoing, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'AppOngProj') {
+                    $('#appongoing').show();
+                    $('#ongoingProj, #createdproj, #releasingproj, #finishedproj, #intentbrgy, #receivedbene, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'ReceivedBrgy') {
+                    $('#receivedbene').show();
+                    $('#ongoingProj, #createdproj, #releasingproj, #finishedproj, #intentbrgy, #appongoing, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'IntentBrgy-received') {
+                    $('#intentbrgy').show();
+                    $('#ongoingProj, #createdproj, #releasingproj, #finishedproj, #receivedbene, #appongoing, #intentbrgy-solved, #intentbrgy-ack').hide();
+                }
+
+                if(selectedVal == 'IntentBrgy-acknow') {
+                    $('#intentbrgy-ack').show();
+                    $('#ongoingProj, #createdproj, #releasingproj, #finishedproj, #receivedbene, #appongoing, #intentbrgy-solved, #intentbrgy').hide();
+                }
+
+                if(selectedVal == 'IntentBrgy-solved') {
+                    $('#intentbrgy-solved').show();
+                    $('#ongoingProj, #createdproj, #releasingproj, #finishedproj, #receivedbene, #appongoing, #intentbrgy-ack, #intentbrgy').hide();
+                }
+            });
+            
+            $('#printReceiptButton').click(function(){
+                $('.noPrint').attr('style', 'display:none;')
+                javascript:window.print(print)
+                $('#formprint').submit();
+                $('.noPrint').attr('style', 'display:show;')
+            });
+        });

@@ -1,0 +1,1426 @@
+extends ../../home/views/navbar.pug
+
+block content
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                each project in tbl_projectdetail
+                    <div class="x_title">
+                        <h2>Project Details<small>Date Created: 
+                        value= "(" + project.date_createdDate + ")"
+                        </small></h2>
+                        a(href=`/office/projects` class="btn btn-danger btn-s pull-right"): span.fa.fa-times-circle  
+                        if project.enum_projectStatus == "Ongoing"
+                            <form id="formcloseproj" name="formcloseproj" method="POST" action='/office/projects/closeproj'>
+                                input(type="hidden" value=`${project.int_projectID}` id="int_projectID" name="int_projectID" class="int_projectID")
+                                button.btn.btn-danger.btn-s.mb-1(id="btn-close" class="btn-close-res pull-right" value= project.int_projectID): span.fa Close Application
+                            </form>
+                        <a class="collapse-link"><i class="fa fa-chevron-up pull-right"></i></a>
+                        <small class="pull-right">Status: 
+                        value=project.enum_projectStatus
+                        </small>
+                    <div class="clearfix"></div>
+                </div>
+                    <div class="x_content">
+                    each project in tbl_projectdetail
+                        <table class="table jambo_table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Problem</th>
+                                <th colspan="3">
+                                
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Problem to be solved:</th>
+                                <td colspan="3">
+                                each statement in tbl_problemstatement
+                                    value=statement.varchar_statementTitle
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="3"></th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>Basic Information</th>
+                                <th colspan="3">   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Project Title:</th>
+                                <td colspan="3">
+                                    <p>
+                                        value=project.varchar_projectName
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Category:</th>
+                                <td colspan="3">
+                                each cat in tbl_projectcategory
+                                    value=cat.varchar_categoryName
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Project Rationale:</th>
+                                <td colspan="3">
+                                value=project.text_projectRationale
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Project Description:</th>
+                                <td colspan="3">
+                                value=project.text_projectDescription
+                                </td>
+                            </tr>
+                            <tr>
+                            <th scope="row">Project Objective:</th>
+                                <td colspan="3">
+                                value=project.text_projectObjective
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" colspan="3"></th>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Beneficiary</th>
+                                <th colspan="3">   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Target Beneficiary:</th>
+                                    <td colspan="3">
+                                    each prbf in tbl_projectbeneficiary
+                                        value=prbf.varchar_beneficiaryName
+                                        <br/>
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Alloted Slot:</th>
+                                <td colspan="3">
+                                value=project.int_allotedSlot
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td colspan="3">
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Requirements</th>
+                                <th colspan="3">   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Requirements to be passed:</th>
+                                <td colspan="3">
+                                each prjreq in tbl_projectrequirement
+                                    value=prjreq.varchar_requirementName
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td colspan="3"></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Timeline</th>
+                                <th colspan="3">   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Target Start of Application: </th>
+                                <td>
+                                    value=project.date_targetStartApp
+                                </td>
+                                <th scope="row">Actual Start of Application: </th>
+                                <td>
+                                    if project.date_actualStartApp != 'Invalid date'
+                                        value=project.date_actualStartApp
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Target Closing of Application: </th>
+                                <td>
+                                value=project.date_targetEndApp
+                                </td>
+                                <th scope="row">Actual Closing of Application: </th>
+                                <td>
+                                    if project.date_actualCloseApp != 'Invalid date'
+                                        value=project.date_actualCloseApp
+                                </td>
+                            </tr>
+                            <tr>
+                            <tr>
+                                <th scope="row">Target Start of Releasing: </th>
+                                <td>
+                                value=project.date_targetStartRelease
+                                </td>
+                                <th scope="row">Actual Start of Releasing: </th>
+                                <td>*barangay based*
+                                    if project.date_actualStartRelease != 'Invalid date'
+                                        value=project.date_actualStartRelease
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Target End of Releasing: </th>
+                                <td>
+                                value=project.date_targetEndRelease
+                                </td>
+                                <th scope="row">Actual Closing of Releasing: </th>
+                                <td>*barangay based*
+                                    if project.date_actualEndRelease != 'Invalid date'
+                                        value=project.date_actualEndRelease 
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Target Closing of Project: </th>
+                                <td>
+                                value=project.date_targetClosing
+                                </td>
+                                <th scope="row">Actual Closing of Project: </th>
+                                <td>
+                                    if project.date_actualClosing != 'Invalid date'
+                                        value=project.date_actualClosing
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td><td></td><td></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Budget</th>
+                                <th>   </th><th></th><th></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Actual Budget:</th>
+                                <td>₱ 
+                                    value=project.decimal_appropriatedBudget.toLocaleString()
+                                </td><td></td><td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                    each project in tbl_projectdetail
+                        if project.enum_projectStatus != "Created"
+                            if project.enum_projectStatus === "Ongoing" 
+                                if project.enum_applicationType == "Resident"
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2><i class="fa fa-users"></i> Applications - Resident</h2>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                        form(id="checkallapplicants-resaccept" method="POST" action=`/office/projects/viewproj/acceptallresident`)
+                                        form(id="checkallapplicants-resreject" method="POST" action=`/office/projects/viewproj/rejectallresident`)
+                                            <div>
+                                            input(type="checkbox" id="check-applications" class="acceptall icheckbox_flat-green" style="margin-left:3%;" onclick="checkAll()")
+                                            button(type="submit" form="checkallapplicants-resaccept" id="buttonaccept" class="btn btn-primary btn-s" name="buttonaccept"  style="margin-left:2%;"): span.fa.fa-check  Accept
+                                            button(type="submit" form="checkallapplicants-resreject" id="buttonreject" class="btn btn-danger btn-s" name="buttonreject"): span.fa.fa-close  Reject
+                                            <br>
+                                            <br>
+                                            </div>
+                                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#tab_content1" id="resident-tab" role="tab" data-toggle="tab" aria-expanded="true">ALL</a>
+                                                    </li>
+                                                    <li role="presentation"><a href="#tab_content2" id="household-tab" role="tab" data-toggle="tab" aria-expanded="true">Approved</a>
+                                                    </li>
+                                                    <li role="presentation"><a href="#tab_content3" id="barangay-tab" role="tab" data-toggle="tab" aria-expanded="true">Pending</a>
+                                                    </li>
+                                                </ul>
+                                                <div id="myTabContent" class="tab-content">
+                                                    <br>
+                                                    //- START OF 1ST TAB
+                                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th></th>
+                                                                                <th>Applicant's Name</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Civil Status</th>
+                                                                                <th>Contact Number</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody> 
+                                                                        each applicant in tbl_appres
+                                                                            <tr>    
+                                                                                <td>
+                                                                                    if project.enum_projectStatus === "Ongoing" 
+                                                                                        if applicant.enum_applicationStatus == "Pending" 
+                                                                                            input(type="checkbox" id="check-applications" name="checkApplicationsID" class="icheckbox_flat-green" value= applicant.int_applicationID )
+                                                                                </td>
+                                                                                <td> #{applicant.varchar_firstName} #{applicant.varchar_middleName} #{applicant.varchar_lastName}
+                                                                                </td>
+                                                                                <td>
+                                                                                    value=applicant.enum_gender
+                                                                                </td>
+                                                                                <td>
+                                                                                    value=applicant.enum_civilStatus
+                                                                                </td>
+                                                                                <td>
+                                                                                    value=applicant.varchar_contactNumber
+                                                                                </td>
+                                                                                <td>
+                                                                                    value=applicant.enum_applicationStatus
+                                                                                </td>
+                                                                                <td>
+                                                                                    button.btn.btn-info(id="btn-view-application" class="btn-view-application btn-sm btn-block" value= applicant.int_applicationID): span.fa.fa-eye View Details
+                                                                                    each slot in slotcount
+                                                                                        if project.int_projectID == slot.projID
+                                                                                            //- if project.int_allotedSlot == (project.int_allotedSlot + slot.slotcount)
+                                                                                            if slot.slotCount == 0
+                                                                                                if applicant.enum_applicationStatus == "Pending"
+                                                                                                    <p class="text-center">Fully alloted</p>
+                                                                                            else
+                                                                                                if project.enum_projectStatus === "Ongoing" 
+                                                                                                    if applicant.enum_applicationStatus == "Pending"
+                                                                                                        form(id="formacceptapp" method="POST" action=`/office/projects/${applicant.int_projectID}/viewproj/accept`)
+                                                                                                            input(value= applicant.int_applicationID name="int_applicationID" required, hidden)
+                                                                                                            button.btn.btn-success.btn-s.btn-block(id="buttonaccept"  value= applicant.int_applicationID class="buttonaccept"): span.fa.fa-check Accept
+
+                                                                                                        form(id="formrejectapp" method="POST" action=`/office/projects/${applicant.int_projectID}/viewproj/reject`)
+                                                                                                            input(value= applicant.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                            button.btn.btn-danger.btn-s.btn-block(id="buttonreject"  value= applicant.int_applicationID class="buttonreject"): span.fa.fa-close Reject
+                                                                                    //- a(href=`/office/releasing/beneficiary/${app2.int_applicationID}/viewAppDet` id="viewAppDet" class="btn btn-primary btn-xs btn-block"): span Application Details
+                                                                                    //- if applicant.enum_applicationType == 'Resident'
+                                                                                    //-     button.btn.btn-info.btn-sm.mb-1(id="btn-view-res-application" class="btn-view-res-application btn-block" value= applicant.int_applicationID): span.fa.fa-eye Beneficiary Details
+                                                                                    //-     if applicant.enum_applicationStatus == 'Approved'
+                                                                                    //-         button.btn.btn-success.btn-sm.mb-1(id="btn-receive-res" class="btn-receive-res btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                                            //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
+                                                                                </td>
+                                                                            </tr>            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th></th>
+                                                                                <th>Applicant's Name</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Civil Status</th>
+                                                                                <th>Contact Number</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody> 
+                                                                        each applicant in tbl_appres
+                                                                            if applicant.enum_applicationStatus == "Approved" 
+                                                                                <tr>    
+                                                                                    <td>
+                                                                                        if project.enum_projectStatus === "Ongoing" 
+                                                                                            if applicant.enum_applicationStatus == "Pending" 
+                                                                                                input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" value=`${applicant.int_applicationID}` )
+                                                                                    </td>
+                                                                                    <td> #{applicant.varchar_firstName} #{applicant.varchar_middleName} #{applicant.varchar_lastName}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.enum_gender
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.enum_civilStatus
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.varchar_contactNumber
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.enum_applicationStatus
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        button.btn.btn-info(id="btn-view-application" class="btn-view-application btn-sm btn-block" value= applicant.int_applicationID): span.fa.fa-eye View Details
+                                                                                        each slot in slotcount
+                                                                                            if project.int_projectID == slot.projID
+                                                                                                //- if project.int_allotedSlot == (project.int_allotedSlot + slot.slotcount)
+                                                                                                if slot.slotCount == 0
+                                                                                                    if applicant.enum_applicationStatus == "Pending"
+                                                                                                        <p class="text-center">Fully alloted</p>
+                                                                                                else
+                                                                                                    if project.enum_projectStatus === "Ongoing" 
+                                                                                                        if applicant.enum_applicationStatus == "Pending"
+                                                                                                            form(id="formacceptapp" method="POST" action=`/office/projects/${applicant.int_projectID}/viewproj/accept`)
+                                                                                                                input(value= applicant.int_applicationID name="int_applicationID" required, hidden)
+                                                                                                                button.btn.btn-success.btn-s.btn-block(id="buttonaccept"  value= applicant.int_applicationID class="buttonaccept"): span.fa.fa-check Accept
+
+                                                                                                            form(id="formrejectapp" method="POST" action=`/office/projects/${applicant.int_projectID}/viewproj/reject`)
+                                                                                                                input(value= applicant.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                                button.btn.btn-danger.btn-s.btn-block(id="buttonreject"  value= applicant.int_applicationID class="buttonreject"): span.fa.fa-close Reject
+                                                                                        //- a(href=`/office/releasing/beneficiary/${app2.int_applicationID}/viewAppDet` id="viewAppDet" class="btn btn-primary btn-xs btn-block"): span Application Details
+                                                                                        //- if applicant.enum_applicationType == 'Resident'
+                                                                                        //-     button.btn.btn-info.btn-sm.mb-1(id="btn-view-res-application" class="btn-view-res-application btn-block" value= applicant.int_applicationID): span.fa.fa-eye Beneficiary Details
+                                                                                        //-     if applicant.enum_applicationStatus == 'Approved'
+                                                                                        //-         button.btn.btn-success.btn-sm.mb-1(id="btn-receive-res" class="btn-receive-res btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                                                //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
+                                                                                    </td>
+                                                                                </tr>            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade  in" id="tab_content3" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th></th>
+                                                                                <th>Applicant's Name</th>
+                                                                                <th>Gender</th>
+                                                                                <th>Civil Status</th>
+                                                                                <th>Contact Number</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody> 
+                                                                        each applicant in tbl_appres
+                                                                            if applicant.enum_applicationStatus == "Pending" 
+                                                                                <tr>    
+                                                                                    <td>
+                                                                                        if project.enum_projectStatus === "Ongoing" 
+                                                                                            if applicant.enum_applicationStatus == "Pending" 
+                                                                                                input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" value=`${applicant.int_applicationID}` )
+                                                                                    </td>
+                                                                                    <td> #{applicant.varchar_firstName} #{applicant.varchar_middleName} #{applicant.varchar_lastName}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.enum_gender
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.enum_civilStatus
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.varchar_contactNumber
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value=applicant.enum_applicationStatus
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        button.btn.btn-info(id="btn-view-application" class="btn-view-application btn-sm btn-block" value= applicant.int_applicationID): span.fa.fa-eye View Details
+                                                                                        each slot in slotcount
+                                                                                            if project.int_projectID == slot.projID
+                                                                                                //- if project.int_allotedSlot == (project.int_allotedSlot + slot.slotcount)
+                                                                                                if slot.slotCount == 0
+                                                                                                    if applicant.enum_applicationStatus == "Pending"
+                                                                                                        <p class="text-center">Fully alloted</p>
+                                                                                                else
+                                                                                                    if project.enum_projectStatus === "Ongoing" 
+                                                                                                        if applicant.enum_applicationStatus == "Pending"
+                                                                                                            form(id="formacceptapp" method="POST" action=`/office/projects/${applicant.int_projectID}/viewproj/accept`)
+                                                                                                                input(value= applicant.int_applicationID name="int_applicationID" required, hidden)
+                                                                                                                button.btn.btn-success.btn-s.btn-block(id="buttonaccept"  value= applicant.int_applicationID class="buttonaccept"): span.fa.fa-check Accept
+
+                                                                                                            form(id="formrejectapp" method="POST" action=`/office/projects/${applicant.int_projectID}/viewproj/reject`)
+                                                                                                                input(value= applicant.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                                button.btn.btn-danger.btn-s.btn-block(id="buttonreject"  value= applicant.int_applicationID class="buttonreject"): span.fa.fa-close Reject
+                                                                                        //- a(href=`/office/releasing/beneficiary/${app2.int_applicationID}/viewAppDet` id="viewAppDet" class="btn btn-primary btn-xs btn-block"): span Application Details
+                                                                                        //- if applicant.enum_applicationType == 'Resident'
+                                                                                        //-     button.btn.btn-info.btn-sm.mb-1(id="btn-view-res-application" class="btn-view-res-application btn-block" value= applicant.int_applicationID): span.fa.fa-eye Beneficiary Details
+                                                                                        //-     if applicant.enum_applicationStatus == 'Approved'
+                                                                                        //-         button.btn.btn-success.btn-sm.mb-1(id="btn-receive-res" class="btn-receive-res btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                                                //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
+                                                                                    </td>
+                                                                                </tr>         
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>		
+                                            </div>			
+                                        </div>	
+                                    </div>
+                                if project.enum_applicationType == "Household"
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2><i class="fa fa-users"></i> Applications - Household</h2>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            //- <div>
+                                            //-     input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" style="margin-left:3%;")
+                                            //-     button(type="submit" id="buttonaccept" class="btn btn-primary btn-s" name="buttonaccept" style="margin-left:2%;"): span.fa.fa-check  Accept
+                                            //-     button(type="submit" id="buttonreject" class="btn btn-danger btn-s" name="buttonreject"): span.fa.fa-close  Reject
+                                            //- <br>
+                                            //- <br>
+                                            //- </div>
+                                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#tab_content1" id="resident-tab" role="tab" data-toggle="tab" aria-expanded="true">ALL</a>
+                                                    </li>
+                                                    <li role="presentation"><a href="#tab_content2" id="household-tab" role="tab" data-toggle="tab" aria-expanded="true">Approved</a>
+                                                    </li>
+                                                    <li role="presentation"><a href="#tab_content3" id="barangay-tab" role="tab" data-toggle="tab" aria-expanded="true">Pending</a>
+                                                    </li>
+                                                </ul>
+                                                <div id="myTabContent" class="tab-content">
+                                                    <br>
+                                                    //- START OF 1ST TAB
+                                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Family Name</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        each household in tbl_apphou
+                                                                            <tr>
+                                                                                <td>
+                                                                                value=household.varchar_familyName
+                                                                                </td>
+                                                                                <td>
+                                                                                value=household.enum_applicationStatus
+                                                                                </td>
+                                                                                <td>
+                                                                                            button.btn.btn-info(id="btn-view-household" class="btn-view-household btn-sm btn-block" value= household.int_applicationID): span.fa.fa-eye View Details
+                                                                                            each slot in slotcount
+                                                                                                if project.int_projectID == slot.projID
+                                                                                                    //- if project.int_allotedSlot == (project.int_allotedSlot + slot.slotcount)
+                                                                                                    if slot.slotCount == 0
+                                                                                                        if household.enum_applicationStatus == "Pending"
+                                                                                                            <p class="text-center">Fully alloted</p>
+                                                                                                    else
+                                                                                                        if project.enum_projectStatus === "Ongoing" 
+                                                                                                            if household.enum_applicationStatus == "Pending"
+                                                                                                                form(id="formacceptapp" method="POST" action=`/office/projects/${household.int_projectID}/viewproj/accept`)
+                                                                                                                    input(value= household.int_applicationID name="int_applicationID" required, hidden)
+                                                                                                                    button.btn.btn-success.btn-s.btn-block(id="buttonaccept"  value= household.int_applicationID class="buttonaccept"): span.fa.fa-check Accept
+                                                                                                                    
+                                                                                                                form(id="formrejectapp" method="POST" action=`/office/projects/${household.int_projectID}/viewproj/reject`)
+                                                                                                                    input(value= household.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                                    button.btn.btn-danger.btn-s.btn-block(id="buttonreject"  value= household.int_applicationID class="buttonreject"): span.fa.fa-close Reject
+                                                                                </td> 
+                                                                                    //- a(href=`/office/releasing/beneficiary/${app2.int_applicationID}/viewAppDet` id="viewAppDet" class="btn btn-primary btn-xs btn-block"): span Application Details
+                                                                                    //- if applicant3.enum_applicationType == 'Household'
+                                                                                    //-     button.btn.btn-info.mb-1(id="btn-view" class="btn-view btn-block" value= applicant3.int_applicationID): span.fa.fa-eye Beneficiary Details
+                                                                                    //-     if applicant3.enum_applicationStatus == 'Approved'
+                                                                                    //-         button.btn.btn-success.mb-1(id="btn-receive" class="btn-receive btn-block" value= applicant3.int_applicationID): span.fa.fa-check Received
+                                                                                            //- a(href=`/office/Releasing/viewben/${applicant3.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
+                                                                            </tr>        
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Family Name</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        each household in tbl_apphou
+                                                                            if household.enum_applicationStatus == "Approved"
+                                                                                <tr>
+                                                                                    <td>
+                                                                                    value=household.varchar_familyName
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    value=household.enum_applicationStatus
+                                                                                    </td>
+                                                                                    <td>
+                                                                                                button.btn.btn-info(id="btn-view-household" class="btn-view-household btn-sm btn-block" value= household.int_applicationID): span.fa.fa-eye View Details
+                                                                                                each slot in slotcount
+                                                                                                    if project.int_projectID == slot.projID
+                                                                                                        //- if project.int_allotedSlot == (project.int_allotedSlot + slot.slotcount)
+                                                                                                        if slot.slotCount == 0
+                                                                                                            if household.enum_applicationStatus == "Pending"
+                                                                                                                <p class="text-center">Fully alloted</p>
+                                                                                                        else
+                                                                                                            if project.enum_projectStatus === "Ongoing" 
+                                                                                                                if household.enum_applicationStatus == "Pending"
+                                                                                                                    form(id="formacceptapp" method="POST" action=`/office/projects/${household.int_projectID}/viewproj/accept`)
+                                                                                                                        input(value= household.int_applicationID name="int_applicationID" required, hidden)
+                                                                                                                        button.btn.btn-success.btn-s.btn-block(id="buttonaccept"  value= household.int_applicationID class="buttonaccept"): span.fa.fa-check Accept
+                                                                                                                        
+                                                                                                                    form(id="formrejectapp" method="POST" action=`/office/projects/${household.int_projectID}/viewproj/reject`)
+                                                                                                                        input(value= household.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                                        button.btn.btn-danger.btn-s.btn-block(id="buttonreject"  value= household.int_applicationID class="buttonreject"): span.fa.fa-close Reject
+                                                                                    </td> 
+                                                                                        //- a(href=`/office/releasing/beneficiary/${app2.int_applicationID}/viewAppDet` id="viewAppDet" class="btn btn-primary btn-xs btn-block"): span Application Details
+                                                                                        //- if applicant3.enum_applicationType == 'Household'
+                                                                                        //-     button.btn.btn-info.mb-1(id="btn-view" class="btn-view btn-block" value= applicant3.int_applicationID): span.fa.fa-eye Beneficiary Details
+                                                                                        //-     if applicant3.enum_applicationStatus == 'Approved'
+                                                                                        //-         button.btn.btn-success.mb-1(id="btn-receive" class="btn-receive btn-block" value= applicant3.int_applicationID): span.fa.fa-check Received
+                                                                                                //- a(href=`/office/Releasing/viewben/${applicant3.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
+                                                                                </tr>        
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content3" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Family Name</th>
+                                                                                <th>Status</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        each household in tbl_apphou
+                                                                            if household.enum_applicationStatus == "Pending"
+                                                                                <tr>
+                                                                                    <td>
+                                                                                    value=household.varchar_familyName
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    value=household.enum_applicationStatus
+                                                                                    </td>
+                                                                                    <td>
+                                                                                                button.btn.btn-info(id="btn-view-household" class="btn-view-household btn-sm btn-block" value= household.int_applicationID): span.fa.fa-eye View Details
+                                                                                                each slot in slotcount
+                                                                                                    if project.int_projectID == slot.projID
+                                                                                                        //- if project.int_allotedSlot == (project.int_allotedSlot + slot.slotcount)
+                                                                                                        if slot.slotCount == 0
+                                                                                                            if household.enum_applicationStatus == "Pending"
+                                                                                                                <p class="text-center">Fully alloted</p>
+                                                                                                        else
+                                                                                                            if project.enum_projectStatus === "Ongoing" 
+                                                                                                                if household.enum_applicationStatus == "Pending"
+                                                                                                                    form(id="formacceptapp" method="POST" action=`/office/projects/${household.int_projectID}/viewproj/accept`)
+                                                                                                                        input(value= household.int_applicationID name="int_applicationID" required, hidden)
+                                                                                                                        button.btn.btn-success.btn-s.btn-block(id="buttonaccept"  value= household.int_applicationID class="buttonaccept"): span.fa.fa-check Accept
+                                                                                                                        
+                                                                                                                    form(id="formrejectapp" method="POST" action=`/office/projects/${household.int_projectID}/viewproj/reject`)
+                                                                                                                        input(value= household.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                                        button.btn.btn-danger.btn-s.btn-block(id="buttonreject"  value= household.int_applicationID class="buttonreject"): span.fa.fa-close Reject
+                                                                                    </td> 
+                                                                                        //- a(href=`/office/releasing/beneficiary/${app2.int_applicationID}/viewAppDet` id="viewAppDet" class="btn btn-primary btn-xs btn-block"): span Application Details
+                                                                                        //- if applicant3.enum_applicationType == 'Household'
+                                                                                        //-     button.btn.btn-info.mb-1(id="btn-view" class="btn-view btn-block" value= applicant3.int_applicationID): span.fa.fa-eye Beneficiary Details
+                                                                                        //-     if applicant3.enum_applicationStatus == 'Approved'
+                                                                                        //-         button.btn.btn-success.mb-1(id="btn-receive" class="btn-receive btn-block" value= applicant3.int_applicationID): span.fa.fa-check Received
+                                                                                                //- a(href=`/office/Releasing/viewben/${applicant3.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
+                                                                                </tr>        
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>		
+                                            </div>			
+                                        </div>	
+                                    </div>
+                                if project.enum_applicationType == "Barangay"
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2><i class="fa fa-users"></i> Applications - Barangay</h2>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            //- <div>
+                                            //-     input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" style="margin-left:3%;")
+                                            //-     button(type="submit" id="buttonaccept" class="btn btn-primary btn-s" name="buttonaccept" style="margin-left:2%;"): span.fa.fa-check  Accept
+                                            //-     button(type="submit" id="buttonreject" class="btn btn-danger btn-s" name="buttonreject"): span.fa.fa-close  Reject
+                                            //- <br>
+                                            //- <br>
+                                            //- </div>
+                                            <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                                                <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#tab_content1" id="resident-tab" role="tab" data-toggle="tab" aria-expanded="true">ALL</a>
+                                                    </li>
+                                                    <li role="presentation"><a href="#tab_content2" id="household-tab" role="tab" data-toggle="tab" aria-expanded="true">Approved</a>
+                                                    </li>
+                                                    <li role="presentation"><a href="#tab_content3" id="barangay-tab" role="tab" data-toggle="tab" aria-expanded="true">Pending</a>
+                                                    </li>
+                                                </ul>
+                                                <div id="myTabContent" class="tab-content">
+                                                    <br>
+                                                    //- START OF 1ST TAB
+                                                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Barangay Name</th>
+                                                                                <th>Requested/Approved slot</th>
+                                                                                <th>Reason</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody> 
+                                                                        each applicant2 in tbl_appbar
+                                                                            <tr>
+                                                                                <td>
+                                                                                    value= applicant2.varchar_barangayName
+                                                                                </td>
+                                                                                <td>
+                                                                                    value= applicant2.int_slot
+                                                                                </td>
+                                                                                <td>
+                                                                                    value= applicant2.text_applicationReason
+                                                                                </td>
+                                                                                <td>
+                                                                                each slot in slotcount
+                                                                                    if project.int_projectID == slot.projID
+                                                                                        if slot.slotCount == 0
+                                                                                            if applicant2.enum_applicationStatus == "Pending"
+                                                                                                <p class="text-center">Fully alloted</p>
+                                                                                        else
+                                                                                            if project.enum_projectStatus === "Ongoing" 
+                                                                                                if applicant2.enum_applicationStatus == "Pending"
+                                                                                                    form(id="formacceptapp" method="POST" action=`/office/projects/${applicant2.int_projectID}/viewproj/accept`)
+                                                                                                        input(value= applicant2.int_projectID id="project_ID" name="project_ID" required, hidden)
+                                                                                                        input(value= slot.slotCount id="slot_Count" name="slot_Count" required, hidden)
+                                                                                                        input(value= applicant2.int_applicationID name="int_slot" id="int_slot" required, hidden)
+                                                                                                        button.btn.btn-success.btn-s.btn-block(id="buttonacceptbrgy"  value= applicant2.int_applicationID class="buttonacceptbrgy"): span.fa.fa-check Accept
+                                                                                                        
+                                                                                                    form(id="formrejapp" method="POST" action=`/office/projects/${applicant2.int_projectID}/viewproj/reject`)
+                                                                                                        input(value= applicant2.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                        button.btn.btn-danger.btn-s.btn-block(id="buttonrejectbrgy"  value= applicant2.int_applicationID class="buttonrejectbrgy"): span.fa.fa-close Reject
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Barangay Name</th>
+                                                                                <th>Requested/Approved slot</th>
+                                                                                <th>Reason</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody> 
+                                                                        each applicant2 in tbl_appbar
+                                                                            if applicant2.enum_applicationStatus == "Approved"
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        value= applicant2.varchar_barangayName
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value= applicant2.int_slot
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value= applicant2.text_applicationReason
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    each slot in slotcount
+                                                                                        if project.int_projectID == slot.projID
+                                                                                            if slot.slotCount == 0
+                                                                                                if applicant2.enum_applicationStatus == "Pending"
+                                                                                                    <p class="text-center">Fully alloted</p>
+                                                                                            else
+                                                                                                if project.enum_projectStatus === "Ongoing" 
+                                                                                                    if applicant2.enum_applicationStatus == "Pending"
+                                                                                                        form(id="formacceptapp" method="POST" action=`/office/projects/${applicant2.int_projectID}/viewproj/accept`)
+                                                                                                            input(value= applicant2.int_projectID id="project_ID" name="project_ID" required, hidden)
+                                                                                                            input(value= slot.slotCount id="slot_Count" name="slot_Count" required, hidden)
+                                                                                                            input(value= applicant2.int_applicationID name="int_slot" id="int_slot" required, hidden)
+                                                                                                            button.btn.btn-success.btn-s.btn-block(id="buttonacceptbrgy"  value= applicant2.int_applicationID class="buttonacceptbrgy"): span.fa.fa-check Accept
+                                                                                                            
+                                                                                                        form(id="formrejapp" method="POST" action=`/office/projects/${applicant2.int_projectID}/viewproj/reject`)
+                                                                                                            input(value= applicant2.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                            button.btn.btn-danger.btn-s.btn-block(id="buttonrejectbrgy"  value= applicant2.int_applicationID class="buttonrejectbrgy"): span.fa.fa-close Reject
+                                                                                    </td>
+                                                                                </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content3" aria-labelledby="home-tab">
+                                                        <div class="x_content">
+                                                            <div class="container">
+                                                                <div class="table-responsive m-b-40">
+                                                                    <table id="datatable" class="table table-borderless table-data3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Barangay Name</th>
+                                                                                <th>Requested/Approved slot</th>
+                                                                                <th>Reason</th>
+                                                                                <th>Actions</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody> 
+                                                                        each applicant2 in tbl_appbar
+                                                                            if applicant2.enum_applicationStatus == "Pending"
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        value= applicant2.varchar_barangayName
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value= applicant2.int_slot
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        value= applicant2.text_applicationReason
+                                                                                    </td>
+                                                                                    <td>
+                                                                                    each slot in slotcount
+                                                                                        if project.int_projectID == slot.projID
+                                                                                            if slot.slotCount == 0
+                                                                                                if applicant2.enum_applicationStatus == "Pending"
+                                                                                                    <p class="text-center">Fully alloted</p>
+                                                                                            else
+                                                                                                if project.enum_projectStatus === "Ongoing" 
+                                                                                                    if applicant2.enum_applicationStatus == "Pending"
+                                                                                                        form(id="formacceptapp" method="POST" action=`/office/projects/${applicant2.int_projectID}/viewproj/accept`)
+                                                                                                            input(value= applicant2.int_projectID id="project_ID" name="project_ID" required, hidden)
+                                                                                                            input(value= slot.slotCount id="slot_Count" name="slot_Count" required, hidden)
+                                                                                                            input(value= applicant2.int_applicationID name="int_slot" id="int_slot" required, hidden)
+                                                                                                            button.btn.btn-success.btn-s.btn-block(id="buttonacceptbrgy"  value= applicant2.int_applicationID class="buttonacceptbrgy"): span.fa.fa-check Accept
+                                                                                                            
+                                                                                                        form(id="formrejapp" method="POST" action=`/office/projects/${applicant2.int_projectID}/viewproj/reject`)
+                                                                                                            input(value= applicant2.int_applicationID name="int_applicationID"  required, hidden)
+                                                                                                            button.btn.btn-danger.btn-s.btn-block(id="buttonrejectbrgy"  value= applicant2.int_applicationID class="buttonrejectbrgy"): span.fa.fa-close Reject
+                                                                                    </td>
+                                                                                </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                    //- <!-- END DATA TABLE-->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>		
+                                            </div>			
+                                        </div>	
+                                    </div>
+
+                                //- MODAL VIEW APPLICANT DETAIL
+                                <div class="modal fade bs-example-modal-lg" id="modalviewapplication" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                        
+                                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                                <h4 class="modal-title" id="myModalLabel"><span class="section">View Application Details</span></h4> 
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-lastname">Last Name:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-lastname">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-firstname">First Name:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-firstname" >
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-middlename">Middle Name:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-middlename">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-birthdate">Birthdate:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-birthdate">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-gender">Gender:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-gender">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-year">Year of Residency:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-year">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-civil">Civil Status:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-civil">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-contact">Contact Number:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-contact">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="item form-group">
+                                                        <label class="control-label col-md-2" for="aj-email">Email Address:
+                                                        </label>
+                                                        <div class="col-md-9" id="aj-email">
+                                            
+                                                        </div>
+                                                        <br>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade bs-example-modal-lg" id="modalviewhousehold" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                            
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                                                    <h4 class="modal-title" id="myModalLabel"><span class="section">View Application Details</span></h4> 
+                                                    <div class="item form-group">
+                                                            <label class="control-label col-md-2" for="aj-familyName">Family Name:
+                                                            </label>
+                                                            <div class="col-md-9" id="aj-familyName">
+                                                
+                                                            </div>
+                                                            <br>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                            <label class="control-label col-md-2" for="aj-homeAddress">Home Address:
+                                                            </label>
+                                                            <div class="col-md-9" id="aj-homeAddress" >
+                                                
+                                                            </div>
+                                                            <br>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                            <label class="control-label col-md-2" for="aj-houseStatus">House Status:
+                                                            </label>
+                                                            <div class="col-md-9" id="aj-houseStatus">
+                                                
+                                                            </div>
+                                                            <br>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                            <label class="control-label col-md-2" for="aj-annualIncome">Annual Income:
+                                                            </label>
+                                                            <div class="col-md-9" id="aj-annualIncome">
+                                                
+                                                            </div>
+                                                            <br>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                            <label class="control-label col-md-2" for="aj-familyBackground">Family Background:
+                                                            </label>
+                                                            <div class="col-md-9" id="aj-familyBackground">
+                                                
+                                                            </div>
+                                                            <br>
+                                                            <br>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                            <label class="control-label col-md-2" for="aj-financialContributor">Financial Contributor:
+                                                            </label>
+                                                            <div class="col-md-9" id="aj-financialContributor">
+                                                
+                                                            </div>
+                                                            <br>
+                                                            <br>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="modal fade" id="modalbrgyapplication" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <form method="POST" action="/office/projects/brgy/accept" class="form-horizontal form-label-left " id="formappapp">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="mediumModalLabel">Barangay Application Approval
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <label class="form-group " for="remapp_count">Remaining available slot:  
+                                                    <div id="remapp_count" class="pull-right">
+                                                    </div>
+                                                    </label>
+                                                    <br>
+                                                    <label class="control-label " for="brgyapp_count">Application Slot
+                                                    </label>
+                                                    <div class="input-group">
+                                                        <input id="brgyapp_count" name="brgyapp_count" type="number" class="form-control">
+                                                        <span class="input-group-btn">
+                                                            button.btn.btn-success.btn-s(id="button_accappbar" class="button_accappbar"): span.fa.fa-check Approve!
+                                                        </span>
+                                                    </div>
+                                                    <input type="hidden" id="appid" name="appid">
+                                                    <input type="hidden" id="projID" name="projID">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="ENDprojectModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form class="form-horizontal form-label-left" method="POST" action='/office/projects/closelateapplication' id="formendreason">
+                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="mediumModalLabel">Scheduled Date to End Application:
+                                                        <div class="" id="aj-projectDate">
+                                                    
+                                                        </div>
+                                                    </h4>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                                <div class="col-md-1 col-sm-1 col-xs-12">
+                                                                </div>
+                                                                <label class="col-md-5" for="problemcreated">Reason of early/late project application end
+                                                                </label>
+                                                        </div>
+                                                        <div class="col-md-1 col-sm-1 col-xs-12">
+                                                        </div>
+                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <textarea class="resizable_textarea form-control" id="projectReason" name="projectReason" placeholder=""></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="hidden" id="projectID" name="projectID" >
+                                                            
+                                                            <input type="hidden" id="current_date" name="current_date" >
+                                                            
+                                                            <button type="submit" id="but-sub" class="btn btn-success">Send</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <small><strong>Current Date:</small>
+                                                <div class="" id="aj-current_date">
+                                                    
+                                                </div></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+        <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+
+        script.
+
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            n =  new Date();
+            y = n.getFullYear();
+            m = n.getMonth() + 1;
+            d = n.getDate();
+            mon = months[n.getMonth()];
+            //- currentdate = y + "-" + m + "-" + d;
+            currdate =  mon + " " + d + ", " + y;
+            currentdate =  m + "-" + d + "-" + y;
+            //- SCRIPT GET INT_APPLICATIONID (VIEW MODAL)
+
+            $(document).ready(function () {
+
+                $('.btn-view-application').click(function (e) {
+                    e.preventDefault()
+                    var Id = $(this).val();
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    console.log("================================Id(Class)")
+                    $('#modalviewapplication').modal('show');
+                    ajaxGet();
+
+                    function ajaxGet(){
+                    console.log("========Id");
+                    console.log(Id);
+                    console.log("========Id");
+
+                    $.ajax({
+                        type : "POST",
+                        url : window.location + "/ajaxapplicantdetails",
+                        data: {ajApplicationID: Id},
+                        dataType: "json",
+                        success: function(tbl_application){
+                            
+                            console.log(tbl_application)
+
+                            $.each(tbl_application, function (index, value) {
+
+                                document.getElementById("aj-lastname").innerHTML = value.varchar_lastName    
+                                document.getElementById("aj-firstname").innerHTML = value.varchar_firstName
+                                document.getElementById("aj-middlename").innerHTML = value.varchar_middleName
+                                document.getElementById("aj-birthdate").innerHTML = value.date_birthDate
+                                document.getElementById("aj-gender").innerHTML = value.enum_gender
+                                document.getElementById("aj-year").innerHTML = value.year_applicantResidency
+                                document.getElementById("aj-civil").innerHTML = value.enum_civilStatus
+                                document.getElementById("aj-contact").innerHTML = value.varchar_contactNumber
+                                document.getElementById("aj-email").innerHTML = value.varchar_emailAddress
+                                    
+                                console.log("Success: " );
+                            });                             
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        }
+                    });	
+                }
+                }); 
+                
+                $('.btn-view-household').click(function (e) {
+                    e.preventDefault()
+                    var Id = $(this).val();
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    console.log("================================Id(Class)")
+                    $('#modalviewhousehold').modal('show');
+                    ajaxGet();
+
+                    function ajaxGet(){
+                        console.log("========Id");
+                        console.log(Id);
+                        console.log("========Id");
+                        
+                        $.ajax({
+                            type : "POST",
+                            url : window.location + "/ajaxhouseholddetails",
+                            data: {ajHouseholdID: Id},
+                            dataType: "json",
+                            success: function(tbl_householdapplication){
+                            
+                            console.log(tbl_householdapplication)
+
+                                $.each(tbl_householdapplication, function (index, value) {
+                                    document.getElementById("aj-familyName").innerHTML = value.varchar_familyName    
+                                    document.getElementById("aj-homeAddress").innerHTML = value.text_homeAddress
+                                    document.getElementById("aj-houseStatus").innerHTML = value.enum_houseStatus
+                                    document.getElementById("aj-annualIncome").innerHTML = value.decimal_totalAnnualIncome
+                                    console.log("Success: " );
+                                });       
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });	
+                    }
+                }); 
+
+                $('.buttonaccept').click(function (e) {
+                    e.preventDefault()
+                    var form = $(this).parents('form');
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You will approve the application.",
+                        type: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Approve Applicant!'
+                        }).then((result) => {
+                        if (result.value) {
+                            swal({
+                            text: "Success",
+                            type: 'success',
+                            confirmButtonColor: '#3085d6',
+                            icon: "success",
+                            confirmButtonText: 'OK!'
+                            }).then((result) => {
+                            if (result.value) {
+                                $(form).submit();
+                            }                        
+                            })
+                        }                        
+                        })
+                }); 
+                $('.buttonreject').click(function (e) {
+                    e.preventDefault()
+                    var form = $(this).parents('form');
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You will reject the application.",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        dangerMode: true,
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Reject Applicant!'
+                        }).then((result) => {
+                        if (result.value) {
+                            swal({
+                            text: "Reject Success",
+                            type: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK!'
+                            }).then((result) => {
+                            if (result.value) {
+                                $(form).submit();
+                            }                        
+                            })
+                        }                        
+                        })
+                }); 
+                $('.buttonacceptbrgy').click(function (e) {
+                    e.preventDefault()
+                    var Id = $(this).val();
+                    var slot = document.getElementById("int_slot").value;
+                    var proj_ID = document.getElementById("project_ID").value;
+                    var slot2 = document.getElementById("slot_Count").value;
+                    if(slot<slot2){
+                        $("#brgyapp_count").val(slot);
+                    }
+                    if(slot2=>slot){
+                        $("#brgyapp_count").val(slot2);
+                    }
+                    $("#appid").val(Id);
+                    $("#projID").val(proj_ID);
+                    document.getElementById("remapp_count").innerHTML = slot2;
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    console.log("================================Id(Class)")
+                    $('#modalbrgyapplication').modal('show');
+                });  
+
+                $('.button_accappbar').click(function (e) {
+                    e.preventDefault();
+                    var Id = $(this).val();
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You will approve the application.",
+                        type: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Approve Aplicant!'
+                        }).then((result) => {
+                        if (result.value) {
+                            swal({
+                            text: "Success",
+                            type: 'success',
+                            confirmButtonColor: '#3085d6',
+                            icon: "success",
+                            confirmButtonText: 'OK!'
+                            }).then((result) => {
+                            if (result.value) {
+                                $('#formappapp').submit();
+                            }                        
+                            })
+                        }                        
+                        })
+                }); 
+                $('.buttonrejectbrgy').click(function (e) {
+                    e.preventDefault()
+                    var form = $(this).parents('form');
+                    swal({
+                        title: 'Are you sure?',
+                        text: "You will reject the application of the resident.",
+                        type: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        dangerMode: true,
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, Reject Aplicant!'
+                        }).then((result) => {
+                        if (result.value) {
+                            swal({
+                            text: "Reject Success",
+                            type: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK!'
+                            }).then((result) => {
+                            if (result.value) {
+                                $(form).submit();
+                            }                        
+                            })
+                        }                        
+                        })
+                }); 
+                $('#btn-close').click(function(e) {  
+                    var Id = $(this).val();
+                    e.preventDefault(); //prevent submit        
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    console.log("================================Id(Class)")
+                    document.getElementById("projectID").value = Id                                            
+                    ajaxGetproj();
+                        function ajaxGetproj(){
+                            $.ajax({
+                                type : "POST",
+                                url : window.location + "/ajaxgetcloseprojectdetails",
+                                data: { ajProjectID: Id},
+                                dataType: "json",
+                                success: function(tbl_project1){
+                                    console.log(tbl_project1)
+                                    $.each(tbl_project1, function (index, value) {
+                                        console.log(value);
+                                        if(value.enum_projectStatus == "Ongoing"){
+                                            if(value.date_targetEndApp != currdate){
+                                                $('#ENDprojectModal').modal('show');
+                                                document.getElementById("aj-projectDate").innerHTML = value.date_targetEndApp
+                                                document.getElementById("aj-current_date").innerHTML = currdate
+                                                document.getElementById("current_date").value = currentdate
+                                            }
+                                            else
+                                            {
+                                                swal({
+                                                    title: 'Are you sure?',
+                                                    text: "You will end the appliction of this project.",
+                                                    type: 'Warning',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Yes!'
+                                                }).then((result) => {
+                                                    if (result.value) {
+                                                        swal({
+                                                            text: "Application Closed",
+                                                            type: 'success',
+                                                            confirmButtonColor: '#3085d6',
+                                                            confirmButtonText: 'OK!'
+                                                        }).then((result) => {
+                                                            if (result.value) {
+                                                                $('#formcloseproj').submit();
+                                                            }                        
+                                                        })
+                                                    }                        
+                                                })
+                                            }
+                                        }
+                                        console.log("Success: " );
+                                    });                                     
+                                                        
+                                },
+                                error : function(e) {
+                                    console.log("ERROR: ", e);
+                                }
+                            });	
+                        }
+                });
+                $('#but-sub').on('click',function (e) {
+                        var form = $(this).parents('form');
+                        e.preventDefault(); //prevent submit                                                        
+                        swal({
+                            title: 'Are you sure?',
+                            text: "You sure to end application of project?.",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes!'
+                        }).then((result) => {
+                            if (result.value) {
+                                swal({
+                                    text: "Application ended",
+                                    type: 'success',
+                                    confirmButtonColor: '#3085d6',
+                                    confirmButtonText: 'OK!'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $(formendreason).submit();
+                                    }                        
+                                })
+                            }                        
+                        })
+                });
+
+                //- $("#buttonaccept").click(function(){  
+                //-     $("#checkallapplicants").submit();
+                //- }
+
+            });
+            //- START SCRIPT TO CHECK/UNCHECK ALL
+            function checkAll() {             
+                $('#check-applications').change(function(event) {
+                    if (this.checked) {
+                        
+                        $(':checkbox').prop('checked', true);
+                        
+                    } else {
+                        $(':checkbox').prop('checked', false);
+                    }
+                });
+            }
+
+           
+            

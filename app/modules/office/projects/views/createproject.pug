@@ -1,0 +1,1302 @@
+extends ../../home/views/navbar.pug
+
+block content
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Proposal Form<small></small></h2>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <form method="POST" action="/office/projects/createproject" class="form-horizontal form-label-left" id="create-proposal">
+                            <div class="x_content">
+                                <div id="wizard" class="form_wizard wizard_horizontal">
+                                    <ul class="wizard_steps">\  
+                                        <li>
+                                            <a href="#step-1">
+                                                <span class="step_no">1</span>
+                                                    <span class="step_descr">Statement List<br/>
+                                                    <small>Approved statements of barangay</small>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-2">
+                                                <span class="step_no">2</span>
+                                                    <span class="step_descr">Basic<br/>Project Information<br/>
+                                                    <small>Basic information regarding the project.</small>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-3">
+                                                <span class="step_no">3</span>
+                                                    <span class="step_descr">Beneficiary Details<br/>
+                                                    <small>What details do we need about the beneficiary?</small>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-4">
+                                                <span class="step_no">4</span>
+                                                    <span class="step_descr">Requirements<br/>
+                                                    <small>What requirements are needed to <br/>be passed in this project?</small>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-5">
+                                                <span class="step_no">5</span>
+                                                    <span class="step_descr">Timeline<br/>
+                                                    <small>Important dates in the project.</small>
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-6">
+                                                <span class="step_no">6</span>
+                                                    <span class="step_descr">Budget<br/>
+                                                    <small>How much should be in this project?</small>
+                                            </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#step-7">
+                                                <span class="step_no">7</span>
+                                                    <span class="step_descr">Summary<br/>
+                                                    <small>Project proposal overview.</small>   
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+
+                                    <div id="step-1">
+                                        <form class="form-horizontal form-label-left">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped jambo_table bulk_action">
+                                                    <thead>
+                                                        <tr class="headings">
+                                                            <th>
+                                                            </th>
+                                                            <th class="column-title">Statement Title </th>
+                                                            <th class="column-title">Statement</th>
+                                                            <th class="column-title">Categories</th>
+                                                            </th>
+                                                            <th class="bulk-actions" colspan="7">
+                                                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody id="problemstatement">
+                                                        each statement in tbl_problemstatement
+                                                            <tr class="even pointer">
+                                                                <td class="a-center ">
+                                                                    input(type="checkbox" id="ap-statementid" class="ap-statementclass" name="statementsList[]" value=`${statement.int_statementID}` )
+                                                                </td>
+                                                                td(class="  statementName")
+                                                                    value= " " + statement.varchar_statementTitle+"   "
+                                                                </td>
+                                                                <td class=" statementContent">
+                                                                    value=statement.text_statementContent
+                                                                </td>
+                                                                <td class="  statementCategory">
+                                                                    value=statement.varchar_categoryName
+                                                                </td>
+                                                                </td>
+                                                            </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <div id="step-2">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="projectname">Project Name <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="input-group">
+                                                    <input type="text" name="projectname" onchange="getName()" id="ap-projectname" required="required" placeholder="Project's name ..." class="form-control col-md-7 col-xs-12">
+                                                    <div class="input-group-btn">
+                                                        <button type="button" id="btnTitleCheck" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul id="titleCheck" class="dropdown-menu dropdown-menu-right" role="menu" style="margin-left: -457px; padding: 12px 16px; background-color: #f9f9f9; position:absolute;">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Project Category</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" id="ap-projectcateg-intent" style="display:none">
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" id="ap-projectcategory-nointent">
+                                                <select class="form-control select-multiple" multiple="multiple" id="ap-projectcategory" onclick="getCategory()" name="projectlist[]">
+                                                    each category in tbl_category
+                                                        option(value=`${category.int_categoryID}`)=category.varchar_categoryName+"   "
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="projectrationale">Project Rationale</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12 ">
+                                                <div class="input-group">
+                                                    <textarea onchange="getRationale()" class="resizable_textarea form-control" placeholder="Please fill project rationale ..." id="ap-projectrationale" name="projectrationale"></textarea>
+                                                    <div class="input-group-btn">
+                                                        <button type="button" id="btn-rationale" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                            <span class="caret"></span>
+                                                        </button>
+                                                        <ul id="contentDrop" class="dropdown-menu dropdown-menu-right contentDropDown" role="menu" style="margin-left: -457px; padding: 12px 16px; background-color: #f9f9f9; position:absolute;">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="projectobjective">Project Objective</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <textarea onchange="getObjective()" class="resizable_textarea form-control" placeholder="Please fill project objective ..." id="ap-projectobjective" name="projectobjective"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="projectdescription">Project Description</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <textarea onchange="getDescription()" class="resizable_textarea form-control" placeholder="Please fill project description ..." id="ap-projectdescription" name="projectdescription"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Application Type</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select class="form-control" id="ap-apptype" onchange="getAppType()" name="applicationType">
+                                                    <option> Select </option>
+                                                    <option value='Resident'>Resident</option>
+                                                    <option value='Household'>Household</option>
+                                                    <option value='Barangay'>Barangay</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="step-3">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Target Beneficiary</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" id="ap-projectbeneficiary-intent" style="display:none">
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-xs-12" id="ap-projectbeneficiary-nointent">
+                                            <select class="select2_multiple form-control" onclick="getBeneficiary()" id="ap-projectbeneficiary" name="projectbeneficiaries[]" multiple="multiple">
+                                                each beneficiary in tbl_beneficiary
+                                                    option(value=`${beneficiary.int_beneficiaryID}`)=beneficiary.varchar_beneficiaryName+"   "
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="allotedslots">Alloted Slot <span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" onchange="getSlot()" id="ap-allotedslots" name="allotedslots" required="required" placeholder="Number of beneficiary ..." onchange="autobudget()" class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div>
+                                            <div id="unitmeasurelist" style="display: none">
+                                                <select name="unitmeasure[]" class="form-control ap-benefitunit">
+                                                    each unit in tbl_unitmeasure
+                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <label class="control-label"> Benefits of the Project </label>
+                                                    <button style="pull-right" class="btn btn-info pull-right" id="addBenefit">Add Benefit</button>
+                                                </div>
+                                                <br/>
+                                                <div class="table-responsive">
+                                                    <table id="datatable-fixed-header expenseTable" class="table">
+                                                        <tbody>
+                                                            <tr style="min-height:10%">
+                                                                <th width="5%"></th>
+                                                                <th width="35%">Benefit</th>
+                                                                <th width="10%">Quantity</th>
+                                                                <th width="10%">Unit Measure</th>
+                                                                <th width="10%">Unit Price</th>
+                                                                <th width="20%">Amount</th>
+                                                            </tr>
+                                                            <tr class="benefit-row beneCounter">
+                                                                <th >1</th>
+                                                                <td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td>
+                                                                <td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td>
+                                                                <td>
+                                                                    <select name="unitMeasure[]" class="form-control ap-benefitunit">
+                                                                        each unit in tbl_unitmeasure
+                                                                            option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td>
+                                                                <td>
+                                                                    <input type="text" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly>
+                                                                    <input type="number" class="benefitAmount" name="benefitAmount[]" hidden>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="">
+                                                                <th ></th>
+                                                                <td colspan="4"><b style="float:right">Total Amount:</b></td>
+                                                                <td>
+                                                                    <input type="text" style="width:100%" class="form-control benefitTot" id="totBeneBudgets" readonly>
+                                                                    <input type="number" class="benefitTot" id="totBeneBudget" name="benefitbudget" hidden>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="step-4">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Select requirements</label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <select class="select2_multiple form-control" onclick="getRequirement()" id="ap-projectrequirement" multiple="multiple" name="projectrequirement[]">
+                                                each requirement in tbl_requirement
+                                                    option(value=`${requirement.int_requirementID}`)=requirement.varchar_requirementName+"   "
+                                            </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="step-5">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="startApp"> Start of Application<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="form-group has-feedback">
+                                                    <input type="date" id="ap-startapp" onchange="getStartApp()" class="pickDate form-control has-feedback-left" name="startApp" aria-describedby="inputSuccess2Status">
+                                                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endApp"> End of Application<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="form-group has-feedback">
+                                                    <input type="date" id="ap-endapp" onchange="getEndApp()" class="form-control has-feedback-left" name="endApp" aria-describedby="inputSuccess2Status">
+                                                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="startRel"> Start of Releasing<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="xdisplay_inputx form-group has-feedback">
+                                                    <input type="date" id="ap-startrel" onchange="getStartRel()" class="form-control has-feedback-left" name="startRel" aria-describedby="inputSuccess2Status">
+                                                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endRel"> End of Releasing<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="form-group has-feedback">
+                                                    <input type="date" id="ap-endrel" onchange="getEndRel()" class="datepicker form-control has-feedback-left" name="endRel" aria-describedby="inputSuccess2Status"/>
+                                                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="closeProj"> Closing of Project<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <div class="form-group has-feedback">
+                                                    <input type="date" id="ap-closeproj" onchange="getCloseProj()" class="form-control has-feedback-left" name="closeProj" aria-describedby="inputSuccess2Status">
+                                                    <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                    <span id="inputSuccess2Status" class="sr-only">(success)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" hidden id="daychange">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="allotedslot"> Days Between Release Dates<span class="required">*</span>
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input type="number" id="betweenDays" required="required" placeholder="Number of days skip..." class="form-control col-md-7 col-xs-12">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="step-6">
+                                        <div class="form-group">
+                                            <div>
+                                                <label class="control-label">Appropriate Budget per Category </label>
+                                                <div id="appropriate-budget">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-vertical">
+                                            <div class="">
+                                                <label class="control-label"> Estimated Expense
+                                                </label>
+                                                <button style="pull-right" class="btn btn-info pull-right" id="addItem">Add Item</button>
+                                            </div>
+                                            <br/>
+                                            <div class="table-responsive">
+                                                <table id="datatable-fixed-header expenseTable" class="table">
+                                                    <tbody>
+                                                        <tr style="min-height:10%">
+                                                            <th width="5%"></th>
+                                                            <th width="35%">Item Description</th>
+                                                            <th width="10%">Quantity</th>
+                                                            <th width="10%">Unit Measure</th>
+                                                            <th width="10%">Unit Price</th>
+                                                            <th width="20%">Amount</th>
+                                                        </tr>
+                                                        <tr class="expense-row rowCounter">
+                                                            <th >1</th>
+                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]" id="expName"></td>
+                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]" id="expQuan"></td>
+                                                            <td>
+                                                                <select name="expensemeasure[]" class="form-control" id="expUnit">
+                                                                    each unit in tbl_unitmeasure
+                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]" id="expUPrice"></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control expenseAmount" id="expAmount" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="expense-row rowCounter">
+                                                            <th >2</th>
+                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
+                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
+                                                            <td>
+                                                                <select name="expensemeasure[]" class="form-control">
+                                                                    each unit in tbl_unitmeasure
+                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="expense-row rowCounter">
+                                                            <th >3</th>
+                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
+                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
+                                                            <td>
+                                                                <select name="expensemeasure[]" class="form-control">
+                                                                    each unit in tbl_unitmeasure
+                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="expense-row rowCounter">
+                                                            <th >4</th>
+                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
+                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
+                                                            <td>
+                                                                <select name="expensemeasure[]" class="form-control">
+                                                                    each unit in tbl_unitmeasure
+                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="expense-row rowCounter">
+                                                            <th >5</th>
+                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
+                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
+                                                            <td>
+                                                                <select name="expensemeasure[]" class="form-control">
+                                                                    each unit in tbl_unitmeasure
+                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="expense-row rowCounter">
+                                                            <th >6</th>
+                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
+                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
+                                                            <td>
+                                                                <select name="expensemeasure[]" class="form-control">
+                                                                    each unit in tbl_unitmeasure
+                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                </select>
+                                                            </td>
+                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                            </td>
+                                                        </tr>
+                                                        <tr class="expense-row-copy rowCounter" style="display:none">
+                                                            <div id="expenseCopy">
+                                                                <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
+                                                                <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
+                                                                <td>
+                                                                    <select name="expensemeasure[]" class="form-control">
+                                                                        each unit in tbl_unitmeasure
+                                                                            option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
+                                                                <td>
+                                                                    <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
+                                                                    <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                                </td>
+                                                            </div>
+                                                        </tr>
+                                                        <tr class="">
+                                                            <th ></th>
+                                                            <td colspan="4"><b style="float:right">Total Budget:</b></td>
+                                                            <td>
+                                                                <input type="text" style="width:100%" class="form-control" id="totBudget" readonly>
+                                                                <input type="number" class="expenseEstimatedAmount" id="totEstBudget" name="estimatedbudget" hidden>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        //- </form>
+                                    </div>
+
+                                    <div id="step-7">
+                                        <form class="form-horizontal form-label-left">
+                                            <div class="x_panel">
+                                                <div class="x_title">
+                                                    <h2>Proposal Summary <small></small></h2>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="x_content">
+                                                    <table class="table table-striped jambo_table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Statement</th>
+                                                                <th>   </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Statement Title:</th>
+                                                                <td>
+                                                                    <div id="result-projStatement"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row"></th>
+                                                                <td>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <thead>
+                                                            <th>Basic Information</th>
+                                                            <th>   </th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row" style="width:20%">Project Title:</th>
+                                                                <td>
+                                                                    <div id="result-projName"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Category:</th>
+                                                                <td>
+                                                                    <div id="result-projCategory"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Project Rationale:</th>
+                                                                <td>
+                                                                    <div id="result-projRationale"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Project Description:</th>
+                                                                <td>
+                                                                    <div id="result-projDescription"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Project Objective:</th>
+                                                                <td>
+                                                                    <div id="result-projObjective"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Application Type:</th>
+                                                                <td>
+                                                                    <div id="result-projAppType"></div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                            <th scope="row"></th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <thead>
+                                                            <tr >
+                                                                <th>Beneficiary</th>
+                                                                <th>   </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Target Beneficiary:</th>
+                                                                <td id="result-projBeneficiary"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Alloted Slot:</th>
+                                                                <td id="result-projSlot"></td>
+                                                            </tr>
+                                                            <tr>
+                                                            <th scope="row"></th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <thead>
+                                                            <tr >
+                                                                <th>Requirements</th>
+                                                                <th>   </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Requirements to be passed:</th>
+                                                                <td id="result-projRequirement"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row"></th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <thead>
+                                                            <tr >
+                                                                <th>Target Timeline</th>
+                                                                <th>   </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Start of Application:</th>
+                                                                <td>
+                                                                    <div id="result-startApp"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">End of Application</th>
+                                                                <td>
+                                                                    <div id="result-endApp"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Start of Releasing</th>
+                                                                <td>
+                                                                    <div id="result-startRel"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">End of Releasing</th>
+                                                                <td>
+                                                                    <div id="result-endRel"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">Closing of the Project</th>
+                                                                <td>
+                                                                    <div id="result-closeProj"><div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row"></th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <thead>
+                                                            <tr >
+                                                                <th>Budget</th>
+                                                                <th>   </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th scope="row">Estimated Budget:</th>
+                                                                <td id="result-projEstimated"></td>
+                                                            </tr>
+                                                            <tr>
+                                                            <th scope="row"></th>
+                                                            <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>      
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+    <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+    <script src="/assets/jquery/jquery-3.3.1.jquery.min.js"></script>
+    <script src="/assets/js/jquery.multi-select.js"></script>
+
+            
+    script.
+        
+        $(document).ready(function(){
+            
+            var rowCounter = 6;
+            var beneCounter = 1;
+            var beneNames = [];
+            var dateToday = new Date();
+            var benefitCounter = 1;
+
+            $(function(){
+                var dtToday = new Date();
+                
+                var month = dtToday.getMonth() + 1;
+                var day = dtToday.getDate();
+                var year = dtToday.getFullYear();
+                if(month < 10)
+                    month = '0' + month.toString();
+                if(day < 10)
+                    day = '0' + day.toString();
+                
+                var maxDate = year + '-' + month + '-' + day;
+                $('#ap-startapp').attr('min', maxDate);
+            });
+
+            //- ADD BENEFIT ROW
+            $(document).on('click', '#addBenefit', function(){
+                beneCounter++;
+                //- var fieldHTML = '<tr class="benefit-row beneCounter" style="position:relative"><th>'+beneCounter+'</th><td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td><td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td><td><input type="number" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly><input type="number" class="benefitAmount" name="benefitAmount[]" hidden></td></tr>';
+                var fieldHTML = '<tr class="benefit-row beneCounter"><th >'+beneCounter+'</th><td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td><td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td><td><input type="text" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly><input type="number" class="benefitAmount" name="benefitAmount[]" hidden></td></tr>';
+                $('body').find('.benefit-row:last').after(fieldHTML);
+            });
+
+            //- ADD EXPENSE ITEM ROW
+            $(document).on('click', '#addItem', function(){
+                rowCounter++;
+                var fieldHTML = '<tr class="expense-row rowCounter"><th >'+rowCounter+'</th><td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td><td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td><td><input type="text" style="width:100%" class="form-control expenseAmount" readonly><input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden></td></tr>';
+
+                $('body').find('.expense-row:last').after(fieldHTML);
+            });
+
+            //- GET STATEMENT TITLE TO INPUT TO PROJECT NAME DROPDOWN
+            $('#btnTitleCheck').click(function (e) {
+                e.preventDefault()
+                console.log("Titles");
+                
+                var statement_indeces = [];
+                var statement_name = [];
+                var statement_name_selected = "";
+
+                $(".ap-statementclass:checked").each(function() {
+                    statement_indeces.push($("input").index($(this)));
+                });
+
+                $(".statementName").each(function() {
+                    statement_name.push($(this).html());
+                });
+
+                for(var i = 0 ; i < statement_indeces.length ; i++ ){
+                    var counter = statement_indeces[i];
+                    statement_name_selected += "<li><a href='#' class='titleDropDown'>"+statement_name[counter]+"</a></li>";
+                }
+                console.log(statement_name_selected);
+
+                document.getElementById("titleCheck").innerHTML = statement_name_selected;
+
+            }); 
+
+            //- GET STATEMENT DESCRIPTION TO INPUT TO PROJECT RATIONALE DROPDOWN
+            $('#btn-rationale').click(function (e) {
+                e.preventDefault()
+                console.log("Rationale");
+
+                var statement_indeces = [];
+                var statement_content = [];
+                var statement_content_selected = "";
+
+                $(".ap-statementclass:checked").each(function() {
+                    statement_indeces.push($("input").index($(this)));
+                });
+
+                $(".statementContent").each(function() {
+                    statement_content.push($(this).html());
+                });
+
+                for(var i = 0 ; i < statement_indeces.length ; i++ ){
+                    var counter = statement_indeces[i];
+                    statement_content_selected += "<li><a href='#' >"+statement_content[counter]+"</a></li>";
+                }
+
+                console.log(statement_content_selected);
+                document.getElementById("contentDrop").innerHTML = statement_content_selected;
+
+            }); 
+
+            //- GET TITLE DROPDOWN VALUE TO INPUT TEXT AND SUMMARY
+            $("#titleCheck").on("click", "li a", function(event) {
+                event.preventDefault();
+                var clickedSubMenu = $(this);
+                $('#ap-projectname').val(clickedSubMenu.text());
+                document.getElementById("result-projName").innerHTML = clickedSubMenu.text();
+            });
+
+            //- GET RATIONALE VALUE TO INPUT TEXT AND SUMMARY
+            $("#contentDrop").on("click", "li a", function(event) {
+                event.preventDefault();
+                var clickedSubMenu = $(this);
+                $('#ap-projectrationale').val(clickedSubMenu.text());
+                document.getElementById("result-projRationale").innerHTML = clickedSubMenu.text();
+            });
+
+            //- GET CALCULATED VALUE OF UNIT PRICE AND QUANTITY ON EXPENSE TABLE
+            $(document).on("keyup", ".unitP, .quantity", function() {
+                var quan = [];
+                var uprice = [];
+                var totAmount = 0;
+                var quanIndex = [];
+                var unitIndex = [];
+                
+                $(".quantity").each(function (){
+
+                    if(!$(this).val()){
+                        console.log("No value quantity");
+                    }
+                    else {
+                        quan.push( $(this).val() );
+                        console.log("Quantity:"+quan);
+                    }
+                });
+
+                $(".unitP").each(function() {
+
+                    if(!$(this).val()){
+                        console.log("No value unit price");
+                    }
+                    else {
+                        uprice.push($(this).val());
+                        console.log("Unit Price:"+uprice);
+                    }
+                });
+
+                for(var i = 0 ; i < quan.length ; i++) {
+                    totAmount += (quan[i]*uprice[i]);
+                    
+                    var n= (quan[i]*uprice[i]).toString().split(".");
+                    n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    var m= totAmount.toString().split(".");
+                    m[0] = m[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    if(isNaN(quan[i]*uprice[i])){
+                        $(".expenseAmount").eq(i).value("0.00");
+                        console.log("NaN detected");
+                    }
+                    else {
+                        $(".expenseAmount").eq(i).val("PHP "+n.join("."));
+                    }
+                    
+                    $(".expenseEstimatedAmount").eq(i).val((quan[i]*uprice[i]));
+                    $("#totEstBudget").val(totAmount);
+                    $("#totBudget").val("PHP "+m.join("."));
+
+                    document.getElementById("result-projEstimated").innerHTML = m.join(".");
+                }
+            });
+
+            //- GET CALCULATED BENEFIT UNIT PRICE AND QUANTITY AND INSERT IT ON EXPENSE TABLE TIMES THE ALLOTED SLOTS
+            $(document).on('keyup', '#ap-allotedslots, .ap-benefitquantity, .ap-benefiruprice', function() {
+                console.log('Change Detected');
+                var beneQuan = [];
+                var beneUPrice = [];
+                var benefitAmount = 0;
+
+                $(".ap-benefitquantity").each(function() {
+                    beneQuan.push($(this).val());
+                });
+
+                $(".ap-benefiruprice").each(function() {
+                    beneUPrice.push($(this).val());
+                });
+
+                for(var i = 0 ; i < beneQuan.length ; i++) {
+
+                    benefitAmount += beneQuan[i]*beneUPrice[i];
+                    
+                    var n= (beneQuan[i]*beneUPrice[i]).toString().split(".");
+                    n[0] = n[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    var m= benefitAmount.toString().split(".");
+                    m[0] = m[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                    
+                    $(".benefitAmount").eq(i).val(beneQuan[i]*beneUPrice[i]);
+                    $(".benefitAmounts").eq(i).val("PHP "+n.join("."));
+
+                    
+                    //- if(isNaN(beneQuan[i]*beneUPrice[i])){
+                    //-     $(".benefitAmounts").eq(i).value("0.00");
+                    //-     console.log("NaN detected");
+                    //- }
+                    //- else {
+                    //-     $(".benefitAmounts").eq(i).val(n.join("."));
+                    //- }
+
+                    $("#totBeneBudget").val(benefitAmount);
+                    $("#totBeneBudgets").val("PHP "+m.join("."));
+                }
+                var beneSlot = getSlot();
+                var o= (beneSlot*benefitAmount).toString().split(".");
+                    o[0] = o[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                $('#expName').val('Benefit Expense');
+                $('#expQuan').val(beneSlot);
+                $('#expUnit').val('pc');
+                $('#expUPrice').val(benefitAmount);
+                $('#expAmount').val("PHP "+o.join("."));
+                $('#totBudget').val("PHP "+o.join("."));
+            });
+
+            //- SET SELECTED VALUE ON MULTIPLE SELECT WITHOUT HOLDING CTRL BUTTON
+            $('option').mousedown(function(e) {
+                e.preventDefault();
+                $(this).prop('selected', !$(this).prop('selected'));
+                return false;
+            });
+
+            $(document).on('keyup', '.ap-appbudgets', function() {
+                var amountValue = [];
+                var appBudgetAmount = 0;
+
+                $('.ap-appbudgets').each(function() {
+                    amountValue.push($(this).val());
+                });
+
+                for(var c = 0 ; c < amountValue.length ; c++) {
+                    appBudgetAmount += parseInt(amountValue[c]);
+                }
+
+                console.log(appBudgetAmount);
+
+                var m= appBudgetAmount.toString().split(".");
+                m[0] = m[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+                $('#ap-appbudget').val("PHP "+m.join("."));
+                $('#ap-apbudget').val(appBudgetAmount);
+            });
+        });
+
+        //- GET AND SET PROJECT NAME
+        function getName() {
+            var name = document.getElementById("ap-projectname").value;
+
+            document.getElementById("result-projName").innerHTML = name;
+        }
+
+        //- GET AND SET PROJECT RATIONALES
+        function getRationale() {
+            var rationale = document.getElementById("ap-projectrationale").value;
+
+            if(rationale!=0){
+                document.getElementById("result-projRationale").innerHTML = rationale;
+            }
+        }
+
+        
+        function getObjective() {
+            var objective = document.getElementById("ap-projectobjective").value;
+
+            if(objective!=0){
+                document.getElementById("result-projObjective").innerHTML = objective;
+            }
+        }
+
+        
+        function getDescription() {
+            var description = document.getElementById("ap-projectdescription").value;
+
+            if(description!=0){
+                document.getElementById("result-projDescription").innerHTML = description;
+            }
+        }
+
+        function getAppType() {
+            var appType;
+
+            $('#ap-apptype').each(function() {
+                appType = $(this).val();
+            });
+
+            console.log(appType);
+            document.getElementById('result-projAppType').innerHTML = appType;
+        }
+
+        function getSlot() {
+            var slot = document.getElementById("ap-allotedslots").value;
+
+            if(slot!=0){
+                document.getElementById("result-projSlot").innerHTML = slot;
+            }
+
+            return slot;
+        }
+
+    
+        function getStartApp() {
+            var applicationDays = new Date(document.getElementById("ap-startapp").value);
+            var options = {year: 'numeric', month: 'long', day: 'numeric'};
+            var days = applicationDays.toLocaleDateString([], options);
+
+            document.getElementById("result-startApp").innerHTML = days;
+
+            var month = applicationDays.getMonth() + 1;
+            var day = applicationDays.getDate() + 1;
+            var year = applicationDays.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+            $('#ap-endapp').attr('min', maxDate);
+        }
+
+        function getEndApp() {
+            var applicationDays = new Date(document.getElementById("ap-endapp").value);
+            var options = {year: 'numeric', month: 'long', day: 'numeric'};
+            var days = applicationDays.toLocaleDateString([], options);
+
+            document.getElementById("result-endApp").innerHTML = days;
+
+            var month = applicationDays.getMonth() + 1;
+            var day = applicationDays.getDate() + 1;
+            var year = applicationDays.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+            $('#ap-startrel').attr('min', maxDate);
+        }
+
+        function getStartRel() {
+            var releasingday = new Date(document.getElementById("ap-startrel").value);
+            var options = {year: 'numeric', month: 'long', day: 'numeric'};
+            var days = releasingday.toLocaleDateString([], options);
+
+            document.getElementById("result-startRel").innerHTML = days;
+            
+            var month = releasingday.getMonth() + 1;
+            var day = releasingday.getDate();
+            var year = releasingday.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+            $('#ap-endrel').attr('min', maxDate);
+        }
+
+        function getEndRel() {
+            var releasedate = new Date(document.getElementById("ap-endrel").value);
+            var options = {year: 'numeric', month: 'long', day: 'numeric'};
+            var days = releasedate.toLocaleDateString([], options);
+
+            document.getElementById("result-endRel").innerHTML = days;
+
+
+            var month = releasedate.getMonth() + 1;
+            var day = releasedate.getDate() + 1;
+            var year = releasedate.getFullYear();
+            if(month < 10)
+                month = '0' + month.toString();
+            if(day < 10)
+                day = '0' + day.toString();
+            
+            var maxDate = year + '-' + month + '-' + day;
+            $('#ap-closeproj').attr('min', maxDate);
+        }
+
+        function getCloseProj() {
+            var applicationDays = new Date(document.getElementById("ap-closeproj").value);
+            var options = {year: 'numeric', month: 'long', day: 'numeric'};
+            var days = applicationDays.toLocaleDateString([], options);
+
+            document.getElementById("result-closeProj").innerHTML = days;
+        }
+
+        function getBeneficiary() {
+            var beneficiary = $("#ap-projectbeneficiary").children(":selected");
+            var beneficiaries = beneficiary.text().split("   ");
+            var beneList = "";
+
+            for(var a = 0 ; a < (beneficiaries.length-1) ; a++) {
+                beneList += beneficiaries[a]+"<br>";
+            }
+
+
+            if(beneficiary!=0){
+                document.getElementById("result-projBeneficiary").innerHTML = beneList;
+            }
+        }
+
+        function getCategory() {
+            var category = $("#ap-projectcategory").children(":selected");
+            var categories = category.text().split("   ");
+            var categList = "";
+            var appcateg = [];
+            var appBudget = "";
+
+            for(var a = 0 ; a < (categories.length-1) ; a++) {
+                categList += categories[a]+"<br>";
+            }
+
+             $.each(categories, function(i, e) {
+                if ($.inArray(e, appcateg) == -1){
+                    appcateg.push(e);
+                }
+            });
+
+            for(var b = 0 ; b < (appcateg.length-1) ; b++){
+                appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>"+appcateg[b]+"</label><div class='col-md-7 col-sm-9 col-xs-9'><input type='number' name='appCategBudget[]' class='form-control ap-appbudgets'></div></div>";
+            }
+
+            appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>Total Appropriate Budget</label><div class='col-md-7 col-sm-9 col-xs-9'><input type='number' id='ap-apbudget' name='appropriatedBudget' hidden><input type='text' class='form-control' id='ap-appbudget' name='' readonly></div></div>";
+
+            if(category!=0){
+                document.getElementById("result-projCategory").innerHTML = categList;
+                document.getElementById("appropriate-budget").innerHTML = appBudget;
+            }
+        }
+
+        function getRequirement() {
+            var requirement = $("#ap-projectrequirement").children(":selected");
+            var requirements = requirement.text().split("   ");
+            var requireList = "";
+
+            for(var a = 0 ; a < (requirements.length-1) ; a++) {
+                requireList += requirements[a]+"<br>";
+            }
+
+
+            if(requirement!=0){
+                document.getElementById("result-projRequirement").innerHTML = requireList;
+            }
+        }
+
+        function getLocation() {
+            var location = $("#ap-projectlocation").children(":selected");
+            var locations = location.text().split("   ");
+            var locList = "";
+
+            for(var a = 0 ; a < (locations.length-1) ; a++) {
+                locList += locations[a]+"<br>";
+            }
+
+
+            if(location!=0){
+                document.getElementById("result-projloc").innerHTML = locList;
+            }
+        }
+
+        $(document).ready(function() {
+
+            $('.ap-statementclass').click(function() {
+                var statement_id = [];
+                var statement_name = [];
+                var statement_name_selected = "";
+                var statement_indeces = [];
+                var statement_category = [];
+                var statement_category_selected = [];
+                var result = [];
+                var categ = [];
+                var categResult = [];
+                var statement_categ = "";
+                var statement_categList = "";
+                var appBudget = "";
+            
+
+                if($('.ap-statementclass:checked').length > 0){
+                    $('#ap-projectcategory-nointent').hide();
+                    $('#ap-projectcateg-intent').show();
+                    $('#ap-projectbeneficiary-nointent').hide();
+                    $('#ap-projectbeneficiary-intent').show();
+
+                    $(".ap-statementclass:checked").each(function() {
+                        statement_id.push($(this).val());
+                        statement_indeces.push($("input").index($(this)));
+                    });
+
+                    $(".statementName").each(function() {
+                        statement_name.push($(this).html());
+                    });
+
+                    $(".statementCategory").each(function() {
+                        statement_category.push($(this).html());
+                        categ.push($(this).text());
+                    });
+
+                    for(var i = 0 ; i < statement_indeces.length ; i++ ){
+                        var counter = statement_indeces[i];
+                        statement_name_selected += statement_name[counter]+"<br>";
+                        statement_category_selected.push(statement_category[counter]);
+                    }
+
+
+                    $.each(statement_category_selected, function(i, e) {
+                        if ($.inArray(e, result) == -1){
+                            result.push(e);
+                        }
+                    });
+
+                    $.each(categ, function(i, e) {
+                        if ($.inArray(e, categResult) == -1){
+                            categResult.push(e);
+                        }
+                    });
+
+                    for(var i = 0 ; i < result.length ; i++) {
+                        console.log(result[i]);
+                        statement_categ += result[i]+"<input type='text' value='"+categResult[i]+"' name='projectlist[]' hidden><br>";
+                        statement_categList += result[i]+"<br>";
+                        appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>"+result[i]+"</label><div class='col-md-7  col-sm-9 col-xs-9'><input type='number' name='appCategBudget[]' class='form-control ap-appbudgets'></div></div>";
+                    }
+
+                    appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>Total Appropriate Budget</label><div class='col-md-7 col-sm-9 col-xs-9'><input type='number' id='ap-apbudget' name='appropriatedBudget' hidden><input type='text' class='form-control' id='ap-appbudget' name='' readonly></div></div>";
+
+                    document.getElementById("result-projStatement").innerHTML = statement_name_selected;
+                    document.getElementById("ap-projectcateg-intent").innerHTML = statement_categList;
+                    document.getElementById("result-projCategory").innerHTML = statement_categ;
+                    document.getElementById("appropriate-budget").innerHTML = appBudget;
+
+                    console.log(statement_id);
+
+                    $.ajax({
+                        type: "POST",
+                        url: window.location + "ajaxBeneficiary",
+                        data: {statementID: statement_id},
+                        dataType: "JSON",
+                        success: function(tbl_beneficiary) {
+                            console.log("success"); 
+
+                            $.each(tbl_beneficiary, function(index, value) {
+                                var beneList = "";
+                                var statement_bene = "";
+
+                                console.log(tbl_beneficiary);
+
+                                for(var i = 0 ; i < value.length ; i++) {
+                                    beneList += value[i]+"<br/>";
+                                    statement_bene += "<input type='text' value='"+value[i]+"' name='projectbeneficiaries[]' hidden><br>";
+                                }
+                                console.log(beneList);
+                                document.getElementById("ap-projectbeneficiary-intent").innerHTML = beneList;
+                                document.getElementById("result-projBeneficiary").innerHTML = beneList;
+                                document.getElementById("result-projBeneficiary").innerHTML = statement_bene;
+                            });
+
+                        },
+                        error: function(e) {
+                            console.log("ERROR: ", e);
+                        }
+                    });
+                }
+
+                else{
+                    $('#ap-projectcategory-nointent').show();
+                    $('#ap-projectcateg-intent').hide();
+                    $('#ap-projectbeneficiary-nointent').show();
+                    $('#ap-projectbeneficiary-intent').hide();
+                }
+            });
+        });
+
+        //- function autobudget() {
+        //-     var x = document.getElementById("ap-allotedslots").value;
+        //-     var y = document.getElementById("estimatedbudget").value;
+        //-     var z = y/x;
+            
+        //-     if(x!=0)
+        //-     {
+        //-         if(x>y)
+        //-         document.getElementById("individualbudget").value = 0;
+        //-         else{
+        //-             document.getElementById("individualbudget").value = z;
+        //-         }
+        //-     }
+            
+        //-     else
+        //-         document.getElementById("individualbudget").value = 0;
+
+        //-     document.getElementById("result-projEstimated").innerHTML = y;
+        //-     document.getElementById("result-projIndividual").innerHTML = z;
+        //- }
+        
+        function unhide() {
+            var x = document.getElementById("daychange");
+            var y = document.getElementById("releasingday").value;
+            document.getElementById("applicationduration");
+            if (y >= "2") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+
+        $(document).ready(function() {
+            $('#wizard').smartWizard({
+                transitionEffect:'slideleft',
+                onLeaveStep:leaveAStepCallback,
+                onFinish:onFinishCallback,
+                enableFinishButton:true
+            });
+        });

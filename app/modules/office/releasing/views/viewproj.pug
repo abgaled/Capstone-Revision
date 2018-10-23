@@ -1,0 +1,230 @@
+extends ../../home/views/navbar.pug
+
+block content
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                each project in tbl_projectproposal
+                    <div class="x_title">
+                        <h2>Project Details<small>Date Created: 
+                        value= "(" + project.date_createdDate + ")"
+                        </small></h2>
+                        <a class="collapse-link"><i class=""></i></a>
+                        a(href=`/office/releasing` class="btn btn-danger btn-s pull-right"): span.fa.fa-times-circle  
+                        <form id="formcloseproj" name="formcloseproj" method="POST" action='/office/releasing/finproj'>
+                            <input hidden id="projID" name="projID">
+                            button.btn.btn-danger.btn-s.mb-1(id="finproj" class="finproj-res pull-right" value= project.int_projectID): span.fa Close Releasing
+                        </form>
+                    <div class="clearfix"></div>
+                </div>
+                    <div class="x_content">
+                    each project in tbl_projectproposal
+                        <table class="table table-hover jambo_table">
+                        <thead>
+                            <tr>
+                                <th>Problem</th>
+                                <th>
+                                
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Problem to be solved:</th>
+                                <td>
+                                each statement in tbl_problemstatement
+                                    value=statement.varchar_statementTitle
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td>
+                                
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>Basic Information</th>
+                                <th>   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Project Title:</th>
+                                <td>
+                                    <p>
+                                        value=project.varchar_projectName
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Category:</th>
+                                <td>
+                                each cat in tbl_projectcategory
+                                    value=cat.varchar_categoryName
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Project Rationale:</th>
+                                <td>
+                                value=project.varchar_projectRationale
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Project Description:</th>
+                                <td>
+                                value=project.text_projectDescription
+                                </td>
+                            </tr>
+                            <tr>
+                            <th scope="row">Project Objective:</th>
+                                <td>
+                                value=project.text_projectObjective
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Beneficiary</th>
+                                <th>   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Target Beneficiary:</th>
+                                    <td>
+                                    each prbf in tbl_projectbeneficiary
+                                        value=prbf.varchar_beneficiaryName
+                                        <br/>
+                                    </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Alloted Slot:</th>
+                                <td>
+                                value=project.int_allotedSlot
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Requirements</th>
+                                <th>   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Requirements to be passed:</th>
+                                <td>
+                                each prjreq in tbl_projectrequirement
+                                    value=prjreq.varchar_requirementName
+                                    <br/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Timeline</th>
+                                <th>   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            each proj in tbl_project
+                                <tr>
+                                    <th scope="row">Application Start: </th>
+                                    <td>
+                                    value=proj.date_startApplication
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Application Closing: </th>
+                                    <td>
+                                    value=proj.date_endApplication
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Release Start: </th>
+                                    <td>
+                                    value=proj.date_startReleaseDate
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Release Closing: </th>
+                                    <td>
+                                    value=proj.date_endReleaseDate
+                                    </td>
+                                </tr>
+                            <tr>
+                                <th scope="row">Releasing Location:</th>
+                                <td>
+                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr >
+                                <th>Budget</th>
+                                <th>   </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Actual Budget:</th>
+                                <td>PHP 
+                                    value=project.decimal_amount
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"></th>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+
+
+            script.
+                $(document).ready(function () {projID
+                    $('#finproj').on('click',function (e) {
+                        var Id = $(this).val();
+                        document.getElementById("projID").value = Id
+
+                        var form = $(this).parents('form');
+                        e.preventDefault(); //prevent submit
+                                    
+                            swal({
+                            title: 'Are you sure?',
+                            text: "You sure to close releasing of project?.",
+                            type: 'info',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes, Close it!'
+                            }).then((result) => {
+                            if (result.value) {
+                                $('#formcloseproj').submit();
+                            }                        
+                            })
+                    });
+                });

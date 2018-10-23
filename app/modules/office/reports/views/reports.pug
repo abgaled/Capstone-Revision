@@ -1,0 +1,180 @@
+extends ../../home/views/navbar.pug
+
+block content
+        //- <!-- page content -->
+        <div class="right_col" role="main">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x-title">
+                        <div class="noPrint"  id="noPRINT">
+                            //- a(href=`/budget/projects` class="btn btn-danger btn-lg pull-right fa"): span.fa.fa-times-circle  
+                            <button id="printReceiptButton" type="button" class= "btn float-right pull-right  btn-lg btn-inverse fa fa-print">&nbsp;&nbsp; Print Receipt
+                            //- <button id="signReceiptButton" type="button" class= "btn float-right btn-lg btn-inverse pull-right fa fa-pencil">&nbsp;&nbsp; Sign Receipt
+                        </div> 
+                        <h1>Reports</h1>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x-content">
+                        <form class="form-horizontal form-label-left" method="POST" action='#' id="formNxtBudget" >
+                            <div class="form-row noPrint">
+                                <div class="form-group has-feedback col-lg-4 col-md-4 col-sx-12 col-xs-12">
+                                    <label class="control-label"> Report Search </label>
+                                    <select class="form-control has-feedback-left" id="reportType">
+                                        <option value="1"> Monthly Project Status Report </option>
+                                        <option value="2"> Liquidation  Report </option>
+                                        <option value="3"> Monthly Budget Summary Report </option>
+                                    </select>
+                                    <span class="fa fa-search form-control-feedback left" aria-hidden="true"></span>
+                                </div>
+                                //- <div class="form-group has-feedback col-lg-5 col-md-5 col-sx-12 col-xs-12">
+                                //-     <label  class="control-label"> Date Range </label>
+                                //-     <input type="text"  name="reservation" id="reservation" class="form-control has-feedback-left" value="01/01/2016 - 01/25/2016" />
+                                //-     <span class="fa fa-calendar form-control-feedback left" sria-hidden="true"></span>
+                                //- </div>
+                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12">
+                                    <div class="">
+                                        <label  class="control-label"> Status </label>
+                                        <select class="form-control " id="reportStatus">
+                                            <option value="Ongoing"> Ongoing </option>
+                                            <option value="Releasing"> Releasing </option>
+                                            <option value="Finished"> Finished </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                    <label  class="control-label"> Month </label>
+                                    <select class="form-control " id="reportMonth">
+                                        <option value="1"> January </option>
+                                        <option value="2"> February </option>
+                                        <option value="3"> March </option>
+                                        <option value="4"> April </option>
+                                        <option value="5"> May </option>
+                                        <option value="6"> June </option>
+                                        <option value="7"> July </option>
+                                        <option value="8"> August </option>
+                                        <option value="9"> September </option>
+                                        <option value="10"> October </option>
+                                        <option value="11"> November </option>
+                                        <option value="12"> December </option>
+                                    </select>
+                                </div>
+                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12">
+                                    <div class="">
+                                        <label  class="control-label"> Year </label>
+                                        <select class="form-control has-feedback-left" id="reportYear">
+                                            <option value="2018"> 2018 </option>
+                                            <option value="2017"> 2017 </option>
+                                            <option value="2016"> 2016 </option>
+                                        </select>
+                                        <span class="fa fa-calendar form-control-feedback left" sria-hidden="true"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group col-lg-2 col-md-2 col-sx-12 col-xs-12">
+                                    <div class="">
+                                        <label  class="control-label"> Action </label>
+                                        button.btn.btn-success.mb-1(id="btn_generateReport" class="btn_generateReport"): span.fa Generate Report 
+                                        //- <button type="submit" id="btn_generate" class="btn btn-primary float-right" position="center" style="background-color#21BA45;color:whitesmoke;border:none;">Generate Report</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <div class="content-wrapper">
+                            <div class="container-fluid">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="datatable" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Project Name</th>
+                                                            <th>Project Rationale</th>
+                                                            <th>Alloted Slot</th>
+                                                            <th>Budget</th>
+                                                            //- <th>Available Slot</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+        script(src='/assets/js/jspdf.js')
+        script(src='/assets/js/printjs.min.js')
+        script.
+            $(document).ready(function () {
+                $('#btn_generateReport').click(function (e) {
+                    $("tbody").empty();
+                    console.log("reportType");
+                    e.preventDefault()
+                    var Id = $(this).val();
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    console.log("================================Id(Class)")
+                    $('#modalviewbudget').modal('show');
+                    var form = $(this).parents('form');
+                    var reportType= $('#reportType').val();
+                    console.log(reportType);
+                    var reportMonth= $('#reportMonth').val();
+                    console.log(reportMonth);
+                    var reportYear= $('#reportYear').val();
+                    console.log(reportYear);
+                    var reportStatus= $('#reportStatus').val();
+                    console.log(reportStatus);
+                    ajaxGet();
+
+                    function ajaxGet(){
+                    console.log("========Id");
+                    console.log("========Id");
+
+                    $.ajax({
+                        type : "POST",
+                        url : window.location + "/reportquery",
+                        data: { rtype: reportType, rmonth:reportMonth, ryear:reportYear, rstatus:reportStatus},
+                        dataType: "json",
+                        success: function(tbl_project){
+                            $.each(tbl_project, function (index, project) {
+                                console.log(project);
+                                for(var i=0;i<project.length;i++)
+                                {
+                                    $("tbody").append("<tr><td>"+project[i].varchar_projectName+"</td><td>"+project[i].text_projectRationale+"</td><td>"+project[i].decimal_appropriatedBudget+"</td><td>"+project[i].int_allotedSlot+"</td></tr>");
+                                }
+                                console.log("Success: " );
+                            });
+
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        }
+                    });	
+                    } 
+
+                });
+                 $('#printReceiptButton').click(function(){
+                    $('.noPrint').attr('style', 'display:none;')
+                    javascript:window.print()
+                    $('.noPrint').attr('style', 'display:show;')
+                });
+            });

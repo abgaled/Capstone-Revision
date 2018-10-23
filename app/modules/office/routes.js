@@ -1,0 +1,18 @@
+var router = require('express').Router();
+var authMiddleware = require('../auth/middlewares/auth');
+
+router.use(authMiddleware.hasAuthOffice);
+
+router.use('/home', require('./home/routes'));
+router.use('/maintenance', require('./maintenance/routes'));
+router.use('/annualbudget', require('./annualbudget/routes'));
+router.use('/problems', require('./problems/routes'));
+router.use('/projects', require('./projects/routes'));
+router.use('/releasing', require('./releasing/routes'));
+router.use('/queries', require('./queries/routes'));
+router.use('/reports', require('./reports/routes'));
+router.use('/profile', require('./profile/routes'));
+router.use('/utility', require('./utility/routes'));
+
+
+exports.office = router;

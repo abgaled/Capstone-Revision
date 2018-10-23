@@ -1,0 +1,543 @@
+extends ../../home/views/navbar.pug
+
+block content
+    <div class="right_col" role="main">
+        <div class="x_panel">
+            <div class="x_title">
+                <h1 class="text-center">Statement of Intent</h1>
+            </div>              
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                        <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#tab_content1" id="all-tab" role="tab" data-toggle="tab" aria-expanded="true">ALL</a>
+                            </li>
+                            <li role="presentation"><a href="#tab_content2" id="submitted-tab" role="tab" data-toggle="tab" aria-expanded="true">Submitted</a>
+                            </li>
+                            <li role="presentation"><a href="#tab_content3" id="acknowledged-tab" role="tab" data-toggle="tab" aria-expanded="true">Acknowledged</a>
+                            </li>
+                            <li role="presentation"><a href="#tab_content4" id="rejected-tab" role="tab" data-toggle="tab" aria-expanded="true">Rejected</a>
+                            </li>
+                            <li role="presentation"><a href="#tab_content5" id="solved-tab" role="tab" data-toggle="tab" aria-expanded="true">Solved</a>
+                            </li>
+                        </ul>
+                        
+                            <div id="myTabContent" class="tab-content">
+                            
+                                    //- START OF 1ST TAB (ALL)
+                                    <div role="tabpanel" class="tab-pane active in" id="tab_content1" aria-labelledby="all-tab">
+                                        <div class="x_content">
+                                            <div class="container">
+                                                <table class="table table-bordered" id="datatable1" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Statement Title</th>
+                                                            <th>Barangay</th>
+                                                            <th>Date Created</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Statement Title</th>
+                                                            <th>Barangay</th>
+                                                            <th>Date Created</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                    <tbody>
+                                                    each problem in tbl_problemstatement
+                                                            <tr>
+                                                                <td>
+                                                                    value=problem.varchar_statementTitle
+                                                                </td>
+                                                                <td>
+                                                                    value=problem.varchar_barangayName
+                                                                </td>
+                                                                <td>
+                                                                    value=problem.date_createdDate
+                                                                </td>
+                                                                <td>
+                                                                    value=problem.enum_problemStatus
+                                                                </td>
+                                                                <td>
+                                                                    button.btn.btn-info.mb-1.btn-sm.btn-block(id="btn-view-prob" class="btn-view-problem" value= problem.int_statementID): span.fa.fa-eye View
+                                                                    if problem.enum_problemStatus == "Submitted"
+                                                                        form(method="POST" action=`/office/problems/${problem.int_statementID}/acknowledge` id='form-approve')
+                                                                            input(value= problem.int_statementID name="int_statementID" type="hidden")
+                                                                            button.btn.btn-success.btn-sm.btn-block(type='submit' class='btn-approve'): span.fa.fa-check Approve
+                                                                        form(method="POST" action=`/office/problems/${problem.int_statementID}/rejectstatement` id='form-reject')
+                                                                            input(value= problem.int_statementID name="int_statementID" type="hidden")
+                                                                            button.btn.btn-danger.btn-sm.btn-block(type='submit' class='btn-reject'): span.fa.fa-ban Reject
+                                                                </td>
+                                                            </tr>
+                                                    </tbody>
+                                                </table>
+                                                //- <!-- END DATA TABLE-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    //- END OF 1ST TAB
+                            
+                                
+                                    //- START OF 3RD TAB (Acknowledged)
+                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content2" aria-labelledby="submitted-tab">
+                                        <div class="x_content">
+                                            <div class="container">
+                                                <div class="table-responsive m-b-40">
+                                                    <table id="datatable2" class="table table-borderless table-data3">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Statement Title</th>
+                                                                <th>Barangay</th>
+                                                                <th>Date Created</th>
+                                                                <th>Status</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        each sub in tbl_submitted
+                                                            <tr class="tr-shadow">
+                                                                <td>
+                                                                    value=sub.varchar_statementTitle
+                                                                </td>
+                                                                <td>
+                                                                    value=sub.varchar_barangayName
+                                                                </td>
+                                                                <td>
+                                                                    value=sub.date_createdDate
+                                                                </td>
+                                                                <td>
+                                                                    value=sub.enum_problemStatus
+                                                                </td>
+                                                                <td>
+                                                                    button.btn.btn-info.mb-1.btn-sm.btn-block(id="btn-view-prob" class="btn-view-problem" value= sub.int_statementID): span.fa.fa-eye View
+                                                                    if sub.enum_problemStatus == "Submitted"
+                                                                        form(method="POST" action=`/office/problems/${sub.int_statementID}/acknowledge` id='form-approve')
+                                                                            input(value= sub.int_statementID name="int_statementID" type="hidden")
+                                                                            button.btn.btn-success.btn-sm.btn-block(type='submit' class='btn-approve'): span.fa.fa-check Approve
+                                                                        form(method="POST" action=`/office/problems/${sub.int_statementID}/rejectstatement` id='form-reject')
+                                                                            input(value= sub.int_statementID name="int_statementID" type="hidden")
+                                                                            button.btn.btn-danger.btn-sm.btn-block(type='submit' class='btn-reject'): span.fa.fa-ban Reject
+                                                                </td>
+                                                            </tr>        
+                                                        </tbody>
+                                                    </table>
+                                                //- <!-- END DATA TABLE-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    //- END OF 2ND TAB
+
+                                
+                                    //- START OF 3RD TAB (Acknowledged)
+                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content3" aria-labelledby="acknowledged-tab">
+                                        <div class="x_content">
+                                            <div class="container">
+                                                <div class="table-responsive m-b-40">
+                                                    <table id="datatable3" class="table table-borderless table-data3">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Statement Title</th>
+                                                                <th>Barangay</th>
+                                                                <th>Date Created</th>
+                                                                <th>Status</th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        each ack in tbl_acknowledged
+                                                            <tr class="tr-shadow">
+                                                                <td>
+                                                                    value=ack.varchar_statementTitle
+                                                                </td>
+                                                                <td>
+                                                                    value=ack.varchar_barangayName
+                                                                </td>
+                                                                <td>
+                                                                    value=ack.date_createdDate
+                                                                </td>
+                                                                <td>
+                                                                    value=ack.enum_problemStatus
+                                                                </td>
+                                                                <td>
+                                                                    button.btn.btn-info.mb-1.btn-sm.btn-block(id="btn-view-prob" class="btn-view-problem" value= ack.int_statementID): span.fa.fa-eye View
+                                                                </td>
+                                                            </tr>        
+                                                        </tbody>
+                                                    </table>
+                                                //- <!-- END DATA TABLE-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    //- END OF 3RD TAB		
+
+                                
+                                    //- START OF 4TH TAB (Rejected)
+                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content4" aria-labelledby="rejected-tab">
+                                        <div class="x_content">
+                                            <div class="container">
+                                                <table id="datatable4" class="table table-borderless table-data3">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Statement Title</th>
+                                                            <th>Barangay</th>
+                                                            <th>Date Created</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    each rej in tbl_rejected
+                                                        <tr class="tr-shadow">
+                                                            <td>
+                                                                value=rej.varchar_statementTitle
+                                                            </td>
+                                                            <td>
+                                                                value=rej.varchar_barangayName
+                                                            </td>
+                                                            <td>
+                                                                value=rej.date_createdDate
+                                                            </td>
+                                                            <td>
+                                                                value=rej.enum_problemStatus
+                                                            </td>
+                                                            <td>
+                                                                button.btn.btn-info.mb-1.btn-sm.btn-block(id="btn-view-prob" class="btn-view-problem" value= rej.int_statementID): span.fa.fa-eye View
+                                                            </td>
+                                                        </tr>        
+                                                    </tbody>
+                                                </table>
+                                                //- <!-- END DATA TABLE-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    //- END OF 4TH TAB	
+
+                                
+                                    //- START OF 5TH TAB (Solved)
+                                    <div role="tabpanel" class="tab-pane fade in" id="tab_content5" aria-labelledby="solved-tab">
+                                        <div class="x_content">
+                                            <div class="container">
+                                                <table id="datatable5" class="table table-borderless table-data3">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Statement Title</th>
+                                                            <th>Barangay</th>
+                                                            <th>Date Created</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    each sol in tbl_solved
+                                                        <tr class="tr-shadow">
+                                                            <td>
+                                                                value=sol.varchar_statementTitle
+                                                            </td>
+                                                            <td>
+                                                                value=sol.varchar_barangayName
+                                                            </td>
+                                                            <td>
+                                                                value=sol.date_createdDate
+                                                            </td>
+                                                            <td>
+                                                                value=sol.enum_problemStatus
+                                                            </td>
+                                                            <td>
+                                                                button.btn.btn-info.mb-1.btn-sm.btn-block(id="btn-view-prob" class="btn-view-problem" value= sol.int_statementID): span.fa.fa-eye View
+                                                            </td>
+                                                        </tr>        
+                                                    </tbody>
+                                                </table>
+                                                //- <!-- END DATA TABLE-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    //- END OF 5TH TAB			
+                            </div> 
+                    </div>
+                    //- END OF TABS
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    //- MODAL
+    <div class="modal fade bs-example-modal-lg" id="modalviewproblem" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            <div class="modal-body">
+                
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel"><span class="section">View Statement of Intent</span></h4> 
+                    <div class="item form-group">
+                            <label class="control-label col-md-3 " for="problemtitle">Statement Title:
+                            </label>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-7" id="aj-problemtitle">
+                
+                            </div>
+                            <br>
+                    </div>
+                    <div class="item form-group">
+                            <label class="control-label col-md-3 " for="problemstatus">Status:
+                            </label>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-7" id="aj-problemstatus" >
+                
+                            </div>
+                            <br>
+                    </div>
+                    <div class="item form-group">
+                            <label class="control-label col-md-3 " for="problemcontent">Statement Content:
+                            </label>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-7" id="aj-problemcontent">
+                
+                            </div>
+                            <br>
+                    </div>
+                    <div class="item form-group">
+                            <label class="control-label col-md-3 " for="problemcreated">Date Created:
+                            </label>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-7" id="aj-problemcreated">
+                
+                            </div>
+                            <br>
+                    </div>
+                    <div class="item form-group">
+                            <label class="control-label col-md-3 " for="problemcategory">Category:
+                            </label>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-7" id="aj-problemcategory">
+                
+                            </div>
+                            <br>
+                    </div>
+                    <div class="item form-group">
+                            <label class="control-label col-md-3 " for="problemBeneficiary">Beneficiary:
+                            </label>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-1">
+                            </div>
+                            <div class="col-md-7" id="aj-problembeneficiary">
+                
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                    </div>
+                    
+                        <div class="item form-group">
+                                <label class="control-label col-md-3" for="resaddress">From Barangay:
+                                </label>
+                                <div class="col-md-1">
+                                </div>
+                                <div class="col-md-1">
+                
+                                </div>
+                                <div class="col-md-7" id="aj-barangay">
+                    
+                                </div>
+                                <br>
+                        </div>
+                        <div class="item form-group">
+                            <div class="col-md-1">
+                            </div>
+                                <label class="control-label col-md-3 " for="resName">Resident's Name:
+                                </label>
+                                <div class="col-md-1">
+                
+                                </div>
+                                <div class="col-md-7" id="aj-resName">
+                    
+                                </div>
+                                <br>
+                        </div>
+                        <div class="item form-group">
+                            <div class="col-md-1">
+                            </div>
+                                <label class="control-label col-md-3" for="resaddress">Resident's Address:
+                                </label>
+                                <div class="col-md-1">
+                
+                                </div>
+                                <div class="col-md-7" id="aj-resaddress">
+                    
+                                </div>
+                                <br>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+
+    script.
+
+        //- SCRIPT GET INT_STATEMENTID (VIEW MODAL)
+
+        $(document).ready(function () {
+            $('#datatable1').dataTable();
+            $('#datatable2').dataTable();
+            $('#datatable3').dataTable();
+            $('#datatable4').dataTable();
+            $('#datatable5').dataTable();
+
+            //- $('.btn-approve').on('click',function (e) {
+            //-     var form = $(this).parents('form');
+            //-     e.preventDefault(); //prevent submit
+            //-     var Id = $(this).val();
+            //-     console.log("================================Id(Class)")
+            //-     console.log(Id);
+            //-     console.log("================================Id(Class)")
+                
+            //-     swal({
+            //-         title: 'Are you sure?',
+            //-         text: "You will approve this statement of intent.",
+            //-         type: 'info',
+            //-         showCancelButton: true,
+            //-         confirmButtonColor: '#3085d6',
+            //-         cancelButtonColor: '#d33',
+            //-         confirmButtonText: 'Yes, approve it!'
+            //-     }).then((result) => {
+            //-         if (result.value) {
+            //-             swal("Success!", "The statement has been approved", "success");
+            //-             $('#form-approve').submit();
+                        
+            //-         }                        
+            //-     })
+            //- });
+
+            //- $('.btn-reject').on('click',function (e) {
+            //-     var form = $(this).parents('form');
+            //-     e.preventDefault(); //prevent submit
+                
+            //-     swal({
+            //-         title: 'Are you sure?',
+            //-         text: "You will reject this statement of intent.",
+            //-         type: 'warning',
+            //-         //- icon: 'warning',
+            //-         showCancelButton: true,
+            //-         confirmButtonColor: '#3085d6',
+            //-         cancelButtonColor: '#d33',
+            //-         confirmButtonText: 'Yes, reject it!'
+            //-     }).then((result) => {
+            //-         if (result.value) {
+            //-             swal("Success!", "The statement has been rejected", "success");
+            //-             $('#form-reject').submit();
+                        
+            //-         }                        
+            //-     })
+            //- });
+
+
+            $(document).on('click', '.btn-view-problem', function (e) {
+                e.preventDefault()
+                var Id = $(this).val();
+                console.log("================================Id(Class)")
+                console.log(Id);
+                console.log("================================Id(Class)")
+                $('#modalviewproblem').modal('show');
+                ajaxGet();
+
+                function ajaxGet(){
+                console.log("========Id");
+                console.log(Id);
+                console.log("========Id");
+
+                $.ajax({
+                    type : "POST",
+                    url : window.location + "/ajaxgetdetails",
+                    data: { ajStatementID: Id},
+                    dataType: "json",
+                    success: function(tbl_problemstatement1){
+
+                        $.each(tbl_problemstatement1, function (index, value) {
+                            console.log("===========problstate===========");
+                            console.log(value);
+                            console.log("===========problstate===========");
+
+                            document.getElementById("aj-problemstatus").innerHTML = value.enum_problemStatus     
+                            document.getElementById("aj-problemtitle").innerHTML = value.varchar_statementTitle
+                            document.getElementById("aj-problemcontent").innerHTML = value.text_statementContent
+                            document.getElementById("aj-problemcreated").innerHTML = value.date_createdDate
+                            document.getElementById("aj-problemcategory").innerHTML = value.varchar_categoryName
+                            document.getElementById("aj-barangay").innerHTML = value.varchar_barangayName
+                            document.getElementById("aj-resName").innerHTML = value.varchar_residentName
+                            document.getElementById("aj-resaddress").innerHTML = value.text_residentAddress
+                            
+                        });
+            
+                        
+                    },
+                    error : function(e) {
+                        console.log("ERROR: ", e);
+                    }
+                });	
+
+                $.ajax({
+                    type: 'POST',
+                    url: window.location + "/ajaxbeneficiary",
+                    data: { statementID: Id},
+                    datatype: 'json',
+                    success: function(tbl_beneficiary) {
+                        var beneList = '<ul>';
+
+                        $.each(tbl_beneficiary, function(index, value) {
+                            console.log(value.length);
+                            //- beneList += value.varchar_beneficiaryName+"<br/>";
+                            //- $('#aj-problembeneficiary').append(value.varchar_beneficiaryName);
+
+                            for(var i = 0 ; i < value.length ; i++) {
+                                beneList += "<li>"+value[i].varchar_beneficiaryName+"</li>";
+                            }
+                            beneList += "</ul>";
+                        });
+
+                        //- for(var i = 0 ; i < tbl_beneficiary.length ; i++) {
+                        //-     console.log(tbl_beneficiary.length);
+                        //-     beneList += tbl_beneficiary.varchar_beneficiaryName+"<br/>";
+                        //- }
+
+                        console.log(beneList);
+                        document.getElementById("aj-problembeneficiary").innerHTML = beneList;
+                    },
+                    error: function(e) {
+                        console.log("ERROR: ", e);
+                    }
+                });
+            }
+        }); 
+
+            
+        });
+        <!-- END STATISTIC-->
+             

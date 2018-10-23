@@ -1,0 +1,196 @@
+extends ../../home/views/navbar.pug
+
+block content
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h1 class="text-center">Releasing Projects</h1>
+                    </div>              
+                    <div class="content-wrapper">
+                        <div class="container-fluid">
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="datatable" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Project Name</th>
+                                                        <th>Releasing Date</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                each project in tbl_project
+                                                    <tr>
+                                                        <td>
+                                                            value=project.varchar_projectName
+                                                        </td>
+                                                        <td>
+                                                            value=project.date_targetStartRelease
+                                                        </td>
+                                                        <td>
+                                                            if project.enum_projectStatus == 'Closed'
+                                                                <p>Upcoming Release</p>
+                                                            else
+                                                                value=project.enum_projectStatus
+                                                        </td>
+                                                        <td>
+                                                            a(href=`/office/releasing/${project.int_projectID}/viewproj` id="viewproj" class="btn btn-info btn-s btn-block"): span.fa.fa-eye View Details
+                                                            //a(href=`/office/releasing/${project.int_projectID}/viewben` id="viewben" class="btn btn-primary btn-xs btn-block"): span Beneficiaries
+                                                            if project.enum_projectStatus == 'Closed'
+                                                                button.btn.btn-success.btn-s.btn-block(id="btn-startProj"  value= project.int_projectID class="btn-startProj"): span.fa.fa-open Open Releasing
+                                                                
+                                                                <form hidden id="formprojectOPEN" method="POST" action='/office/releasing/openreleasing' name="formprojectOPEN">
+                                                                    //- <input id="int_projectID" name="int_projectID" >
+                                                                    input(type="text" value=`${project.int_projectID}` id="int_projectID" name="int_projectID")
+                                                                </form>
+                                                            if project.enum_projectStatus == 'Releasing'
+                                                                a(href=`/office/releasing/${project.int_projectID}/viewben` id="viewben" class="btn btn-primary btn-s btn-block"): span.fa.fa-eye View Beneficiary Releasing
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="startprojectModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <form class="form-horizontal form-label-left" method="POST" action='/office/releasing/openlatereleasing' id="formstartreason">
+                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                                    </button>
+                                                    <h4 class="modal-title" id="mediumModalLabel">Scheduled Date to Start Releasing:
+                                                        <div class="" id="aj-projectDate">
+                                                        </div>
+                                                    </h4>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                                <div class="col-md-1 col-sm-1 col-xs-12">
+                                                                </div>
+                                                                <label class="col-md-5" for="problemcreated">Reason of early/late project releasing start
+                                                                </label>
+                                                        </div>
+                                                        <div class="col-md-1 col-sm-1 col-xs-12">
+                                                        </div>
+                                                        <div class="col-md-9 col-sm-9 col-xs-12">
+                                                            <textarea class="resizable_textarea form-control" id="projectReason" name="projectReason" placeholder=""></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="hidden" id="projectID" name="projectID" >
+                                                            <input type="hidden" id="current_date" name="current_date" >
+                                                            
+                                                            <button type="submit" id="but-sub" class="btn btn-success">Send</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <div class="" id="aj-current_date">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        <!-- END STATISTIC-->
+            <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+
+
+            script.
+                var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                n =  new Date();
+                y = n.getFullYear();
+                m = n.getMonth() + 1;
+                d = n.getDate();
+                var mon = months[n.getMonth()];
+                currdate =  mon + " " + d + ", " + y;
+                currentdate =  m + "-" + d + "-" + y;
+
+                $(document).ready(function () {
+                    $('.btn-startProj').click(function (e) {
+                        e.preventDefault()
+                        var Id = $(this).val();
+                        document.getElementById("projectID").value = Id
+                        console.log("================================Id(Class)")
+                        console.log(Id);
+                        console.log("================================Id(Class)")
+                        ajaxGetproj();
+                        
+                        function ajaxGetproj(){
+                        console.log("========Id");
+                        console.log(Id);
+                        console.log("========Id");
+
+                        $.ajax({
+                            type : "POST",
+                            url : window.location + "/ajaxgetprojectdetails",
+                            data: { ajProjectID: Id},
+                            dataType: "json",
+                            success: function(tbl_project1){
+
+                            console.log(tbl_project1)
+
+                                $.each(tbl_project1, function (index, value) {
+                                    console.log(value);
+                                    if(value.enum_projectStatus == "Closed"){
+                                        if(value.date_targetStartRelease != currentdate){
+                                            $('#startprojectModal').modal('show');
+                                            document.getElementById("aj-projectDate").innerHTML = value.date_targetStartRelease
+                                            document.getElementById("aj-current_date").innerHTML = currdate
+                                            document.getElementById("current_date").value = currentdate
+                                        }
+                                        else
+                                        {
+                                            swal({
+                                            title: 'Are you sure?',
+                                            text: "You will start the releasing of this project.",
+                                            type: 'info',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Yes, Start Releasing!'
+                                            }).then((result) => {
+                                            if (result.value) {
+                                                $('#formprojectOPEN').submit();
+                                            }                        
+                                            })
+                                        }
+                                    }
+                                    console.log("Success: " );
+                                });                                     
+                                
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });	
+                    }
+                    });     
+                    //- SWEET ALERT CONFIRM SUBMIT
+                            $('#but-sub').on('click',function (e) {
+                                var form = $(this).parents('form');
+                                e.preventDefault(); //prevent submit
+                                
+                                    swal({
+                                    title: 'Are you sure?',
+                                    text: "You sure to open releasing of project?.",
+                                    type: 'info',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, Open it!'
+                                    }).then((result) => {
+                                    if (result.value) {
+                                        $('#formstartreason').submit();
+                                    }                        
+                                    })
+                            });
+                            //- START VALIDATIONS
+                            
+                            //- END VALIDATIONS
+                });
