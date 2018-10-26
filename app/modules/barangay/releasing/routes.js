@@ -38,17 +38,21 @@ router.get('/',(req, res) => {
 
         user_results = resultsuser;
 
-        var queryString =`SELECT DISTINCT app.int_projectID, enum_projectStatus, enum_barangayReleaseStatus, varchar_projectName, date_targetStartRelease, decimal_estimatedBudget, pat.enum_applicationType
+        var queryString =`SELECT DISTINCT app.int_projectID, enum_projectStatus, br.int_brgyreleaseID, enum_barangayReleaseStatus, varchar_projectName, date_targetStartRelease, decimal_appropriatedBudget, pat.enum_applicationType
         FROM tbl_projectdetail pd
         JOIN tbl_projectapplicationtype pat ON pd.int_projectID = pat.int_projectID
         JOIN tbl_application app ON pd.int_projectID = app.int_projectID
         JOIN tbl_barangayreleasing br ON pd.int_projectID = br.int_projectID
         WHERE 
         (
-            (pd.enum_projectStatus = 'Releasing')
+            (pd.enum_projectStatus = 'Releasing'
+            OR
+            pd.enum_projectStatus = 'Closed Application')
             AND 
             (
             br.enum_barangayReleaseStatus ='Releasing'
+            OR 
+            br.enum_barangayReleaseStatus ='Claimed Benefit'
             OR 
             br.enum_barangayReleaseStatus = 'Closed' )
         )
@@ -83,11 +87,13 @@ router.get('/',(req, res) => {
                     console.log(notifications)
 
                     var countrow = notifications.length;
+            
 
-                res.render('barangay/releasing/views/releasing',{
-                    tbl_project:date_results,
-                    notifications:notifications,
-                    numbernotif:countrow});
+                    res.render('barangay/releasing/views/releasing',{
+                        tbl_project:date_results,
+                        notifications:notifications,
+                        numbernotif:countrow
+                    });
                 });
             });
     });
@@ -147,6 +153,62 @@ router.post('/openreleasing', (req, res) => {
     db.query(queryString, (err, results) => {        
         if (err) throw err;
 
+        res.redirect('/barangay/releasing');
+    });
+});
+
+router.post('/claimBenefits', (req, res) => {
+    console.log('=================================');
+    console.log('BARANGAY: claimBenefits ');
+    console.log('=================================');
+    resultIndex = `${req.body.eprojectID}`;
+    var item = `${req.body.benefitsD}`;
+    var quantity = `${req.body.quantity}`;
+
+    console.log(req.body.ebrgyRel);
+    console.log(req.body.receiverName);
+    console.log(req.body.eprojectID);
+    console.log(req.body.item);
+    console.log(req.body.quantity);
+
+    var queryString = `SELECT * FROM tbl_applicantbenefit 
+        WHERE int_projectID = ${req.body.eprojectID}`
+    db.query(queryString, (err, results) => {        
+        if (err) throw err;
+    // var queryString1 = `UPDATE tbl_projectdetail SET
+    // enum_projectStatus = 'Releasing',
+    // date_actualStartRelease = "${currentDate}"
+    // WHERE int_projectID = ${req.body.int_projectID}`
+    // 
+        var resultss = results;
+        console.log(resultss);
+        for(var i = 0; i<resultss.length;i++)
+        {
+            var queryString2 = `INSERT INTO \`tbl_barangaybenefit\` 
+                (\`int_brgyreleaseID\`, 
+                \`text_itemReceived\`,
+                \`int_itemQuantity\`)
+                VALUES
+                ("${req.body.ebrgyRel}",
+                "${resultss[i].text_benefitName}",
+                "${req.body.quantity[i]}");`;
+    
+            db.query(queryString2, (err, results2) => {        
+                if (err) throw err;
+    
+            });
+
+        }      
+        var queryString3 = `UPDATE tbl_barangayreleasing SET
+        enum_barangayReleaseStatus = 'Claimed Benefit',
+        date_claimedBenefit = "${now}",
+        varchar_receiversName="${req.body.receiverName}"
+        WHERE int_brgyreleaseID = ${req.body.ebrgyRel}`
+        
+        db.query(queryString3, (err, results3) => {        
+            if (err) throw err;
+
+        });
         res.redirect('/barangay/releasing');
     });
 });
@@ -403,7 +465,7 @@ router.get('/:int_projectID/viewben',(req, res) => {
 
 router.post('/receipt', (req, res) => {
     console.log('=================================');
-    console.log('BARANGAY: project - 1 acceptapplication GET');
+    console.log('BARANGAY: receipt - 1 acceptapplication GET');
     console.log('=================================');
     
     var dayNow = moment().format('Do');
@@ -416,7 +478,7 @@ router.post('/receipt', (req, res) => {
     var queryString = `UPDATE tbl_application SET
     enum_applicationStatus = 'Received',
     datetime_receivedDate = "${now}"
-    WHERE tbl_application.int_applicationID=${req.body.int_applicationID}`
+    WHERE tbl_application.int_applicationID=${req.body.appID}`
 
     db.query(queryString, (err, results, fields) => {
         console.log(results);
@@ -440,56 +502,270 @@ router.post('/receipt', (req, res) => {
                 JOIN tbl_projectdetail pd ON app.int_projectID = pd.int_projectID
                 JOIN tbl_personalinformation pi ON app.int_applicationID = pi.int_applicationID
                 WHERE app.enum_applicationStatus = 'Received' 
-                AND app.int_applicationID=${req.body.int_applicationID}`
+                AND app.int_applicationID=${req.body.appID}`
 
                 var queryHousehold =`SELECT * FROM tbl_application app
                 JOIN tbl_projectdetail pd ON app.int_projectID = pd.int_projectID
                 JOIN tbl_householdapplication pi ON app.int_applicationID = pi.int_applicationID
                 WHERE app.enum_applicationStatus = 'Received' 
-                AND app.int_applicationID=${req.body.int_applicationID}`
+                AND app.int_applicationID=${req.body.appID}`
     
                 db.query(queryProject,(err, app) => {
                 if (err) console.log(err);
-                console.log(app)
+                console.log(app.length)
+                var app_res = app;
                     db.query(queryHousehold,(err, house) => {
                     if (err) console.log(err);
                         console.log(house)
-
-                        var queryPROJECTDETAIL =`SELECT * FROM tbl_projectdetail prd
-                        JOIN tbl_projectapplicationtype apptype ON apptype.int_projectID = prd.int_projectID
-                        WHERE prd.int_projectID = "${app[0].int_projectID}"`
-
-                        db.query(queryPROJECTDETAIL,(err, proDET) => {
-                        if (err) console.log(err);
-                            console.log(proDET)
-                    
-
-                            var queryBENEFITS =`SELECT * FROM tbl_applicantbenefit proj
-                            JOIN tbl_projectdetail appben ON proj.int_projectID = appben.int_projectID
-                            WHERE proj.int_projectID = "${app[0].int_projectID}"
-                            OR proj.int_projectID = "${proDET[0].int_projectID}"`
-
-                            db.query(queryBENEFITS,(err, results5) => {
+                        
+                        if(app_res.length == 0)
+                        {
+                           
+                            var queryPROJECTDETAIL =`SELECT * FROM tbl_projectdetail prd
+                            JOIN tbl_projectapplicationtype apptype ON apptype.int_projectID = prd.int_projectID
+                            WHERE prd.int_projectID = "${house[0].int_projectID}"`
+    
+                            db.query(queryPROJECTDETAIL,(err, proDET) => {
                             if (err) console.log(err);
-                                console.log('=================================');
-                                console.log(results5)
+                                console.log(proDET)
                                 
-                                res.render(`barangay/releasing/views/receipt`,{
-                                    tbl_app:app,
-                                    tbl_benefits:results5,
-                                    notifications:notifications,
-                                    dateNow:dateToday,
-                                    projectDETAILS:proDET,
-                                    tbl_house:house
+                                var queryBENEFITS =`SELECT * FROM tbl_applicantbenefit proj
+                                JOIN tbl_projectdetail appben ON proj.int_projectID = appben.int_projectID
+                                WHERE proj.int_projectID = "${house[0].int_projectID}"
+                                OR proj.int_projectID = "${proDET[0].int_projectID}"`
+
+                                db.query(queryBENEFITS,(err, results5) => {
+                                if (err) console.log(err);
+                                    console.log('=================================');
+                                    console.log(results5)
+                                    
+                                    res.render(`barangay/releasing/views/receipt`,{
+                                        tbl_app:app,
+                                        tbl_benefits:results5,
+                                        notifications:notifications,
+                                        dateNow:dateToday,
+                                        projectDETAILS:proDET,
+                                        tbl_house:house
+                                    });
                                 });
                             });
-                        });
+                        }
+                        else
+                        {
+                            var queryPROJECTDETAIL =`SELECT * FROM tbl_projectdetail prd
+                            JOIN tbl_projectapplicationtype apptype ON apptype.int_projectID = prd.int_projectID
+                            WHERE prd.int_projectID = "${app[0].int_projectID}"`
+    
+                            db.query(queryPROJECTDETAIL,(err, proDET) => {
+                            if (err) console.log(err);
+                                console.log(proDET)
+                                var queryBENEFITS =`SELECT * FROM tbl_applicantbenefit proj
+                                JOIN tbl_projectdetail appben ON proj.int_projectID = appben.int_projectID
+                                WHERE proj.int_projectID = "${app[0].int_projectID}"
+                                OR proj.int_projectID = "${proDET[0].int_projectID}"`
+
+                                db.query(queryBENEFITS,(err, results5) => {
+                                if (err) console.log(err);
+                                    console.log('=================================');
+                                    console.log(results5)
+                                    
+                                    res.render(`barangay/releasing/views/receipt`,{
+                                        tbl_app:app,
+                                        tbl_benefits:results5,
+                                        notifications:notifications,
+                                        dateNow:dateToday,
+                                        projectDETAILS:proDET,
+                                        tbl_house:house
+                                    });
+                                });
+                            });
+                            
+                            
+                        }
+                        
+                    
+
+                           
                     });
             });
         });
     });
 });
 
+router.post('/receiptRep', (req, res) => {
+    console.log('=================================');
+    console.log('BARANGAY: receipt - 1 acceptapplication GET');
+    console.log('=================================');
+    
+    var dayNow = moment().format('Do');
+    var monthNow = moment().format('MMMM');
+    var yearNow = moment().format('YYYY');
+    var dateNow = moment().format('DD MMMM YYYY');
+    
+    var dateToday = {day: dayNow, month:monthNow, year: yearNow, dateNow:dateNow};
+
+    var repReason = req.body.repReason;
+    var repRel = req.body.repRel;
+    var repName = req.body.repName;
+    console.log(repName);
+    console.log(repRel);
+    console.log(repReason);
+    
+    var queryString = `UPDATE tbl_application SET
+    enum_applicationStatus = 'Received',
+    datetime_receivedDate = "${now}"
+    WHERE tbl_application.int_applicationID=${req.body.appID}`
+
+    db.query(queryString, (err, results, fields) => {
+        console.log(results);
+        if (err) console.log(err);
+
+        var queryStringRep = `INSERT INTO \`tbl_residentrepresentative\`
+        (\`int_applicationID\`,
+        \`varchar_representativeName\`, 
+        \`varchar_representativesRelation\`,
+        \`text_representativeReason\`)
+        VALUES
+        ("${req.body.appID}",
+        "${repName}",
+        "${repRel}",
+        "${repReason}");`;
+        db.query(queryStringRep, (err, results2, fields) => {
+            console.log(results2);
+            if (err) console.log(err);
+
+            var notificationsQuery = `SELECT * FROM tbl_notification 
+            JOIN tbl_user ON tbl_notification.int_notifSenderID = tbl_user.int_userID 
+            WHERE tbl_notification.int_notifReceiverID=${req.session.barangay.int_userID}
+            AND enum_notifStatus = "New"
+            ORDER BY tbl_notification.int_notifID DESC`
+
+            db.query(notificationsQuery,(err, notifications) => {
+                if (err) console.log(err);
+                console.log('=================================');
+                console.log('BARANGAY: NOTIFICATIONS - GET NOTIFICATIONS - DATA');
+                console.log('=================================');
+                console.log(notifications)
+                var countrow = notifications.length;
+    
+                var queryProject =`SELECT * FROM tbl_application app
+                JOIN tbl_projectdetail pd ON app.int_projectID = pd.int_projectID
+                JOIN tbl_personalinformation pi ON app.int_applicationID = pi.int_applicationID
+                JOIN tbl_residentrepresentative rr ON app.int_applicationID = rr.int_applicationID
+                WHERE app.enum_applicationStatus = 'Received' 
+                AND app.int_applicationID=${req.body.appID}`
+
+                var queryHousehold =`SELECT * FROM tbl_application app
+                JOIN tbl_projectdetail pd ON app.int_projectID = pd.int_projectID
+                JOIN tbl_householdapplication pi ON app.int_applicationID = pi.int_applicationID
+                WHERE app.enum_applicationStatus = 'Received' 
+                AND app.int_applicationID=${req.body.appID}`
+    
+                db.query(queryProject,(err, app) => {
+                if (err) console.log(err);
+                console.log(app.length)
+                var app_res = app;
+                    db.query(queryHousehold,(err, house) => {
+                    if (err) console.log(err);
+                        console.log(house)
+                        
+                        if(app_res.length == 0)
+                        {
+                           
+                            var queryPROJECTDETAIL =`SELECT * FROM tbl_projectdetail prd
+                            JOIN tbl_projectapplicationtype apptype ON apptype.int_projectID = prd.int_projectID
+                            WHERE prd.int_projectID = "${house[0].int_projectID}"`
+    
+                            db.query(queryPROJECTDETAIL,(err, proDET) => {
+                            if (err) console.log(err);
+                                console.log(proDET)
+                                
+                                var queryBENEFITS =`SELECT * FROM tbl_applicantbenefit proj
+                                JOIN tbl_projectdetail appben ON proj.int_projectID = appben.int_projectID
+                                WHERE proj.int_projectID = "${house[0].int_projectID}"
+                                OR proj.int_projectID = "${proDET[0].int_projectID}"`
+
+                                db.query(queryBENEFITS,(err, results5) => {
+                                if (err) console.log(err);
+                                    console.log('=================================');
+                                    console.log(results5)
+                                    
+                                    res.render(`barangay/releasing/views/receipt`,{
+                                        tbl_app:app,
+                                        tbl_benefits:results5,
+                                        notifications:notifications,
+                                        dateNow:dateToday,
+                                        projectDETAILS:proDET,
+                                        tbl_house:house
+                                    });
+                                });
+                            });
+                        }
+                        else
+                        {
+                            var queryPROJECTDETAIL =`SELECT * FROM tbl_projectdetail prd
+                            JOIN tbl_projectapplicationtype apptype ON apptype.int_projectID = prd.int_projectID
+                            WHERE prd.int_projectID = "${app[0].int_projectID}"`
+    
+                            db.query(queryPROJECTDETAIL,(err, proDET) => {
+                            if (err) console.log(err);
+                                console.log(proDET)
+                                var queryBENEFITS =`SELECT * FROM tbl_applicantbenefit proj
+                                JOIN tbl_projectdetail appben ON proj.int_projectID = appben.int_projectID
+                                WHERE proj.int_projectID = "${app[0].int_projectID}"
+                                OR proj.int_projectID = "${proDET[0].int_projectID}"`
+
+                                db.query(queryBENEFITS,(err, results5) => {
+                                if (err) console.log(err);
+                                    console.log('=================================');
+                                    console.log(results5)
+                                    
+                                    res.render(`barangay/releasing/views/receiptRep`,{
+                                        tbl_app:app,
+                                        tbl_benefits:results5,
+                                        notifications:notifications,
+                                        dateNow:dateToday,
+                                        projectDETAILS:proDET,
+                                        tbl_house:house
+                                    });
+                                });
+                            });
+                            
+                            
+                        }
+                        
+                    
+
+                    });
+                           
+                });
+            });
+        });
+    });
+});
+
+
+
+router.post('/projectbenefits',(req,res) => {
+    console.log('=================================');
+    console.log('BARANGAY: PROJECTS-AJAX GET DETAILS (POST)');
+    console.log('=================================');
+    console.log(`${req.body.ProjectID}`);
+
+    
+    var queryString = `SELECT * FROM tbl_applicantbenefit 
+        WHERE int_projectID = ${req.body.ProjectID}`
+
+
+    db.query(queryString,(err, results, fields) => {
+        if (err) console.log(err);
+
+        console.log("=====RESULTSS=====")
+        console.log(results)
+
+        return res.send({tbl_project:results});
+    });
+});
 
 router.post('/projectdetails',(req,res) => {
     console.log('=================================');
@@ -522,6 +798,7 @@ router.post('/projectdetails',(req,res) => {
         return res.send({tbl_project:resultss});
     });
 });
+
 
 
 router.get('/:int_projectID/viewbarangay',(req, res) => {
@@ -625,6 +902,7 @@ router.post('/addbeneficiary',(req, res) => {
         \`varchar_MName\`,
         \`varchar_LName\`,
         \`datetime_received\`,
+        \`varchar_validationID\`,
         \`text_remarks\`)
         VALUES
         (${req.body.appID},
@@ -632,6 +910,7 @@ router.post('/addbeneficiary',(req, res) => {
         "${req.body.benMNAME}",
         "${req.body.benLNAME}",
         "${now}",
+        "${req.body.benID}",
         "${req.body.benREMARKS}")`;
 
         appID = req.body.appID;
@@ -924,8 +1203,7 @@ router.post('/closerel', (req, res) => {
 
     console.log(resultIndex);
     var queryString1 = `UPDATE tbl_barangayreleasing SET
-    enum_barangayReleaseStatus = 'Closed',
-    date_endRelease = "${currentDate}"
+    enum_barangayReleaseStatus = 'Closed'
     WHERE tbl_barangayreleasing.int_barangayID=${user_results[0].int_barangayID}
     AND tbl_barangayreleasing.int_projectID=${req.body.int_projectID} `
             
@@ -957,6 +1235,7 @@ router.post('/closerel', (req, res) => {
                 {
                     var queryString4 = `UPDATE tbl_projectdetail
                     SET enum_projectStatus = 'Closed Releasing' 
+                    date_endReleasing = "${currentDate}"
                     WHERE int_projectID = ${req.body.int_projectID}`
                     db.query(queryString4, (err, results4) => {        
                         if (err) throw err;
@@ -1001,8 +1280,7 @@ router.post('/closelaterel', (req, res) => {
         console.log('=================================');
 
         var queryString1 = `UPDATE tbl_barangayreleasing SET
-        enum_barangayReleaseStatus = 'Closed',
-        date_endRelease = "${currentDate}"
+        enum_barangayReleaseStatus = 'Closed'
         WHERE int_barangayID=${user_results[0].int_barangayID}
         AND int_projectID=${req.body.eprojectID} `
 
@@ -1037,7 +1315,8 @@ router.post('/closelaterel', (req, res) => {
                     if(results2[0].closeBarRel==results3[0].BarRel)
                     {
                         var queryString4 = `UPDATE tbl_projectdetail
-                        SET enum_projectStatus = 'Closed Releasing' 
+                        SET enum_projectStatus = 'Closed Releasing' ,
+                        date_endReleasing = "${currentDate}"
                         WHERE int_projectID = ${req.body.eprojectID}`
                         db.query(queryString4, (err, results4) => {        
                             if (err) throw err;

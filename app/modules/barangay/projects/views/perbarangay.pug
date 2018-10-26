@@ -47,10 +47,12 @@ block content
                                 <div class="tab" id="basicinfotab">
                                     <hr/>
                                     <h3>BASIC INFORMATION</h3>
+                                    <h5>(The office has/have the right to distribute the slots based on their evaluation for each barangay. Requested Slots could increase or decrease depending on how many slots will be given to your barangay.)</h5>
                                     <div class="form-row">
                                         <div class="form-group col-md-4 col-sm-12">
                                             <label for="ap-slots" class="form-control-label">Slots:</label>
-                                                <input type="number" id="ap-slots" onchange="getslots()" name="apply_slots" placeholder="Slots" class="names col-sm-11 form-control ">
+                                                <input type="number" id="ap-slots" onchange="getslots()" name="apply_slots" min="0" placeholder="Slots" class="names col-sm-11 form-control ">
+                                            <label id="labelslots"></span>
                                         </div>
                                         <div class="form-group col-md-8 col-sm-12">
                                             <label for="ap-reason" class="form-control-label">Reason:<small>(why you need the benefits)</small></label>
@@ -121,6 +123,32 @@ block content
             if(slot!=0){
                 document.getElementById("result-slots").innerHTML = slot;
             }
+
+            $.ajax({
+                type : "POST",
+                url : window.location + "/checkbrgyslots",
+                data: { checkSlot: slot},
+                dataType: "json",
+                success: function(record){
+
+                if (record.record == true){
+                    console.log("Success: True" );
+                    document.getElementById("labelslots").innerHTML = "<small style='color:red;'>Exceeds the value of available slots.</small>"
+
+                    console.log(record.record)
+                }
+                else{
+                    console.log("Success: False" );
+                    console.log(record.record)
+                    document.getElementById("labelslots").innerHTML = "<small style='color:black;'>Requested Slots are still available.</small>"
+                    //- document.getElementById("result-email").innerHTML = email;
+                    
+                }   
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                }
+            });	
         }
 
         function getreason() {

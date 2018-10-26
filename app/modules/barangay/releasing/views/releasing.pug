@@ -35,12 +35,13 @@ block content
                                                                 value=project.date_targetStartRelease
                                                             </td>
                                                             td ₱ 
-                                                                value= project.decimal_estimatedBudget
+                                                                if project.decimal_appropriatedBudget != null
+                                                                    value= project.decimal_appropriatedBudget.toLocaleString()
                                                             <td>
-                                                                if project.enum_projectStatus == "Releasing" && project.enum_barangayReleaseStatus == null
-                                                                    p Ready to Release
+                                                                if project.enum_barangayReleaseStatus == "Releasing" || (project.enum_barangayReleaseStatus == "Claimed Benefit" && project.enum_projectStatus =="Closed Application")
+                                                                    p Waiting for Releasing
                                                                 else
-                                                                    value= project.enum_barangayReleaseStatus
+                                                                    p Releasing
                                                             </td>
                                                             <td>
                                                                 button.btn.btn-info.mb-1(id="btn-view-project" class="btn-view-project" value= project.int_projectID): span.fa.fa-eye View
@@ -51,7 +52,7 @@ block content
                                                                         //- <input id="int_projectID" name="int_projectID" >
                                                                         input(type="text" value=`${project.int_projectID}` id="srint_projectID" name="srint_projectID")
                                                                     </form>
-                                                                if project.enum_barangayReleaseStatus == 'Releasing'
+                                                                if project.enum_barangayReleaseStatus == 'Claimed Benefit' && project.enum_projectStatus == 'Releasing' 
                                                                     if project.enum_applicationType == "Resident" || project.enum_applicationType == "Household"
                                                                         a(href=`/barangay/releasing/${project.int_projectID}/viewben` id="viewben" class="btn btn-primary btn-s"): span.fa.fa-eye View Beneficiary Releasing
                                                                     if project.enum_applicationType == "Barangay"
@@ -61,7 +62,9 @@ block content
                                                                         input(type="text" value=`${project.int_projectID}` id="int_projectID" name="int_projectID")
                                                                     </form>
                                                                     button.btn.btn-danger.btn-s(id="btn-release-close"  value= project.int_projectID class="btn-release-close"): span.fa.fa-times-circle-o Close Releasing
-
+                                                                else if project.enum_barangayReleaseStatus == "Releasing"
+                                                                    input(type="hidden" value=`${project.int_brgyreleaseID}` id="int_brgyreleaseID" name="int_brgyreleaseID")
+                                                                    button.btn.btn-success.btn-s(id="benefitClaimed"  value= project.int_projectID class="benefitClaimed"): span.fa.fa-check Benefits Claimed
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -204,7 +207,67 @@ block content
                 </div>
             </div>
         </div>
-    </div>                      
+    </div>              
+    <div class="modal fade" id="claimBenefitsModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form class="form-horizontal form-label-left" method="POST" action='/barangay/releasing/claimBenefits' id="formClaimBen">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                            </button>
+                            <h4 class="modal-title" id="mediumModalLabel">Claim Benefits:
+                                <div class="" id="ej-projectDate">
+                                </div>
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="x_content">
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-2 col-xs-12" for="first-name">Receiver's Name <span class="required" style="color: red">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="text" id="receiverName" name="receiverName" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                    <br />
+                                    <br />
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-2 col-xs-12" for="first-name">Upload photo of Receipt <span class="required" style="color: red">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" accept=".jpg, .jpeg, .png" />
+                                    </div>
+                                    <br />
+                                    <br />
+                                </div>
+                                hr
+                                br
+                                <div class="form-group col-md-8 col-sm-8 col-xs-12">
+                                    <label>Item Description</label>
+                                </div>
+                                <div class="form-group col-md-2 col-sm-2 col-xs-12">
+                                    <label>Quantity/  Php</label>
+                                </div>
+                                <div class="claimedBenefits">
+                                </div>
+                                <div class="form-group">
+                                    <input type="hidden" id="eprojectID" name="eprojectID" class="eprojectID">
+                                    <input type="hidden" id="ebrgyRel" name="ebrgyRel" class="ebrgyRel">
+                                    <input type="hidden" id="ecurrent_date" name="ecurrent_date" class="ecurrent_date">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="ej-current_date pull-left" id="ej-current_date">
+                    </div></strong>
+                    <button type="submit" id="but-claim" class="btn btn-success pull-right">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>            
         <!-- END STATISTIC-->
     <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
 
@@ -220,6 +283,49 @@ block content
         currentdate =  m + "-" + d + "-" + y;
 
         $(document).ready(function () {
+            $('#benefitClaimed').on('click',function (e) {
+                $(".claimedBenefits").empty();
+                e.preventDefault()
+                var Id = $(this).val();
+                var brgyRId = $(int_brgyreleaseID).val();
+                $('.ej-current_date').html("Current Date: "+ currdate)
+                $('.ecurrent_date').val(currentdate)
+                $('.eprojectID').val(Id)
+                $('.ebrgyRel').val(brgyRId)
+                $('#claimBenefitsModal').modal('show');
+                ajaxGet();
+                function ajaxGet(){
+                    console.log("========Id");
+                    console.log(Id);
+                    console.log("========Id");
+
+                    $.ajax({
+                        type : "POST",
+                        url : window.location + "/projectbenefits",
+                        data: { ProjectID: Id},
+                        dataType: "json",
+                        success: function(tbl_project){
+
+                        console.log(tbl_project)
+
+                            $.each(tbl_project, function (index, value) {
+                                console.log(value.length);
+                                for(var i = 0; i<value.length; i++) 
+                                {
+                                    $(".claimedBenefits").append('<div class="form-group col-md-8 col-sm-8 col-xs-12"><input type="text" id="benefitsD" name="benefitsD" readonly required value="'+value[i].text_benefitName+'" class="form-control col-md-6 col-xs-12" placeholder="Enter item.." ></div><div class="form-group col-md-2 col-sm-2 col-xs-12"><input type="number" class="form-control col-md-6 col-xs-12" placeholder="Quantity" required id="quantity" name="quantity"></div>');
+                                }
+                                console.log("Success: " );
+                            });
+                                                        
+                            
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        }
+                    });	
+                }
+            });
+
             $('.btn-view-project').click(function (e) {
                     e.preventDefault()
                     var Id = $(this).val();
@@ -418,6 +524,24 @@ block content
                     }).then((result) => {
                     if (result.value) {
                         $('#formstartreason').submit();
+                    }                        
+                    })
+            });  
+            $('#but-claim').on('click',function (e) {
+                var form = $(this).parents('form');
+                e.preventDefault(); //prevent submit
+                
+                    swal({
+                    title: 'Are you sure?',
+                    text: "You sure to open releasing of project?.",
+                    type: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, Open it!'
+                    }).then((result) => {
+                    if (result.value) {
+                        $('#formClaimBen').submit();
                     }                        
                     })
             });  

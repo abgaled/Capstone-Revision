@@ -34,6 +34,7 @@ block content
                                 <table id="datatable" class="table table-borderless table-data3">
                                     <thead>
                                         <tr>
+                                            <th>Beneficiary's ID number</th>
                                             <th>Last Name</th>
                                             <th>First Name</th>
                                             <th>Middle Name</th>
@@ -45,19 +46,22 @@ block content
                                     each ben in tbl_beneficiary
                                         <tr>    
                                             <td>
-                                                value= ben.varchar_LName
+                                               value= ben.varchar_validationID
+                                            </td> 
+                                            <td>
+                                               value= ben.varchar_LName
                                             </td>
                                             <td>
-                                                value= ben.varchar_FName
+                                               value= ben.varchar_FName
                                             </td>
                                             <td>
-                                                value= ben.varchar_MName
+                                               value= ben.varchar_MName
                                             </td>
                                             <td>
-                                                value= ben.text_remarks
+                                               value= ben.text_remarks
                                             </td>
                                             <td>
-                                                value= ben.datetime_received
+                                               value= ben.datetime_received
                                             </td>
                                         </tr>            
                                     </tbody>
@@ -127,6 +131,14 @@ block content
                         </button>
                         <h4 class="modal-title" id="myModalLabel"><span class="section">Add Beneficiary
                         </span></h4>
+                        <div class="form-horizontal form-label-left">
+                            <div class="form-group col-md-8">
+                                <label>Beneficiary ID number</label><span style="color:red">*</span>
+                                <input type="text" id="benID" name="benID" class="form-control" required placeholder="Enter ID number">
+                            </div>
+                            <br><br><br>
+                            <br>
+                        </div>
                         <div class="form-horizontal form-label-left">
                             <div class="form-group col-md-4">
                                 <label>First Name</label><span style="color:red">*</span>

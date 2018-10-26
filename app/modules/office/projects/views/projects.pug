@@ -39,7 +39,7 @@ block content
                                     //-                     <thead>
                                     //-                         <tr>
                                     //-                             <th>Project Name</th>
-                                    //-                             <th>Available Slots</th>
+                                    //-                             <th>Alloted Slot</th>
                                     //-                             //- <th>Available Slot</th>
                                     //-                             <th>Status</th>
                                     //-                             <th>Actions</th>
@@ -101,7 +101,7 @@ block content
                                                         <thead>
                                                             <tr>
                                                                 <th>Project Name</th>
-                                                                <th>Available Slots</th>
+                                                                <th>Alloted Slot</th>
                                                                 //- <th>Available Slot</th>
                                                                 <th>Status</th>
                                                                 <th>Actions</th>
@@ -153,7 +153,7 @@ block content
                                                         <thead>
                                                             <tr>
                                                                 <th>Project Name</th>
-                                                                <th>Available Slots</th>
+                                                                <th>Alloted Slot</th>
                                                                 //- <th>Available Slot</th>
                                                                 <th>Status</th>
                                                                 <th>Actions</th>
@@ -201,7 +201,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Available Slots</th>
+                                                            <th>Alloted Slot</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -250,7 +250,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Available Slots</th>
+                                                            <th>Alloted Slot</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -294,7 +294,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Available Slots</th>
+                                                            <th>Alloted Slot</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -342,7 +342,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Available Slots</th>
+                                                            <th>Alloted Slot</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -456,7 +456,7 @@ block content
                             </div>
                             <div class="form-group">
                                 <input type="hidden" id="rprojectID" name="rprojectID" >
-                                <input type="hidden" id="rcurrent_date" name="rcurrent_date" >
+                                //- <input type="hidden" id="rcurrent_date" name="rcurrent_date" >
                                 <button type="submit" id="but-rel" class="btn btn-success">Send</button>
                             </div>
                         </div>
@@ -591,58 +591,90 @@ block content
                 console.log("================================Id(Class)")
                 console.log(Id);
                 console.log("================================Id(Class)")
-                ajaxGetproj();
-                        
-                function ajaxGetproj(){
-                console.log("========Id");
-                console.log(Id);
-                console.log("========Id");
-                
-
-                $.ajax({
+                ajaxGet();
+                function ajaxGet(){
+                    $.ajax({
                     type : "POST",
-                    url : window.location + "/ajaxgetprojectdetails",
+                    url : window.location + "/ajaxgetCount",
                     data: { ajProjectID: Id},
                     dataType: "json",
-                    success: function(tbl_project1){
+                    success: function(tbl_count){
 
-                    console.log(tbl_project1)
+                        console.log(tbl_count)
 
-                    $.each(tbl_project1, function (index, value) {
-                        console.log(value);
-                        if(value.enum_projectStatus == "Closed Application"){
-                            if(value.date_targetStartRelease != currdate){
-                                $('#startreleaseModal').modal('show');
-                                document.getElementById("r-projectDate").innerHTML = value.date_targetStartRelease
-                                document.getElementById("rl-current_date").innerHTML = currdate
-                                document.getElementById("r-current_date").value = currentdate
-                            }
-                                else
-                                {
-                                    swal({
-                                    title: 'Are you sure?',
-                                    text: "You will start the releasing of this project.",
-                                    type: 'info',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#3085d6',
-                                    cancelButtonColor: '#d33',
-                                    confirmButtonText: 'Yes, Start Releasing!'
-                                    }).then((result) => {
-                                    if (result.value) {
-                                        $('#formReleasingOPEN').submit();
-                                    }                        
-                                    })
-                                }
-                            }
-                            console.log("Success: " );
-                        });                                     
+                        $.each(tbl_count, function (index, value) {
+                            console.log(value[0].received); 
+                            if(value[0].received === value[0].claimed)
+                            {
+                                console.log("nice one");
+                                 ajaxGetproj();
+                        
+                                function ajaxGetproj(){
+                                console.log("========Id");
+                                console.log(Id);
+                                console.log("========Id");
                                 
-                    },
-                    error : function(e) {
-                        console.log("ERROR: ", e);
-                    }
-                });	
-            }
+
+                                $.ajax({
+                                    type : "POST",
+                                    url : window.location + "/ajaxgetprojectdetails",
+                                    data: { ajProjectID: Id},
+                                    dataType: "json",
+                                    success: function(tbl_project1){
+
+                                    console.log(tbl_project1)
+
+                                    $.each(tbl_project1, function (index, value) {
+                                        console.log(value);
+                                        if(value.enum_projectStatus == "Closed Application"){
+                                            if(value.date_targetStartRelease != currdate){
+                                                $('#startreleaseModal').modal('show');
+                                                document.getElementById("r-projectDate").innerHTML = value.date_targetStartRelease
+                                                document.getElementById("rl-current_date").innerHTML = currdate
+                                            }
+                                                else
+                                                {
+                                                    swal({
+                                                    title: 'Are you sure?',
+                                                    text: "You will start the releasing of this project.",
+                                                    type: 'info',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Yes, Start Releasing!'
+                                                    }).then((result) => {
+                                                    if (result.value) {
+                                                        $('#formReleasingOPEN').submit();
+                                                    }                        
+                                                    })
+                                                }
+                                            }
+                                            console.log("Success: " );
+                                        });                                     
+                                                    
+                                        },
+                                        error : function(e) {
+                                            console.log("ERROR: ", e);
+                                        }
+                                    });	
+                                }
+                            }  
+                            else
+                            {
+                                console.log("Uhhh ohhh");
+                                swal("Unable to start Releasing!", "Not all barangay have received the benefits", "error");
+                                
+                            }
+                        });                                     
+                                    
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        }
+                    });	
+                }	
+                
+               
             });  
             
             $('#but-rel').on('click',function (e) {

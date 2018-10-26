@@ -74,45 +74,66 @@ router.get('/',(req, res) => {
         
             var countrow = notifications.length;
 
-                    for (var i = 0; i < results1.length;i++){
-                        var approvedSlotsFinal = results1[i].int_allotedSlot ;
-                        console.log("APPROVED SLOTS FINAL ===============")
-                        console.log(approvedSlotsFinal);
-                        console.log("APPROVED SLOTS FINAL ===============")
+                var queryString2 =`
+                    SELECT
+                        int_projectID AS projID,
+                        (
+                            int_allotedSlot - (
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                tbl_application
+                            WHERE
+                                int_projectID = projID AND enum_applicationStatus = "Approved" AND (enum_applicationType = "Resident" OR enum_applicationType = "Household")
+                                
+                        )
+                        ) AS slotCount
+                        
+                    FROM
+                        tbl_projectdetail`;
 
-                        var countSlotsFinal = results1[i].int_projectID ;
+                db.query(queryString2, (err, result2, fields) => {
+                    if (err) console.log(err);
 
-                            console.log("INT PROJECT ID")
-                            console.log(countSlotsFinal)
-                            console.log("INT PROJECT ID")
+                    var queryString3 =`
+                    SELECT int_projectID AS projID,
+                        (
+                        SELECT
+                            int_slot
+                        FROM
+                            tbl_barangayapplication
+                        WHERE
+                            int_applicationID = tbl_application.int_applicationID
+                    ) AS barcount
+                    FROM
+                        tbl_application
+                    WHERE
+                        enum_applicationType = "Barangay" AND enum_applicationStatus = "Approved"`;
 
-                        // for (var a = 0; a < approvedslots.length; a++){
-                        // console.log("APPROVED SLOTS FINAL ===============")
-                        // console.log(approvedSlotsFinal);
-                        // console.log("APPROVED SLOTS FINAL ===============")
-                        // }
-                    }
-                    var countSlots = `SELECT COUNT(*) FROM tbl_application 
-                            JOIN tbl_projectdetail 
-                            ON tbl_application.int_projectID = tbl_projectdetail.int_projectID
-                            WHERE tbl_application.enum_applicationStatus = "Approved"
-                            AND tbl_application.int_projectID = ${countSlotsFinal}`
-
-                        db.query(countSlots,(err, approvedslots) => {
-                            if (err) console.log(err);
-
-                            console.log("APPROVED SLOTS COUNT ===============")
-                            console.log(approvedslots);
-                            console.log("APPROVED SLOTS COUNT ===============")
-
-                        });
                     
+                    db.query(queryString3, (err, result3, fields) => {
+                        if (err) console.log(err);
+                        var proj = result2;
+                        var bar = result3;
+                        
+                        for (var i = 0; i < proj.length;i++){
+                            for (var j = 0; j < bar.length;j++){
+                                if(proj[i].projID==bar[j].projID)
+                                {
+                                    proj[i].slotCount=proj[i].slotCount-bar[j].barcount;
+                                }
+                            }
+                        }
+                        console.log(proj);
             
-                    res.render('barangay/projects/views/projects',{
-                        tbl_project:results1,
-                        notifications:notifications,
-                        numbernotif:countrow
+                        res.render('barangay/projects/views/projects',{
+                            tbl_project:results1,
+                            notifications:notifications,
+                            slotcount:proj,
+                            numbernotif:countrow
                     });
+                    });
+                });
         });
     });
 });
@@ -143,69 +164,6 @@ router.post('/projectdetails',(req,res) => {
         console.log(resultss)
 
         return res.send({tbl_project:resultss});
-    });
-});
-
-
-// AJAX - GET PROJECT DETAILS (VIEW)
-router.post('/checkbrgyapp',(req,res) => {
-    console.log('=================================');
-    console.log('BARANGAY: PROJECTS-AJAX CHECK BARANGAY APPLICATION (POST)');
-    console.log('=================================');
-    console.log(`${req.body.ajProjectID}`);
-    console.log(`${req.session.barangay.int_userID}`);
-
-
-    var queryString = `SELECT * FROM tbl_officialsaccount 
-        JOIN tbl_user
-        ON tbl_user.int_userID = tbl_officialsaccount.int_userID
-        WHERE tbl_user.int_userID = ${req.session.barangay.int_userID}`
-
-        db.query(queryString,(err, results, fields) => {
-            if (err) console.log(err);   
-
-            var brgyID = results[0];
-            console.log("=======================BRGY ID")
-            console.log(brgyID);
-            console.log("=======================BRGY ID END")
-            
-            
-            var queryString1 = `SELECT * FROM tbl_application
-                JOIN tbl_barangayapplication
-                ON tbl_application.int_applicationID = tbl_barangayapplication.int_applicationID
-                JOIN tbl_officialsaccount
-                ON tbl_application.int_barangayID = tbl_officialsaccount.int_officialsID 
-                WHERE tbl_application.int_projectID = ${req.body.ajProjectID}
-                AND tbl_officialsaccount.int_officialsID = ${brgyID.int_officialsID}`
-
-
-                db.query(queryString1,(err, results1, fields) => {
-                    if (err) console.log(err);
-
-                    console.log("=======CHECK IF THERE'S AN APPLICATION======");
-                    console.log(results1)
-                    console.log("=======CHECK IF THERE'S AN APPLICATION======");
-
-                    if(results1.length > 0 ){
-                        
-                        console.log("MAY RECORD");
-
-                        var record = true;
-
-                        return res.send({check_app:results1,record:record});
-                    }
-
-                    else{
-                        console.log("WALANG RECORD");
-                        
-                        var record = false;
-                        
-                        return res.send({check_app:results1,record:record});
-                                
-                        
-                    }
-                    // END OF ELSE
-        });
     });
 });
 
@@ -379,6 +337,7 @@ router.post('/:int_projectID/apply/resident',(req,res) => {
                         \`enum_civilStatus\`,
                         \`varchar_contactNumber\`,
                         \`varchar_emailAddress\`,
+                        \`varchar_validationID\`,
                         \`text_address\`) 
                         VALUES 
                         (${int_applicationID},
@@ -391,6 +350,7 @@ router.post('/:int_projectID/apply/resident',(req,res) => {
                         "${req.body.apply_civilstat}",
                         "${req.body.apply_contact}",
                         "${req.body.apply_emailaddress}",
+                        "${req.body.apply_idvalid}",
                         "${req.body.apply_address}")`
 
                     db.query(insertPersonalInfo,(err, personalinfo, fields) => {
@@ -576,7 +536,8 @@ router.post('/:int_projectID/apply/household',(req,res) => {
                         \`varchar_representativeName\`,
                         \`varchar_representativeEmailAddress\`,
                         \`varchar_representativeContact\`,
-                        \`decimal_totalAnnualIncome\`, 
+                        \`decimal_totalAnnualIncome\`,
+                        \`varchar_validationID\`, 
                         \`enum_houseStatus\`) 
                         VALUES 
                         (${int_applicationID},
@@ -586,6 +547,7 @@ router.post('/:int_projectID/apply/household',(req,res) => {
                         "${req.body.apply_repemail}",
                         "${req.body.apply_repcontact}",
                         "${req.body.apply_famincome}",
+                        "${req.body.apply_idvalid}",
                         "${req.body.apply_famhouse}")`
 
                         db.query(insertHousehold,(err, household, fields) => {
@@ -1060,6 +1022,124 @@ router.post('/:int_projectID/apply/checkemailrepresentative',(req,res) => {
                         
             }
             // END OF ELSE
+    });
+});
+
+// -------------------BARANGAY-----------------------
+router.post('/:int_projectID/apply/checkbrgyslots',(req,res) => {
+    console.log('=================================');
+    console.log('BARANGAY: PROJECTS-AJAX CHECK SLOTS IF EXISTING (POST)');
+    console.log('=================================');
+    console.log(`${req.body.checkSlot}`);
+
+    var queryString = `SELECT * FROM tbl_projectdetail
+    JOIN tbl_application
+    ON tbl_projectdetail.int_projectID = tbl_application.int_projectID
+    JOIN tbl_barangayapplication
+    ON tbl_barangayapplication.int_applicationID = tbl_application.int_applicationID
+    WHERE tbl_application.int_projectID =${req.params.int_projectID}
+    AND tbl_application.enum_applicationStatus="Approved"`
+
+        db.query(queryString,(err, results, fields) => {
+            if (err) console.log(err);       
+
+            var allotedSlot = results[0].int_allotedSlot;
+
+            console.log("=======CHECK SLOTS======");
+            // console.log(results)
+            console.log("=======CHECK SLOTS======");
+            var availableSlot = 0;
+
+            for(i=0;i<results.length;i++){
+                availableSlot+=results[i].int_slot;
+            }
+            console.log("accomodated")
+            console.log(availableSlot)
+            console.log("========")
+
+            var finalAvailableSlot = allotedSlot - availableSlot;
+            console.log(finalAvailableSlot);
+
+            if(req.body.checkSlot >  finalAvailableSlot){
+                
+                console.log("GREATER THAN THE AVAILABLE SLOT");
+
+                var record = true;
+
+                return res.send({check_app:results,record:record,remainingslots:finalAvailableSlot});
+            }
+
+            else{
+                console.log("LESS THAN THE AVAILABLE SLOT");
+                
+                var record = false;
+                
+                return res.send({check_app:results,record:record});
+                        
+                
+            }
+            // END OF ELSE
+    });
+});
+
+router.post('/checkbrgyapp',(req,res) => {
+    console.log('=================================');
+    console.log('BARANGAY: PROJECTS-AJAX CHECK BARANGAY APPLICATION (POST)');
+    console.log('=================================');
+    console.log(`${req.body.ajProjectID}`);
+    console.log(`${req.session.barangay.int_userID}`);
+
+
+    var queryString = `SELECT * FROM tbl_officialsaccount 
+        JOIN tbl_user
+        ON tbl_user.int_userID = tbl_officialsaccount.int_userID
+        WHERE tbl_user.int_userID = ${req.session.barangay.int_userID}`
+
+        db.query(queryString,(err, results, fields) => {
+            if (err) console.log(err);   
+
+            var brgyID = results[0];
+            console.log("=======================BRGY ID")
+            console.log(brgyID);
+            console.log("=======================BRGY ID END")
+            
+            
+            var queryString1 = `SELECT * FROM tbl_application
+                JOIN tbl_barangayapplication
+                ON tbl_application.int_applicationID = tbl_barangayapplication.int_applicationID
+                JOIN tbl_officialsaccount
+                ON tbl_application.int_barangayID = tbl_officialsaccount.int_officialsID 
+                WHERE tbl_application.int_projectID = ${req.body.ajProjectID}
+                AND tbl_officialsaccount.int_officialsID = ${brgyID.int_officialsID}`
+
+
+                db.query(queryString1,(err, results1, fields) => {
+                    if (err) console.log(err);
+
+                    console.log("=======CHECK IF THERE'S AN APPLICATION======");
+                    console.log(results1)
+                    console.log("=======CHECK IF THERE'S AN APPLICATION======");
+
+                    if(results1.length > 0 ){
+                        
+                        console.log("MAY RECORD");
+
+                        var record = true;
+
+                        return res.send({check_app:results1,record:record});
+                    }
+
+                    else{
+                        console.log("WALANG RECORD");
+                        
+                        var record = false;
+                        
+                        return res.send({check_app:results1,record:record});
+                                
+                        
+                    }
+                    // END OF ELSE
+        });
     });
 });
 

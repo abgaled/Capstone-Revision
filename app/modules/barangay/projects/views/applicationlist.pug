@@ -68,7 +68,6 @@ block content
 										<tr>
 											<th>Family Name</th>
 											<th>Status</th>
-											<th>Requirements</th>
 											<th>Action/s</th>
 										</tr>
 									</thead>
@@ -82,12 +81,8 @@ block content
 												value=household.enum_applicationStatus
 											</td>
 											<td>
-												<div class="progress">
-													<div class="progress progress-bar-info" data-transitiongoal="95" aria-valuenow="95" style="width: 70%;"></div>
-												</div>
-											</td>
-											<td>
 												button.btn.btn-success.mb-1(id="btn-view-household" class="btn-view-household" value= household.int_applicationID): span.fa.fa-eye View
+												a(href=`/barangay/projects/${household.int_projectID}/registeredapplicants/requirements/${household.int_applicationID}` class="btn btn-primary btn-sm"): <i class="fa fa-files-o"></i> Requirements
 											</td>
 										</tr>                   
 									</tbody>
@@ -250,32 +245,62 @@ block content
 										<br>
 						</div>
 						<div class="item form-group">
-										<label class="control-label col-md-2" for="aj-annualIncome">Annual Income:
+										<label class="control-label col-md-2" for="aj-representativeName">Representative Name:
 										</label>
-										<div class="col-md-9" id="aj-annualIncome">
+										<div class="col-md-9" id="aj-representativeName">
 				
 										</div>
 										<br>
-						</div>
-						<div class="item form-group">
-										<label class="control-label col-md-2" for="aj-familyBackground">Family Background:
-										</label>
-										<div class="col-md-9" id="aj-familyBackground">
-				
-										</div>
 										<br>
 										<br>
 						</div>
 						<div class="item form-group">
-										<label class="control-label col-md-2" for="aj-financialContributor">Financial Contributor:
+										<label class="control-label col-md-2" for="aj-representativeEmail">Representative Email Address:
 										</label>
-										<div class="col-md-9" id="aj-financialContributor">
+										<div class="col-md-9" id="aj-representativeEmail">
 				
 										</div>
 										<br>
 										<br>
 										<br>
 						</div>
+						<div class="item form-group">
+										<label class="control-label col-md-2" for="aj-representativeContact">Representative Contact:
+										</label>
+										<div class="col-md-9" id="aj-representativeContact">
+				
+										</div>
+										<br>
+										<br>
+										<br>
+						</div>
+						//- <div class="item form-group">
+						//- 				<label class="control-label col-md-2" for="aj-annualIncome">Annual Income:
+						//- 				</label>
+						//- 				<div class="col-md-9" id="aj-annualIncome">
+				
+						//- 				</div>
+						//- 				<br>
+						//- </div>
+						//- <div class="item form-group">
+						//- 				<label class="control-label col-md-2" for="aj-familyBackground">Family Background:
+						//- 				</label>
+						//- 				<div class="col-md-9" id="aj-familyBackground">
+				
+						//- 				</div>
+						//- 				<br>
+						//- 				<br>
+						//- </div>
+						//- <div class="item form-group">
+						//- 				<label class="control-label col-md-2" for="aj-financialContributor">Financial Contributor:
+						//- 				</label>
+						//- 				<div class="col-md-9" id="aj-financialContributor">
+				
+						//- 				</div>
+						//- 				<br>
+						//- 				<br>
+						//- 				<br>
+						//- </div>
 						
 						<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
@@ -380,7 +405,10 @@ block content
 								document.getElementById("aj-familyName").innerHTML = value.varchar_familyName    
 								document.getElementById("aj-homeAddress").innerHTML = value.text_homeAddress
 								document.getElementById("aj-houseStatus").innerHTML = value.enum_houseStatus
-								document.getElementById("aj-annualIncome").innerHTML = value.decimal_totalAnnualIncome
+								document.getElementById("aj-representativeName").innerHTML = value.varchar_representativeName
+								document.getElementById("aj-representativeEmail").innerHTML = value.varchar_representativeEmailAddress
+								document.getElementById("aj-representativeContact").innerHTML = value.varchar_representativeContact
+								//- document.getElementById("aj-annualIncome").innerHTML = value.decimal_totalAnnualIncome
 																
 								console.log("Success: " );
 							});                             

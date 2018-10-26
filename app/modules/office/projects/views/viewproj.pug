@@ -165,8 +165,8 @@ block content
                                 </td>
                                 <th scope="row">Actual Closing of Application: </th>
                                 <td>
-                                    if project.date_actualCloseApp != 'Invalid date'
-                                        value=project.date_actualCloseApp
+                                    if project.date_actualEndApp != 'Invalid date'
+                                        value=project.date_actualEndApp
                                 </td>
                             </tr>
                             <tr>
@@ -176,9 +176,9 @@ block content
                                 value=project.date_targetStartRelease
                                 </td>
                                 <th scope="row">Actual Start of Releasing: </th>
-                                <td>*barangay based*
-                                    if project.date_actualStartRelease != 'Invalid date'
-                                        value=project.date_actualStartRelease
+                                <td>
+                                    if project.date_startReleasing != 'Invalid date'
+                                        value=project.date_startReleasing
                                 </td>
                             </tr>
                             <tr>
@@ -187,9 +187,9 @@ block content
                                 value=project.date_targetEndRelease
                                 </td>
                                 <th scope="row">Actual Closing of Releasing: </th>
-                                <td>*barangay based*
-                                    if project.date_actualEndRelease != 'Invalid date'
-                                        value=project.date_actualEndRelease 
+                                <td>
+                                    if project.date_endReleasing != 'Invalid date'
+                                        value=project.date_endReleasing 
                                 </td>
                             </tr>
                             <tr>
@@ -234,12 +234,11 @@ block content
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="x_content">
-                                        form(id="checkallapplicants-resaccept" method="POST" action=`/office/projects/viewproj/acceptallresident`)
-                                        form(id="checkallapplicants-resreject" method="POST" action=`/office/projects/viewproj/rejectallresident`)
+                                        
                                             <div>
                                             input(type="checkbox" id="check-applications" class="acceptall icheckbox_flat-green" style="margin-left:3%;" onclick="checkAll()")
-                                            button(type="submit" form="checkallapplicants-resaccept" id="buttonaccept" class="btn btn-primary btn-s" name="buttonaccept"  style="margin-left:2%;"): span.fa.fa-check  Accept
-                                            button(type="submit" form="checkallapplicants-resreject" id="buttonreject" class="btn btn-danger btn-s" name="buttonreject"): span.fa.fa-close  Reject
+                                            //- button(type="submit" form="checkallapplicants-resaccept" id="buttonaccept" class="btn btn-primary btn-s" name="buttonaccept"  style="margin-left:2%;"): span.fa.fa-check  Accept
+                                            //- button(type="submit" form="checkallapplicants-resreject" id="buttonreject" class="btn btn-danger btn-s" name="buttonreject"): span.fa.fa-close  Reject
                                             <br>
                                             <br>
                                             </div>
@@ -1031,7 +1030,7 @@ block content
                                                     <label class="control-label " for="brgyapp_count">Application Slot
                                                     </label>
                                                     <div class="input-group">
-                                                        <input id="brgyapp_count" name="brgyapp_count" type="number" class="form-control">
+                                                        <input id="brgyapp_count" name="brgyapp_count" min="0" type="number" class="form-control">
                                                         <span class="input-group-btn">
                                                             button.btn.btn-success.btn-s(id="button_accappbar" class="button_accappbar"): span.fa.fa-check Approve!
                                                         </span>
@@ -1272,7 +1271,7 @@ block content
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, Approve Aplicant!'
+                        confirmButtonText: 'Yes, Approve Applicant!'
                         }).then((result) => {
                         if (result.value) {
                             swal({
@@ -1300,7 +1299,7 @@ block content
                         confirmButtonColor: '#3085d6',
                         dangerMode: true,
                         cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, Reject Aplicant!'
+                        confirmButtonText: 'Yes, Reject Applicant!'
                         }).then((result) => {
                         if (result.value) {
                             swal({

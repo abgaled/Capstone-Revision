@@ -16,7 +16,7 @@ block content
                         </small>  
                         </center>
                         <div>
-                            a(href=`/barangay/releasing/${proj.int_projectID}/viewproj` id="viewproj" style="float:left;" class="btn btn-info btn-s"): span.fa.fa-eye  Project Details
+                            button.btn.btn-info.mb-1(id="btn-view-project" class="btn-view-project" value= proj.int_projectID): span.fa.fa-eye Project Details
                             a(href=`/barangay/releasing/` id="viewproj" class="btn btn-dark btn-s pull-right"): span.fa.fa-arrow-circle-left  Back
                             </br>
                             </br>
@@ -45,13 +45,12 @@ block content
                                 <div class="x_content">
                                     <div class="container">
                                         <div class="table-responsive m-b-40">
-                                            <table id="datatable" class="table table-borderless table-data3">
+                                            <table id="datatable1" class="table table-borderless table-data3">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Beneficiary's Name</th>
                                                         <th>Gender</th>
-                                                        <th>Civil Status</th>
-                                                        <th>Contact Number</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -60,16 +59,13 @@ block content
                                                 each applicant in tbl_application
                                                     <tr>    
                                                         <td>
+                                                            value=applicant.varchar_validationID
+                                                        </td>
+                                                        <td>
                                                             value=applicant.varchar_firstName+" "+applicant.varchar_middleName+" "+applicant.varchar_lastName
                                                         </td>
                                                         <td>
                                                             value=applicant.enum_gender
-                                                        </td>
-                                                        <td>
-                                                            value=applicant.enum_civilStatus
-                                                        </td>
-                                                        <td>
-                                                            value=applicant.varchar_contactNumber
                                                         </td>
                                                         <td>
                                                             value=applicant.enum_applicationStatus
@@ -82,6 +78,7 @@ block content
                                                                     <form id="formReceipt" method="POST" action='/barangay/releasing/receipt' name="formReceipt">
                                                                         input(type="text" hidden value=`${applicant.int_applicationID}` id="int_applicationID" name="int_applicationID")
                                                                         button.btn.btn-success.btn-sm.mb-1(id="btn-print" class="btn-print btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                        //- button.btn.btn-success.btn-sm.mb-1(id="btn-print" class="btn-print btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
                                                                     </form>
                                                                     //- button.btn.btn-success.btn-sm.mb-1(id="btn-receive-res" class="btn-receive-res btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
                                                                     //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
@@ -97,13 +94,12 @@ block content
                                 <div class="x_content">
                                     <div class="container">
                                         <div class="table-responsive m-b-40">
-                                            <table id="datatable" class="table table-borderless table-data3">
+                                            <table id="datatable2" class="table table-borderless table-data3">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Beneficiary's Name</th>
                                                         <th>Gender</th>
-                                                        <th>Civil Status</th>
-                                                        <th>Contact Number</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -113,16 +109,13 @@ block content
                                                     if applicant.enum_applicationStatus == 'Received'
                                                         <tr>    
                                                             <td>
+                                                                value=applicant.varchar_validationID
+                                                            </td>
+                                                            <td>
                                                                 value=applicant.varchar_firstName+" "+applicant.varchar_middleName+" "+applicant.varchar_lastName
                                                             </td>
                                                             <td>
                                                                 value=applicant.enum_gender
-                                                            </td>
-                                                            <td>
-                                                                value=applicant.enum_civilStatus
-                                                            </td>
-                                                            <td>
-                                                                value=applicant.varchar_contactNumber
                                                             </td>
                                                             <td>
                                                                 value=applicant.enum_applicationStatus
@@ -149,13 +142,12 @@ block content
                                 <div class="x_content">
                                     <div class="container">
                                         <div class="table-responsive m-b-40">
-                                            <table id="datatable" class="table table-borderless table-data3">
+                                            <table id="datatable3" class="table table-borderless table-data3">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Beneficiary's Name</th>
                                                         <th>Gender</th>
-                                                        <th>Civil Status</th>
-                                                        <th>Contact Number</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -164,17 +156,14 @@ block content
                                                 each applicant in tbl_application
                                                     if applicant.enum_applicationStatus == 'Approved'
                                                         <tr>    
+                                                            <td>    
+                                                                value=applicant.varchar_validationID
+                                                            </td>
                                                             <td>
                                                                 value=applicant.varchar_firstName+" "+applicant.varchar_middleName+" "+applicant.varchar_lastName
                                                             </td>
                                                             <td>
                                                                 value=applicant.enum_gender
-                                                            </td>
-                                                            <td>
-                                                                value=applicant.enum_civilStatus
-                                                            </td>
-                                                            <td>
-                                                                value=applicant.varchar_contactNumber
                                                             </td>
                                                             <td>
                                                                 value=applicant.enum_applicationStatus
@@ -220,11 +209,12 @@ block content
                                 <div class="x_content">
                                     <div class="container">
                                         <div class="table-responsive m-b-40">
-                                            <table id="datatable" class="table table-borderless table-data3">
+                                            <table id="datatable4" class="table table-borderless table-data3">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Family Name</th>
-                                                        <th>Home Address</th>
+                                                        <th>Representative's Name</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -233,10 +223,13 @@ block content
                                                 each applicant in tbl_household
                                                     <tr>    
                                                         <td>
+                                                            value= applicant.varchar_validationID
+                                                        </td>
+                                                        <td>
                                                             value= applicant.varchar_familyName
                                                         </td>
                                                         <td>
-                                                            value=applicant.text_homeAddress
+                                                            value=applicant.varchar_representativeName
                                                         </td>
                                                         <td>
                                                             value=applicant.enum_applicationStatus
@@ -247,8 +240,8 @@ block content
                                                                 button.btn.btn-info.btn-sm.mb-1(id="btn-view-household" class="btn-view-household btn-block" value= applicant.int_applicationID): span.fa.fa-eye Beneficiary Details
                                                                 if applicant.enum_applicationStatus == 'Approved'
                                                                     <form id="formReceipt" method="POST" action='/barangay/releasing/receipt' name="formReceipt">
-                                                                        input(type="text" hidden value=`${applicant.int_applicationID}` id="int_applicationID" name="int_applicationID")
-                                                                        button.btn.btn-success.btn-sm.mb-1(id="btn-print" class="btn-print btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                        input(type="text" hidden value=`${applicant.int_applicationID}` id="appID" name="appID")
+                                                                        button.btn.btn-success.btn-sm.mb-1(id="btn-hprint" class="btn-hprint btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
                                                                     </form>
                                                                     //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
                                                         </td>
@@ -263,11 +256,12 @@ block content
                                 <div class="x_content">
                                     <div class="container">
                                         <div class="table-responsive m-b-40">
-                                            <table id="datatable" class="table table-borderless table-data3">
+                                            <table id="datatable5" class="table table-borderless table-data3">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Family Name</th>
-                                                        <th>Home Address</th>
+                                                        <th>Representative's Name</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -277,10 +271,13 @@ block content
                                                     if applicant.enum_applicationStatus == 'Received'
                                                         <tr>    
                                                             <td>
+                                                                value= applicant.varchar_validationID
+                                                            </td>
+                                                            <td>
                                                                 value= applicant.varchar_familyName
                                                             </td>
                                                             <td>
-                                                                value=applicant.text_homeAddress
+                                                                value=applicant.varchar_representativeName
                                                             </td>
                                                             <td>
                                                                 value=applicant.enum_applicationStatus
@@ -291,8 +288,8 @@ block content
                                                                     button.btn.btn-info.btn-sm.mb-1(id="btn-view-household" class="btn-view-household btn-block" value= applicant.int_applicationID): span.fa.fa-eye Beneficiary Details
                                                                     if applicant.enum_applicationStatus == 'Approved'
                                                                         <form id="formReceipt" method="POST" action='/barangay/releasing/receipt' name="formReceipt">
-                                                                            input(type="text" hidden value=`${applicant.int_applicationID}` id="int_applicationID" name="int_applicationID")
-                                                                            button.btn.btn-success.btn-sm.mb-1(id="btn-print" class="btn-print btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                            input(type="text" hidden value=`${applicant.int_applicationID}` id="appID" name="appID")
+                                                                            button.btn.btn-success.btn-sm.mb-1(id="btn-hprint" class="btn-hprint btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
                                                                         </form>
                                                                         //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
                                                             </td>
@@ -307,11 +304,12 @@ block content
                                 <div class="x_content">
                                     <div class="container">
                                         <div class="table-responsive m-b-40">
-                                            <table id="datatable" class="table table-borderless table-data3">
+                                            <table id="datatable6" class="table table-borderless table-data3">
                                                 <thead>
                                                     <tr>
+                                                        <th>ID</th>
                                                         <th>Family Name</th>
-                                                        <th>Home Address</th>
+                                                        <th>Representative's Name</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -321,10 +319,13 @@ block content
                                                     if applicant.enum_applicationStatus == 'Approved'
                                                         <tr>    
                                                             <td>
+                                                                value= applicant.varchar_validationID
+                                                            </td>
+                                                            <td>
                                                                 value= applicant.varchar_familyName
                                                             </td>
                                                             <td>
-                                                                value=applicant.text_homeAddress
+                                                                value=applicant.varchar_representativeName
                                                             </td>
                                                             <td>
                                                                 value=applicant.enum_applicationStatus
@@ -335,8 +336,8 @@ block content
                                                                     button.btn.btn-info.btn-sm.mb-1(id="btn-view-household" class="btn-view-household btn-block" value= applicant.int_applicationID): span.fa.fa-eye Beneficiary Details
                                                                     if applicant.enum_applicationStatus == 'Approved'  
                                                                         <form id="formReceipt" method="POST" action='/barangay/releasing/receipt' name="formReceipt">
-                                                                            input(type="text" hidden value=`${applicant.int_applicationID}` id="int_applicationID" name="int_applicationID")
-                                                                            button.btn.btn-success.btn-sm.mb-1(id="btn-print" class="btn-print btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
+                                                                            input(type="text" hidden value=`${applicant.int_applicationID}` id="appID" name="appID")
+                                                                            button.btn.btn-success.btn-sm.mb-1(id="btn-hprint" class="btn-hprint btn-block" value= applicant.int_applicationID): span.fa.fa-check Received
                                                                         </form>
                                                                         //- a(href=`/office/Releasing/viewben/${applicant.int_applicationID}/receiveben` id="receiveben" class="btn btn-success btn-sm btn-block"): span.fa.fa-check  Received
                                                             </td>
@@ -486,338 +487,166 @@ block content
             </div>
         </div>
     </div>
-        //- receipt
-    <div class="modal fade bs-example-modal-lg" id="modalreceivereceipt" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade bs-example-modal-lg" id="modalviewproject" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-body">   
+                <div class="modal-body">
+                    
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><span class="section">Resident's Receipt</span></h4> 
-                    <div class="item form-group">
-                        <div class="">
+                        <h4 class="modal-title" id="myModalLabel"><span class="section">View Project Details</span></h4> 
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="projecttitle">Project:
+                                </label>
+                                <div class="col-md-9" id="projecttitle">
+                    
+                                </div>
+                                <br>
                         </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-officeName">City Project Application and Beneficiary Releasing Management System
-                        </label>
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="projectdescription">Description:
+                                </label>
+                                <div class="col-md-9" id="projectdescription" >
+                    
+                                </div>
+                                <br>
+                        </div>
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="projectrelstart">Start of Releasing:
+                                </label>
+                                <div class="col-md-9" id="projectrelstart">
+                    
+                                </div>
+                                <br>
+                        </div>
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="projectrelend">End of Releasing: (Target Date)
+                                </label>
+                                <div class="col-md-9" id="projectrelend">
+                    
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
+                        </div>
                     </div>
-                    <div class="item form-group">
-                        <div class="">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-officeName">Office of the Congresswomen Alexandria Gonzales
-                        </label>
-                    </div>
-                    <div class="item form-group">
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-cityName">Mandaluyong City
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">315 Maysilo Cir, 1550 Metro Manila
-                        </label>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">=======================================================================
-                        </label>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aj-projectTitle">Project Title:
-                        </label>
-                        <div class="col-md-7" id="aj-projectTitle" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aj-projectTitle">Date:
-                        </label>
-                        <div class="col-md-7" id="aj-date" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">=======================================================================
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aj-recepientName">Name:
-                        </label>
-                        <div class="col-md-7" id="aj-recepientName" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aj-recgender">Gender:
-                        </label>
-                        <div class="col-md-7" id="aj-recgender" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aj-recbirhtdate">Birth Date:
-                        </label>
-                        <div class="col-md-7" id="aj-recbirhtdate" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aj-recemail">E-Mail Address:
-                        </label>
-                        <div class="col-md-7" id="aj-recemail" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">-----------------------------------------------------------------------------------------------------------------------------
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-2 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-3 col-md-3 text-center " id="aj-project">QUANTITY
-                        </label>
-                        <div class="col-sm-1 col-md-1">
-                        </div>
-                        <label class="control-label col-sm-4 col-md-4 " id="aj-project">BENEFIT
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">-----------------------------------------------------------------------------------------------------------------------------
-                        </label>
-                        <br>
-                    </div>
-                    each appben in tbl_applicantbenefit
-                        <div class="item form-group ">
-                            <div class="col-sm-3 col-md-3">
-                            </div>
-                            <div class="col-sm-1 col-md-1 text-left" id="aj-recquantity" >
-                                value= appben.int_benefitQuantity
-                            </div>
-                            <div class="col-sm-2 col-md-2">
-                            </div>
-                            <div class="col-sm-4 col-md-4" id="aj-recbenefits" >
-                                value= appben.text_benefitName
-                            </div>
-                            <br>
-                        </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">-----------------------------------------------------------------------------------------------------------------------------
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">Proof of benefit received
-                        </label>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <form class="form-horizontal form-label-left" method="POST" action='/barangay/releasing/printbenefit' id="formprint">
-                        button.btn.btn-dark.mb-1.btn-block(id="btn-print" class="btn-print btn-block" ): span.fa.fa-print Print Receipt
-                        <input hidden id="aj_appID" name="aj_appID">
-                        <input type="hidden" class="int_projectID" id="int_projectID" name="int_projectID">
-                    </form>
                 </div>
             </div>
         </div>
-    </div>
-    //- HOUSEHOLD RECEIPT
-    <div class="modal fade bs-example-modal-lg" id="modalhouseappreceipt" tabindex="-1" role="dialog" aria-hidden="true">
+    </div>  
+    <div class="modal fade bs-example-modal-lg" id="modalReceive" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-body">   
+                <div class="modal-body">
+                    
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><span class="section">Household's Receipt</span></h4> 
-                    <div class="item form-group">
-                        <div class="">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-officeName">City Project Application and Beneficiary Releasing Management System
+                    <h4 class="modal-title" id="myModalLabel"><span class="section">Receive Benefits:</span></h4> 
+                    <div class="radio">
+                        <label>
+                            p Receive benefits  by:
                         </label>
+                        <center>
+                            <label>
+                                <input type="radio" class="" checked="" value="beneficiary" id="optionsRadios1" name="opt" onclick="is_checked()"> Beneficiary
+                            </label> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <label>
+                                <input type="radio" class="" value="representative" id="optionsRadios2" name="opt" onclick="is_checked()"> Representative
+                            </label>
+                        </center>
                     </div>
-                    <div class="item form-group">
-                        <div class="">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-officeName">Office of the Congresswomen Alexandria Gonzales
-                        </label>
-                    </div>
-                    <div class="item form-group">
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-cityName">Mandaluyong City
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">315 Maysilo Cir, 1550 Metro Manila
-                        </label>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">=======================================================================
-                        </label>
-                        <br>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aH-projectTitle">Project Title:
-                        </label>
-                        <div class="col-md-7" id="aH-projectTitle" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aH-projectTitle">Date:
-                        </label>
-                        <div class="col-md-7" id="aH-date" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aH-project">=======================================================================
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aH-recepientName">Family Name:
-                        </label>
-                        <div class="col-md-7" id="aH-recepientName" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aH-address">Address:
-                        </label>
-                        <div class="col-md-7" id="aH-address" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aH-houseStatus">House Status:
-                        </label>
-                        <div class="col-md-7" id="aH-houseStatus" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group ">
-                        <div class="col-sm-3 col-md-3">
-                        </div>
-                        <label class="control-label col-sm-2 col-md-2" for="aH-annual">Total Annual Income:
-                        </label>
-                        <div class="col-md-7" id="aH-annual" >
-                        </div>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">-----------------------------------------------------------------------------------------------------------------------------
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-2 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-3 col-md-3 text-center " id="aH-project">QUANTITY
-                        </label>
-                        <div class="col-sm-1 col-md-1">
-                        </div>
-                        <label class="control-label col-sm-4 col-md-4 " id="aH-project">BENEFIT
-                        </label>
-                        <br>
-                    </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">-----------------------------------------------------------------------------------------------------------------------------
-                        </label>
-                        <br>
-                    </div>
-                    each appben2 in tbl_applicantbenefit
-                        <div class="item form-group ">
-                            <div class="col-sm-3 col-md-3">
-                            </div>
-                            <div class="col-sm-1 col-md-1 text-left" id="aH-recquantity" >
-                                value= appben2.int_benefitQuantity
-                            </div>
-                            <div class="col-sm-2 col-md-2">
-                            </div>
-                            <div class="col-sm-4 col-md-4" id="aH-recbenefits" >
-                                value= appben2.text_benefitName
+                    hr
+                    <div id="benben">
+                        <div class="item form-group">
+                            <label class="control-label col-md-2" for="aj-lastname">Last Name:
+                            </label>
+                            <div class="col-md-9" id="arj-lastname">
+                        
                             </div>
                             <br>
                         </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
+                        <div class="item form-group">
+                            <label class="control-label col-md-2" for="aj-firstname">First Name:
+                            </label>
+                            <div class="col-md-9" id="arj-firstname" >
+                        
+                            </div>
+                            <br>
                         </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aj-project">-----------------------------------------------------------------------------------------------------------------------------
-                        </label>
-                        <br>
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="aj-middlename">Middle Name:
+                                </label>
+                                <div class="col-md-9" id="arj-middlename">
+                        
+                                </div>
+                                <br>
+                        </div>
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="aj-birthdate">Birthdate:
+                                </label>
+                                <div class="col-md-9" id="arj-birthdate">
+                        
+                                </div>
+                                <br>
+                        </div>
+                        <div class="item form-group">
+                                <label class="control-label col-md-2" for="aj-gender">Gender:
+                                </label>
+                                <div class="col-md-9" id="arj-gender">
+                        
+                                </div>
+                                <br>
+                        </div>
+                        <center>
+                        <form id="formReceipt" method="POST" action='/barangay/releasing/receipt' name="formReceipt">
+                            <input type="hidden" id="appID" name="appID" class="appID">
+                            button.btn.btn-success.btn-sm.mb-1(id="btn-subprint" class="btn-subprint btn-" ): span.fa.fa-check Submit Beneficiary
+                        </form>
+                            //- <button type="button" class="btn btn-success" data-dismiss="modal" style="">Submit Beneficiary</button>
+                        </center>
+                        
                     </div>
-                    <div class="item form-group">
-                        <div class="col-sm-1 col-md-2">
-                        </div>
-                        <label class="control-label col-sm-12 col-md-12 text-center" id="aH-project">Proof of benefit received
-                        </label>
-                        <br>
-                        <br>
+
+
+                    <div id="reprep">
+                        <form id="formReceipt" method="POST" action='/barangay/releasing/receiptRep' class="form-horizontal form-label-left"  name="formReceipt">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Representative's Name <span class="required" style="color:red">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="repName" name="repName" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Relationship with the beneficiary <span class="required" style="color:red">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="repRel" name="repRel" required="required" class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name" >Reason of beneficiary for being unavailable: <span class="required" style="color:red">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <textarea class="resizable_textarea form-control" id="repReason" required name="repReason" placeholder=""style="resize: vertical;"></textarea>
+                                </div>
+                            </div>
+                            <center>
+                                <input type="hidden" id="appID" name="appID" class="appID">
+                                button.btn.btn-success.btn-sm.mb-1(id="btn-subprint" class="btn-subprint btn-" ): span.fa.fa-check Submit Representative
+                            </center>
+                        </form>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <form class="form-horizontal form-label-left" method="POST" action='/barangay/releasing/printbenefithouse' id="formprint">
-                        button.btn.btn-dark.mb-1.btn-block(id="btn-hprint" class="btn-hprint btn-block" ): span.fa.fa-print Print Receipt
-                        <input type="hidden" id="ah_appID" name="ah_appID">
-                        <input type="hidden" class="int_projectID" id="int_projectID" name="int_projectID">
-                    </form>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
+                </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 
 
         <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
@@ -831,9 +660,86 @@ block content
             mon = months[n.getMonth()];
             currentdate = m + "-" + d + "-" + y;
             currdate =  mon + " " + d + ", " + y;
-            //- SCRIPT GET INT_APPLICATIONID (VIEW MODAL)
-
+            $('#reprep').attr('style', 'display:none;')
+            function is_checked()
+            {
+                console.log("nice")
+                var ben_checked = document.getElementsByName("opt");
+                var len = ben_checked.length;
+                //- alert("ben_checked");
+                for(var i = 0; i < len; i++)
+                {
+                    if(ben_checked[i].checked)
+                    {
+                        if(ben_checked[i].value == "representative")
+                        {
+                            console.log("representative")
+                            $('#reprep').attr('style', 'display:show;')
+                            $('#benben').attr('style', 'display:none;')
+                        }
+                        else if(ben_checked[i].value == "beneficiary")
+                        {
+                            console.log("beneficiary")
+                            $('#reprep').attr('style', 'display:none;')
+                            $('#benben').attr('style', 'display:show;')
+                        }
+                    }
+                }
+            }
             $(document).ready(function () {
+                
+                $('#datatable1').dataTable();
+                $('#datatable2').dataTable();
+                $('#datatable3').dataTable();
+                $('#datatable4').dataTable();
+                $('#datatable5').dataTable();
+                $('#datatable6').dataTable();
+
+                
+
+
+                $('.btn-view-project').click(function (e) {
+                    e.preventDefault()
+                    var Id = $(this).val();
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    console.log("================================Id(Class)")
+                    $('#modalviewproject').modal('show');
+                    ajaxGet();
+
+                    function ajaxGet(){
+                    console.log("========Id");
+                    console.log(Id);
+                    console.log("========Id");
+
+                    $.ajax({
+                        type : "POST",
+                        url : "/barangay/releasing/projectdetails",
+                        data: { ajProjectID: Id},
+                        dataType: "json",
+                        success: function(tbl_project){
+
+                        console.log(tbl_project)
+
+                            $.each(tbl_project, function (index, value) {
+                                console.log(value);
+
+                                document.getElementById("projecttitle").innerHTML = value.varchar_projectName    
+                                document.getElementById("projectdescription").innerHTML = value.text_projectDescription
+                                document.getElementById("projectrelstart").innerHTML = value.date_actualStartRelease
+                                document.getElementById("projectrelend").innerHTML = value.date_targetEndRelease
+                                    
+                                console.log("Success: " );
+                            });
+                                                        
+                            
+                        },
+                        error : function(e) {
+                            console.log("ERROR: ", e);
+                        }
+                    });	
+                }
+                });
 
                 $('.btn-view-application').click(function (e) {
                     e.preventDefault()
@@ -843,7 +749,6 @@ block content
                     console.log("================================Id(Class)")
                     $('#modalviewapplication').modal('show');
                     ajaxGet();
-
                     function ajaxGet(){
                     console.log("========Id");
                     console.log(Id);
@@ -1000,7 +905,50 @@ block content
                             });	
                         }
                 });
-                $('#btn-print').on('click',function (e) {
+                $('.btn-print').on('click',function (e) {
+                    //- var form = $(this).parents('form');
+                    var Id = $(this).val();
+                    console.log("================================Id(Class)")
+                    console.log(Id);
+                    $(".appID").val(Id);
+                    console.log("================================Id(Class)")
+                    $('#modalReceive').modal('show');
+                    e.preventDefault(); //prevent submit
+                    ajaxGet();
+                    function ajaxGet(){
+                    console.log("========Id");
+                    console.log(Id);
+                    console.log("========Id");
+
+                    $.ajax({
+                        type : "POST",
+                        url : window.location + "/ajaxapplicantdetails",
+                        data: {ajApplicationID: Id},
+                        dataType: "json",
+                        success: function(tbl_application){
+
+                            $.each(tbl_application, function (index, value) {
+
+                                document.getElementById("arj-lastname").innerHTML = value.varchar_lastName    
+                                document.getElementById("arj-firstname").innerHTML = value.varchar_firstName
+                                document.getElementById("arj-middlename").innerHTML = value.varchar_middleName
+                                document.getElementById("arj-birthdate").innerHTML = value.date_birthDate
+                                document.getElementById("arj-gender").innerHTML = value.enum_gender
+                                //- document.getElementById("arj-year").innerHTML = value.year_applicantResidency
+                                //- document.getElementById("arj-civil").innerHTML = value.enum_civilStatus
+                                //- document.getElementById("arj-contact").innerHTML = value.varchar_contactNumber
+                                //- document.getElementByID("aj-email").innerHTML = value.varchar_emailAddress
+                                    
+                                console.log("Success: " );
+                            });                             
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });	
+                    }
+                });
+                $('#btn-subprint').on('click',function (e) {
                     var form = $(this).parents('form');
                     e.preventDefault(); //prevent submit
                         swal({

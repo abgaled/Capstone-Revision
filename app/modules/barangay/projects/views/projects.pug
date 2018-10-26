@@ -34,8 +34,9 @@ block content
                                             value=project.date_targetEndApp
                                         </td>
                                         <td>
-                                            //- ORIGINAL SLOT - APPROVED APPLICANTS
-                                            value=project.int_allotedSlot
+                                        each slot in slotcount 
+                                            if slot.projID == project.int_projectID
+                                                value=slot.slotCount
                                         </td>
                                          <td>
                                             //-
@@ -45,6 +46,7 @@ block content
                                             value=project.enum_projectStatus
                                         </td>
                                         <td>
+                                            
                                             if project.enum_applicationType == "Resident"
                                                 button.btn.btn-success.mb-1(id="btn-view-project" class="btn-view-project" value= project.int_projectID): span.fa.fa-eye View
                                                 if project.enum_projectStatus == "Ongoing"
@@ -68,6 +70,7 @@ block content
                                                     a(href=`/barangay/projects/${project.int_projectID}/registeredapplicants` class="btn btn-info btn-sm"): <i class="fa fa-users"></i> View Application    
                                                 if project.enum_projectStatus == "Closed Releasing"
                                                     a(href=`/barangay/projects/${project.int_projectID}/liquidation` class="btn btn-dark btn-sm"): <i class="fa fa-files-o"></i> Liquidation
+                                            
                                         </td>
                                     </tr>                   
                                 </tbody>

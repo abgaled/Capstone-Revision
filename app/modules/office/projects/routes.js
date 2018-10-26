@@ -1,9 +1,9 @@
 var express = require('express');
+var nodemailer = require('nodemailer');
 var router = express.Router();
 var authMiddleware = require('../../auth/middlewares/auth');
 var db = require('../../../lib/database')();
 var moment = require('moment');
-var nodemailer = require('nodemailer');
 var cityID;
 
 
@@ -32,7 +32,8 @@ router.get('/',(req, res) => {
     db.query(queryString4, (err, cityResult, fields ) => {
         if (err) console.log(err);
         var cityid = cityResult[0];
-
+        console.log(cityid);
+        
         var queryString = `SELECT * 
             FROM tbl_projectdetail
             WHERE int_cityID = ${cityid.int_userID}`;
@@ -208,8 +209,8 @@ router.get('/:int_projectID/viewproj',(req, res) => {
             results[i].date_targetClosing = moment(results[i].date_targetClosing).format('MMMM DD[,] YYYY');
             results[i].date_actualStartApp = moment(results[i].date_actualStartApp).format('MMMM DD[,] YYYY');
             results[i].date_actualEndApp = moment(results[i].date_actualEndApp).format('MMMM DD[,] YYYY');
-            results[i].date_startReleaseDate = moment(results[i].date_startReleaseDate).format('MMMM DD[,] YYYY');
-            results[i].date_endReleaseDate = moment(results[i].date_endReleaseDate).format('MMMM DD[,] YYYY');
+            results[i].date_startReleasing = moment(results[i].date_startReleasing).format('MMMM DD[,] YYYY');
+            results[i].date_endReleasing = moment(results[i].date_endReleasing).format('MMMM DD[,] YYYY');
             results[i].date_projectClose = moment(results[i].date_projectClose).format('MMMM DD[,] YYYY');
         }
 
@@ -515,11 +516,15 @@ router.post('/brgy/accept',(req, res) => {
                 ON ap.int_projectID = pd.int_projectID
                 JOIN tbl_projectapplicationtype pat
                 ON ap.int_projectID = pat.int_projectID
-                WHERE ap.int_applicationID = ${req.body.int_applicationID}`
+                WHERE ap.int_applicationID = ${req.body.appid}`
 
                 db.query(queryBarangay, (err, barangaydetails, fields) => {
+                    console.log("done barangay details")
 
-                    var finalBarangayDetails = barangaydetails[0];
+                    var finalBarangayDetails = barangaydetails;
+
+                    console.log("before for loop")
+                    for(i=0;i<finalBarangayDetails.length;i++){
 
                     var queryBarangayUser =`SELECT * FROM tbl_application ap
                     JOIN tbl_officialsaccount oa
@@ -528,11 +533,12 @@ router.post('/brgy/accept',(req, res) => {
                     ON oa.int_userID = us.int_userID
                     JOIN tbl_barangay ba
                     ON ba.int_barangayID = oa.int_officialsID
-                    WHERE ap.int_applicationID = ${req.body.int_applicationID}`
+                    WHERE ap.int_applicationID = ${req.body.appid}`
 
                     db.query(queryBarangayUser, (err, barangayuserdetails, fields) => {
+                        console.log("done barangay user details")
 
-                        var finalBarangayUserDetails = barangayuserdetails[0];
+                        var finalBarangayUserDetails = barangayuserdetails;
 
                         // START OF NODE MAILER
                         nodemailer.createTestAccount((err, account) => {
@@ -551,12 +557,12 @@ router.post('/brgy/accept',(req, res) => {
                             // setup email data with unicode symbols
                             let mailOptions = {
                                 from: '"City Project - Office" <cityprojmsoffice@gmail.com>', // sender address
-                                to: `${finalBarangayUserDetails.varchar_userEmailAddress}`, // list of receivers
+                                to: `${finalBarangayUserDetails[i].varchar_userEmailAddress}`, // list of receivers
                                 subject: 'City Project Application and Beneficiary Releasing Management System - Registration/Application Response', // Subject line
                                 html: `<p>Welcome to City Project Application and Beneficiary Releasing Management System</p>
-                                <br>Good day! <b>${finalBarangayUserDetails.text_userName}</b>,
+                                <br>Good day! <b>${finalBarangayUserDetails[i].text_userName}</b>,
                                 <br> 
-                                <p>We're here to inform you that your application for the <b>Project: ${finalBarangayDetails.varchar_projectName}</b> for <i><b>Barangay: ${finalBarangayUserDetails.varchar_barangayName}</i></b> has been <u><b>ACCEPTED</b></u>.</p>
+                                <p>We're here to inform you that your application for the <b>Project: ${finalBarangayDetails.varchar_projectName}</b> for <i><b>Barangay: ${finalBarangayUserDetails[i].varchar_barangayName}</i></b> has been <u><b>ACCEPTED</b></u>.</p>
                                 <hr>
                                 Please wait for further announcements and updates about the said project. Thank you!` // html body
                             };
@@ -577,8 +583,9 @@ router.post('/brgy/accept',(req, res) => {
                             });
                             // END OF NODE MAILER
                             
-                            res.redirect(`/office/projects`);
-                    });
+                        });
+                    }
+                        res.redirect(`/office/projects`);
                 });    
         });
     });
@@ -1029,6 +1036,7 @@ router.post('/:int_projectID/viewproj/reject',(req, res) => {
     });
 });
 
+
 // AJAX GET DETAILS VIEW DETAILS PROJECT - VIEW APPLICANT DETAILS
 router.post('/:int_projectID/viewproj/ajaxapplicantdetails',(req,res) => {
     console.log('=================================');
@@ -1062,6 +1070,34 @@ router.post('/:int_projectID/viewproj/ajaxapplicantdetails',(req,res) => {
     });
 });
 
+// router.get('/:int_projectID/viewapp',(req, res) => {
+//     console.log('=================================');
+//     console.log('OFFICE: ONGOING PROJECT - VIEW APPLICATIONS');
+//     console.log('=================================');
+
+//     var queryString1 =`SELECT * FROM tbl_projectproposal pr
+//     JOIN tbl_project proj ON pr.int_projectID = proj.int_projectID
+//     WHERE pr.int_projectID = "${req.params.int_projectID}"`
+
+//     db.query(queryString1, (err, results1, fields) => {
+//         console.log("=========RESULTS1==========")
+//         console.log(results1);
+
+//         var queryString2 =`SELECT * FROM tbl_application ap
+//         JOIN tbl_personalinformation pi 
+//         ON ap.int_applicationID = pi.int_applicationID
+//         WHERE ap.int_projectID = "${req.params.int_projectID}"
+//         AND (ap.enum_applicationStatus = "Approved" OR ap.enum_applicationStatus = "Received")`
+
+//         db.query(queryString2, (err, results2, fields) => {
+    
+//             res.render('office/projects/views/viewapplication',{
+//                     tbl_project:results1,
+//                     tbl_application:results2
+//                 });
+//         });
+//     });
+// });
 
 router.post('/:int_projectID/viewproj/ajaxhouseholddetails',(req,res) => {
     console.log('=================================');
@@ -1269,7 +1305,6 @@ router.post('/:int_projectID/viewapp/ajaxapplicanthouseholddetails',(req,res) =>
     });
 });
 
-
 //-start project
 router.post('/startproj', (req, res) => {
     console.log('=================================');
@@ -1283,25 +1318,6 @@ router.post('/startproj', (req, res) => {
             
     db.query(queryString1, (err, results) => {        
         if (err) throw err;
-
-        // var updateProject = `UPDATE tbl_project
-        // SET date_startApplication=CURDATE(),
-        // date_endApplication=DATE_ADD(CURDATE(), 
-        // INTERVAL (SELECT int_applicationDuration 
-        // FROM tbl_projectproposal WHERE int_projectID=${req.body.int_projectID}) DAY),
-        // date_startReleaseDate=DATE_ADD(DATE_ADD(CURDATE(), 
-        // INTERVAL (SELECT int_applicationDuration FROM tbl_projectproposal 
-        // WHERE int_projectID=${req.body.int_projectID}) DAY), INTERVAL (SELECT int_beforeReleasingDuration 
-        // FROM tbl_projectproposal WHERE int_projectID=${req.body.int_projectID}) DAY)
-        // WHERE int_projectID=${req.body.int_projectID};`
-
-        // var updateProject = `UPDATE tbl_project
-        // SET enum_projectStatus = "Ongoing"
-        // WHERE int_projectID=${req.body.int_projectID};`
-
-        // db.query(updateProject, (err, results) => {        
-        //     if (err) throw err;
-    
 
             res.redirect('/office/projects');
     });
@@ -1378,6 +1394,22 @@ router.post('/finishedproject/:int_projectID/viewapp/ajaxapplicantdetails',(req,
 });
 
 //-projectopenmodal
+router.post('/ajaxgetCount',(req,res) => {
+    console.log('=================================');
+    console.log('OFFICE: OPEN PROJECT APPLICATION-PREVIOUS-AJAX GET DETAILS (POST)');
+    console.log('=================================');
+    console.log(`${req.body.ajProjectID}`);
+
+            var queryString =`SELECT DISTINCT(SELECT COUNT(*) FROM tbl_barangayreleasing WHERE int_projectID = ${req.body.ajProjectID} AND enum_barangayReleaseStatus = "Claimed Benefit") AS claimed, 
+                                            (SELECT COUNT(*) FROM tbl_barangayreleasing WHERE int_projectID = ${req.body.ajProjectID}) AS received 
+                                FROM tbl_barangayreleasing`
+
+            db.query(queryString,(err, results, fields) => {
+                if (err) console.log(err);
+
+                return res.send({tbl_count:results});
+        });
+});
 router.post('/ajaxgetprojectdetails',(req,res) => {
     console.log('=================================');
     console.log('OFFICE: OPEN PROJECT APPLICATION-PREVIOUS-AJAX GET DETAILS (POST)');
@@ -1453,7 +1485,31 @@ router.post('/closeproj', (req, res) => {
             
     db.query(queryString1, (err, results) => {        
         if (err) throw err;
-        res.redirect('/office/projects');
+
+        var queryProject = `SELECT DISTINCT int_barangayID from tbl_application 
+            WHERE int_projectID = ${req.body.int_projectID}`
+            db.query(queryProject, (err, resultsPROJECTS) => {        
+                if (err) throw err;
+                console.log(resultsPROJECTS);
+                var projects = resultsPROJECTS;
+                for (var i = 0; i < projects.length;i++)
+                {
+                    var queryINSERTBarR = `INSERT INTO \`tbl_barangayreleasing\` 
+                    (\`int_projectID\`, 
+                    \`int_barangayID\`,
+                    \`enum_barangayReleaseStatus\`)
+                    VALUES
+                    ("${req.body.int_projectID}",
+                    "${projects[i].int_barangayID}",
+                    "Releasing");`;
+
+                    db.query(queryINSERTBarR, (err, resultsREL) => {        
+                        if (err) throw err;
+                        console.log(resultsREL);
+                    });
+                }
+            res.redirect('/office/projects');
+        });
     });
 });
 router.post('/closelateapplication', (req, res) => {
@@ -1486,7 +1542,31 @@ db.query(queryString, (err, results) => {
             if (err) throw err;
             console.log(results);
 
-            res.redirect('/office/projects');
+            var queryProject = `SELECT DISTINCT int_barangayID from tbl_application 
+            WHERE int_projectID = ${req.body.projectID}`
+            db.query(queryProject, (err, resultsPROJECTS) => {        
+                if (err) throw err;
+                console.log(resultsPROJECTS);
+                var projects = resultsPROJECTS;
+                for (var i = 0; i < projects.length;i++)
+                {
+                    var queryINSERTBarR = `INSERT INTO \`tbl_barangayreleasing\` 
+                    (\`int_projectID\`, 
+                    \`int_barangayID\`,
+                    \`enum_barangayReleaseStatus\`)
+                    VALUES
+                    ("${req.body.projectID}",
+                    "${projects[i].int_barangayID}",
+                    "Releasing");`;
+
+                    db.query(queryINSERTBarR, (err, resultsREL) => {        
+                        if (err) throw err;
+                        console.log(resultsREL);
+                    });
+                }
+
+                res.redirect('/office/projects');
+            });
         });
     });
 });
@@ -1501,36 +1581,15 @@ router.post('/openreleasing', (req, res) => {
 
     console.log(resultIndex);
     var queryString1 = `UPDATE tbl_projectdetail SET
-    enum_projectStatus = 'Releasing'
+    enum_projectStatus = 'Releasing',
+    date_startReleasing = '${now}'
     WHERE int_projectID = ${req.body.rint_projectID}`
 
-    var queryProject = 'SELECT DISTINCT int_barangayID from tbl_application WHERE int_projectID = 1'
-    
     db.query(queryString1, (err, results) => {        
         if (err) throw err;
         console.log(results);
 
-        db.query(queryProject, (err, resultsPROJECTS) => {        
-            if (err) throw err;
-            console.log(resultsPROJECTS);
-
-            var projects = resultsPROJECTS;
-            for (var i = 0; i < projects.length;i++)
-            {
-                var queryINSERTBarR = `INSERT INTO \`tbl_barangayreleasing\` 
-                (\`int_projectID\`, 
-                \`int_barangayID\`)
-                VALUES
-                ("${req.body.rint_projectID}",
-                "${projects[i].int_barangayID}");`;
-                db.query(queryINSERTBarR, (err, resultsREL) => {        
-                    if (err) throw err;
-                    console.log(resultsREL);
-                });
-            }
-
-            res.redirect('/office/projects');
-        });
+        res.redirect('/office/projects');
     });
 });
 
@@ -1558,42 +1617,17 @@ router.post('/openlatereleasing', (req, res) => {
             console.log(results);
 
             var queryString1 = `UPDATE tbl_projectdetail SET
-            enum_projectStatus = 'Releasing'
+            enum_projectStatus = 'Releasing',
+            date_startReleasing = '${now}'
             WHERE tbl_projectdetail.int_projectID = ${req.body.rprojectID}`
-
-            var queryProject = `SELECT DISTINCT int_barangayID from tbl_application 
-            WHERE int_projectID = ${req.body.rprojectID}`
-            
             db.query(queryString1, (err, results) => {        
                 if (err) throw err;
                 console.log(results);
 
-                db.query(queryProject, (err, resultsPROJECTS) => {        
-                    if (err) throw err;
-                    console.log(resultsPROJECTS);
-
-                    var projects = resultsPROJECTS;
-                    for (var i = 0; i < projects.length;i++)
-                    {
-                        var queryINSERTBarR = `INSERT INTO \`tbl_barangayreleasing\`
-                        (\`int_projectID\`, 
-                        \`int_barangayID\`)
-                        VALUES
-                        ("${req.body.rprojectID}",
-                        "${projects[i].int_barangayID}");`;
-                        db.query(queryINSERTBarR, (err, resultsREL) => {        
-                            if (err) throw err;
-                            console.log(resultsREL);
-                        });
-                    }
+                
 
                     
-                    db.query(queryString1, (err, results2) => {        
-                        if (err) throw err;
-
-                        res.redirect('/office/projects');
-                });
-            });
+            res.redirect('/office/projects');
         });
     });
 });
