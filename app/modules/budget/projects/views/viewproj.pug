@@ -159,8 +159,8 @@ block content
                                 </td>
                                 <th scope="row">Actual Closing of Application: </th>
                                 <td>
-                                    if project.date_actualCloseApp != 'Invalid date'
-                                        value=project.date_actualCloseApp
+                                    if project.date_actualEndApp != 'Invalid date'
+                                        value=project.date_actualEndApp
                                 </td>
                             </tr>
                             <tr>
@@ -170,9 +170,9 @@ block content
                                 value=project.date_targetStartRelease
                                 </td>
                                 <th scope="row">Actual Start of Releasing: </th>
-                                <td>*barangay based*
-                                    if project.date_actualStartRelease != 'Invalid date'
-                                        value=project.date_actualStartRelease
+                                <td>
+                                    if project.date_startReleasing != 'Invalid date'
+                                        value=project.date_startReleasing
                                 </td>
                             </tr>
                             <tr>
@@ -181,9 +181,9 @@ block content
                                 value=project.date_targetEndRelease
                                 </td>
                                 <th scope="row">Actual Closing of Releasing: </th>
-                                <td>*barangay based*
-                                    if project.date_actualEndRelease != 'Invalid date'
-                                        value=project.date_actualEndRelease 
+                                <td>
+                                    if project.date_endReleasing != 'Invalid date'
+                                        value=project.date_endReleasing 
                                 </td>
                             </tr>
                             <tr>

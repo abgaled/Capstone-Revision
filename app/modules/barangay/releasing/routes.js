@@ -92,6 +92,7 @@ router.get('/',(req, res) => {
                     res.render('barangay/releasing/views/releasing',{
                         tbl_project:date_results,
                         notifications:notifications,
+                        user_results:user_results,
                         numbernotif:countrow
                     });
                 });

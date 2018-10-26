@@ -212,7 +212,7 @@ block content
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            each applicant in tbl_household
+                                            each applicant in tbl_application3
                                                 <tr>    
                                                     <td>
                                                         value= applicant.varchar_familyName
@@ -247,7 +247,7 @@ block content
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            each applicant in tbl_household
+                                            each applicant in tbl_application3
                                                 if applicant.enum_applicationStatus == 'Received'
                                                     <tr>    
                                                         <td>
@@ -283,7 +283,7 @@ block content
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            each applicant in tbl_household
+                                            each applicant in tbl_application3
                                                 if applicant.enum_applicationStatus == 'Approved'
                                                     <tr>    
                                                         <td>

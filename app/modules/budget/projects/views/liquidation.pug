@@ -45,8 +45,8 @@
                 each proj in tbl_project
                     <div class="noPRINT"  id="noPRINT">
                         a(href=`/budget/projects` class="btn btn-danger btn-lg pull-right fa"): span.fa.fa-times-circle  
-                        <button id="printReceiptButton" type="button" disabled class= "btn float-right pull-right  btn-lg btn-inverse fa fa-print">&nbsp;&nbsp; Print Receipt
-                        <button id="signReceiptButton" type="button" class= "btn float-right btn-lg btn-inverse pull-right fa fa-pencil">&nbsp;&nbsp; Sign Receipt
+                        <button id="printReceiptButton" type="button" disabled class= "btn float-right pull-right  btn-lg btn-inverse fa fa-print">&nbsp;&nbsp; Print Liquidation
+                        <button id="signReceiptButton" type="button" class= "btn float-right btn-lg btn-inverse pull-right fa fa-pencil">&nbsp;&nbsp; Sign Liquidation
                     </div> 
                     <div class="x_title" >
                         <h4 class="">Office of the Congresswomen Alexandria Gonzales</h4>
@@ -108,6 +108,46 @@
                                                                 </td>
                                                             </tr>        
                                                     </tbody>
+                                                    
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="6"></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="6">
+                                                                <center>Sponsored
+                                                                </center></th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th><center>Expenses Item</center></th>
+                                                            <th>QTY</th>
+                                                            <th>Sponsored by</th>
+                                                            <th>Amount</th>
+                                                            <th></th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        each exp in tbl_sponsor
+                                                            <tr class="tr-shadow">
+                                                                input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
+                                                                <td>
+                                                                    value=exp.text_expenseDescription
+                                                                </td>
+                                                                <td>
+                                                                    value= exp.int_actualQuantity
+                                                                </td>
+                                                                <td class='' > #{exp.varchar_sponsorName} 
+                                                                </td>
+                                                                <td>Php 
+                                                                    value= exp.decimal_actualAmount.toLocaleString()
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                                <td>
+                                                                </td>
+                                                            </tr>        
+                                                    </tbody>    
                                                     <tfoot>
                                                         <tr>
                                                             <th>Total Expense</th>
@@ -177,7 +217,8 @@
                                     <label class="control-label col-md-2" for="first-name">Name:
                                     </label>
                                     <div class="col-md-7 totalExpense" id="totalExpense">
-                                        <input type="text" id="nameSign" name="nameSign" class="nameSign  form-control col-md-7 col-xs-12" required placeholder="">
+                                    each user in tbl_user
+                                        input(type="text" id="nameSign" value=user.text_userName name="nameSign" class="nameSign  form-control col-md-7 col-xs-12" required)
                                     </div>
                                 </div>
                                     <button id="undo" class= "btn"> Undo

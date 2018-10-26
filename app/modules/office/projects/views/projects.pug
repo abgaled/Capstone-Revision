@@ -101,7 +101,7 @@ block content
                                                         <thead>
                                                             <tr>
                                                                 <th>Project Name</th>
-                                                                <th>Alloted Slot</th>
+                                                                <th>Available Slots</th>
                                                                 //- <th>Available Slot</th>
                                                                 <th>Status</th>
                                                                 <th>Actions</th>
@@ -153,7 +153,7 @@ block content
                                                         <thead>
                                                             <tr>
                                                                 <th>Project Name</th>
-                                                                <th>Alloted Slot</th>
+                                                                <th>Available Slots</th>
                                                                 //- <th>Available Slot</th>
                                                                 <th>Status</th>
                                                                 <th>Actions</th>
@@ -201,7 +201,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Alloted Slot</th>
+                                                            <th>Available Slots</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -250,7 +250,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Alloted Slot</th>
+                                                            //- <th>Available Slots</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -262,11 +262,11 @@ block content
                                                             <td>
                                                                 value=rel.varchar_projectName
                                                             </td>
-                                                            <td>
-                                                            each slot in slotcount 
-                                                                if slot.projID == rel.int_projectID
-                                                                    value=slot.slotCount
-                                                            </td>
+                                                            //- <td>
+                                                            //- each slot in slotcount 
+                                                            //-     if slot.projID == rel.int_projectID
+                                                            //-         value=slot.slotCount
+                                                            //- </td>
                                                             
                                                             <td>
                                                                 if rel.enum_projectStatus == "ClosedRel"
@@ -294,7 +294,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Alloted Slot</th>
+                                                            //- <th>Available Slots</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -306,11 +306,11 @@ block content
                                                             <td>
                                                                 value=closedrel.varchar_projectName
                                                             </td>
-                                                            <td>
-                                                            each slot in slotcount 
-                                                                if slot.projID == closedrel.int_projectID
-                                                                    value=slot.slotCount
-                                                            </td>
+                                                            //- <td>
+                                                            //- each slot in slotcount 
+                                                            //-     if slot.projID == closedrel.int_projectID
+                                                            //-         value=slot.slotCount
+                                                            //- </td>
                                                             
                                                             <td>
                                                                 if closedrel.enum_projectStatus == "ClosedRel"
@@ -342,7 +342,7 @@ block content
                                                     <thead>
                                                         <tr>
                                                             <th>Project Name</th>
-                                                            <th>Alloted Slot</th>
+                                                            //- <th>Available Slots</th>
                                                             //- <th>Available Slot</th>
                                                             <th>Status</th>
                                                             <th>Actions</th>
@@ -354,11 +354,11 @@ block content
                                                             <td>
                                                                 value=finished.varchar_projectName
                                                             </td>
-                                                            <td>
-                                                            each slot in slotcount 
-                                                                if slot.projID == finished.int_projectID
-                                                                    value=slot.slotCount
-                                                            </td>
+                                                            //- <td>
+                                                            //- each slot in slotcount 
+                                                            //-     if slot.projID == finished.int_projectID
+                                                            //-         value=slot.slotCount
+                                                            //- </td>
                                                             
                                                             <td>
                                                                 if finished.enum_projectStatus == "ClosedRel"
@@ -662,7 +662,7 @@ block content
                             else
                             {
                                 console.log("Uhhh ohhh");
-                                swal("Unable to start Releasing!", "Not all barangay have received the benefits", "error");
+                                swal("Unable to Start Releasing!", "Not all the barangay who applied for this project have received their benefits yet.", "error");
                                 
                             }
                         });                                     

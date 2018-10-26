@@ -82,8 +82,10 @@ router.get('/:int_projectID/viewproj',(req, res) => {
             results[i].date_startReleaseDate = moment(results[i].date_startReleaseDate).format('MMMM DD[,] YYYY');
             results[i].date_endReleaseDate = moment(results[i].date_endReleaseDate).format('MMMM DD[,] YYYY');
             results[i].date_projectClose = moment(results[i].date_projectClose).format('MMMM DD[,] YYYY');
+            results[i].date_startReleasing = moment(results[i].date_startReleasing).format('MMMM DD[,] YYYY');
+            results[i].date_endReleasing  = moment(results[i].date_endReleasing ).format('MMMM DD[,] YYYY');
         }
-
+       
         console.log(results);
 
         db.query(queryString2, (err, results2, fields) => {
@@ -137,7 +139,7 @@ router.get('/:int_projectID/viewapp',(req, res) => {
     
     var queryString3 =`SELECT * FROM tbl_application app
         JOIN tbl_projectdetail proj ON app.int_projectID = proj.int_projectID
-        JOIN tbl_personalinformation pi ON app.int_applicationID = pi.int_applicationID
+        JOIN tbl_householdapplication pi ON app.int_applicationID = pi.int_applicationID
         WHERE app.int_projectID = "${req.params.int_projectID}"
         AND (app.enum_applicationStatus = 'Approved' 
         OR app.enum_applicationStatus = 'Received')
@@ -303,7 +305,8 @@ router.get('/:int_projectID/liquidation',(req, res) => {
 
     var queryString1 =`SELECT * FROM tbl_expense ex
         JOIN tbl_projectdetail proj ON ex.int_projectID = proj.int_projectID
-        WHERE ex.int_projectID = "${req.params.int_projectID}"`
+        WHERE ex.int_projectID = "${req.params.int_projectID}"
+        AND int_sponsorID IS NULL`
 
         var queryString2 =`SELECT * FROM tbl_projectdetail proj
         WHERE proj.int_projectID = "${req.params.int_projectID}"`
@@ -324,6 +327,10 @@ router.get('/:int_projectID/liquidation',(req, res) => {
         var queryString7 =`SELECT COUNT(*) AS appCount FROM tbl_application proj
         WHERE proj.int_projectID = "${req.params.int_projectID}"
         AND (enum_applicationStatus = "Received")`
+
+        var queryUserBudget =`SELECT * FROM tbl_user
+        WHERE tbl_user.int_userID = ${req.session.budget.int_userID}`
+
     db.query(queryString7, (err, results7, fields) => {
         console.log(results7)
         db.query(queryString1, (err, results1, fields) => {
@@ -370,15 +377,28 @@ router.get('/:int_projectID/liquidation',(req, res) => {
                                 console.log(percent)
                                 var categoryPercentage = {percentage:percent , catName:categoryName , catID:categoryID , catAllBud:categoryAllotedBudget};
                                 console.log(categoryPercentage)
-                                res.render('budget/projects/views/liquidation',
-                                {
-                                    tbl_expenses:results1,
-                                    tbl_project:results2,
-                                    totalest:results3,
-                                    total:results4,
-                                    tbl_rembal:results6,
-                                    tbl_appCount:results7,
-                                    categPerc:categoryPercentage
+                                var queryStringSPONSOR =`SELECT * FROM tbl_expense ex
+                                    JOIN tbl_projectsponsor ps ON ex.int_sponsorID = ps.int_sponsorID
+                                    JOIN tbl_sponsordetail sd ON ex.int_sponsorID = sd.int_sponsorID
+                                    WHERE ex.int_projectID = "${req.params.int_projectID}"
+                                    AND ex.int_sponsorID IS NOT NULL`
+                                    db.query(queryStringSPONSOR, (err, resultsSPONSOR, fields) => {
+                                        console.log(resultsSPONSOR)
+                                        db.query(queryUserBudget, (err, resultsUSER, fields) => {
+                                            console.log(resultsUSER)
+                                        res.render('budget/projects/views/liquidation',
+                                        {
+                                            tbl_expenses:results1,
+                                            tbl_project:results2,
+                                            totalest:results3,
+                                            total:results4,
+                                            tbl_rembal:results6,
+                                            tbl_appCount:results7,
+                                            categPerc:categoryPercentage,
+                                            tbl_sponsor:resultsSPONSOR,
+                                            tbl_user:resultsUSER
+                                        });
+                                });
                                 });
                             });
                         });

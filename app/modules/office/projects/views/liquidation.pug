@@ -115,15 +115,15 @@ block content
                                                     <tbody>    
                                                         <tr class="tr-shadow">
                                                             <td >
-                                                                <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
+                                                                <input type="text"   id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
                                                             </td>  
                                                             <td>
                                                                 <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
@@ -136,11 +136,11 @@ block content
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                <input type="number"  min="0"  id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
                                                             </td>  
                                                             <td>
                                                                 <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
@@ -153,11 +153,11 @@ block content
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                <input type="number"  min="0"  id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
                                                             </td>  
                                                             <td>
                                                                 <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
@@ -170,11 +170,11 @@ block content
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                <input type="number" min="0"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
                                                             </td>  
                                                             <td>
                                                                 <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
@@ -187,11 +187,11 @@ block content
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                <input type="number" min="0"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
                                                             </td>  
                                                             
                                                             <td>
-                                                                <input type="number"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
                                                             </td>  
                                                             <td>
                                                                 <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
@@ -291,6 +291,33 @@ block content
                                                                 </center>
                                                             </th>
                                                         </tr>
+                                                    </tbody>
+                                                </table>
+                                                
+                                                <table class="table table-bordered" id="datatable" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="1" rowspan="" class="">
+                                                                <center class=""> Sponsored Items/expenses
+                                                                </center>
+                                                            </th>
+                                                            <th colspan="1" rowspan="" class=""> Item Quantity
+                                                            </th>
+                                                            <th colspan="1" rowspan="" class=""> Sponsored by
+                                                            </th>
+                                                            <th colspan="1" rowspan="" class=""> Sponsor budget
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    each sponsor in tbl_sponsor
+                                                        tr 
+                                                            th #{sponsor.text_expenseDescription}
+                                                            th #{sponsor.int_estimatedQuantity}
+                                                            th #{sponsor.varchar_sponsorName}
+                                                            th 
+                                                                if sponsor.decimal_sponsorBudget != null
+                                                                    p Php #{sponsor.decimal_sponsorBudget.toLocaleString()}
                                                     </tbody>
                                                 </table>
                                             button.btn.btn-success.mb-1.pull-right(id="submit-liq" class="submit-liq"): span.fa.fa-plus Submit Liquidated Expense

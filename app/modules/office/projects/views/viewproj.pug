@@ -236,7 +236,7 @@ block content
                                         <div class="x_content">
                                         
                                             <div>
-                                            input(type="checkbox" id="check-applications" class="acceptall icheckbox_flat-green" style="margin-left:3%;" onclick="checkAll()")
+                                            //- input(type="checkbox" id="check-applications" class="acceptall icheckbox_flat-green" style="margin-left:3%;" onclick="checkAll()")
                                             //- button(type="submit" form="checkallapplicants-resaccept" id="buttonaccept" class="btn btn-primary btn-s" name="buttonaccept"  style="margin-left:2%;"): span.fa.fa-check  Accept
                                             //- button(type="submit" form="checkallapplicants-resreject" id="buttonreject" class="btn btn-danger btn-s" name="buttonreject"): span.fa.fa-close  Reject
                                             <br>
@@ -276,7 +276,7 @@ block content
                                                                                 <td>
                                                                                     if project.enum_projectStatus === "Ongoing" 
                                                                                         if applicant.enum_applicationStatus == "Pending" 
-                                                                                            input(type="checkbox" id="check-applications" name="checkApplicationsID" class="icheckbox_flat-green" value= applicant.int_applicationID )
+                                                                                            //- input(type="checkbox" id="check-applications" name="checkApplicationsID" class="icheckbox_flat-green" value= applicant.int_applicationID )
                                                                                 </td>
                                                                                 <td> #{applicant.varchar_firstName} #{applicant.varchar_middleName} #{applicant.varchar_lastName}
                                                                                 </td>
@@ -348,7 +348,7 @@ block content
                                                                                     <td>
                                                                                         if project.enum_projectStatus === "Ongoing" 
                                                                                             if applicant.enum_applicationStatus == "Pending" 
-                                                                                                input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" value=`${applicant.int_applicationID}` )
+                                                                                                //- input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" value=`${applicant.int_applicationID}` )
                                                                                     </td>
                                                                                     <td> #{applicant.varchar_firstName} #{applicant.varchar_middleName} #{applicant.varchar_lastName}
                                                                                     </td>
@@ -420,7 +420,7 @@ block content
                                                                                     <td>
                                                                                         if project.enum_projectStatus === "Ongoing" 
                                                                                             if applicant.enum_applicationStatus == "Pending" 
-                                                                                                input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" value=`${applicant.int_applicationID}` )
+                                                                                                //- input(type="checkbox" id="check-applications" name="checkApplications[]" class="icheckbox_flat-green" value=`${applicant.int_applicationID}` )
                                                                                     </td>
                                                                                     <td> #{applicant.varchar_firstName} #{applicant.varchar_middleName} #{applicant.varchar_lastName}
                                                                                     </td>
@@ -976,31 +976,61 @@ block content
                                                             <br>
                                                     </div>
                                                     <div class="item form-group">
-                                                            <label class="control-label col-md-2" for="aj-annualIncome">Annual Income:
-                                                            </label>
-                                                            <div class="col-md-9" id="aj-annualIncome">
-                                                
-                                                            </div>
-                                                            <br>
+                                                                    <label class="control-label col-md-2" for="aj-representativeName">Representative Name:
+                                                                    </label>
+                                                                    <div class="col-md-9" id="aj-representativeName">
+                                            
+                                                                    </div>
+                                                                    <br>
+                                                                    <br>
+                                                                    <br>
                                                     </div>
                                                     <div class="item form-group">
-                                                            <label class="control-label col-md-2" for="aj-familyBackground">Family Background:
-                                                            </label>
-                                                            <div class="col-md-9" id="aj-familyBackground">
-                                                
-                                                            </div>
-                                                            <br>
-                                                            <br>
+                                                                    <label class="control-label col-md-2" for="aj-representativeEmail">Representative Email Address:
+                                                                    </label>
+                                                                    <div class="col-md-9" id="aj-representativeEmail">
+                                            
+                                                                    </div>
+                                                                    <br>
+                                                                    <br>
+                                                                    <br>
                                                     </div>
                                                     <div class="item form-group">
-                                                            <label class="control-label col-md-2" for="aj-financialContributor">Financial Contributor:
-                                                            </label>
-                                                            <div class="col-md-9" id="aj-financialContributor">
-                                                
-                                                            </div>
-                                                            <br>
-                                                            <br>
+                                                                    <label class="control-label col-md-2" for="aj-representativeContact">Representative Contact:
+                                                                    </label>
+                                                                    <div class="col-md-9" id="aj-representativeContact">
+                                            
+                                                                    </div>
+                                                                    <br>
+                                                                    <br>
+                                                                    <br>
                                                     </div>
+                                                    //- <div class="item form-group">
+                                                    //-         <label class="control-label col-md-2" for="aj-annualIncome">Annual Income:
+                                                    //-         </label>
+                                                    //-         <div class="col-md-9" id="aj-annualIncome">
+                                                
+                                                    //-         </div>
+                                                    //-         <br>
+                                                    //- </div>
+                                                    //- <div class="item form-group">
+                                                    //-         <label class="control-label col-md-2" for="aj-familyBackground">Family Background:
+                                                    //-         </label>
+                                                    //-         <div class="col-md-9" id="aj-familyBackground">
+                                                
+                                                    //-         </div>
+                                                    //-         <br>
+                                                    //-         <br>
+                                                    //- </div>
+                                                    //- <div class="item form-group">
+                                                    //-         <label class="control-label col-md-2" for="aj-financialContributor">Financial Contributor:
+                                                    //-         </label>
+                                                    //-         <div class="col-md-9" id="aj-financialContributor">
+                                                
+                                                    //-         </div>
+                                                    //-         <br>
+                                                    //-         <br>
+                                                    //- </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default" data-dismiss="modal" style="float:right;">Close</button>
                                                     </div>
@@ -1175,7 +1205,10 @@ block content
                                     document.getElementById("aj-familyName").innerHTML = value.varchar_familyName    
                                     document.getElementById("aj-homeAddress").innerHTML = value.text_homeAddress
                                     document.getElementById("aj-houseStatus").innerHTML = value.enum_houseStatus
-                                    document.getElementById("aj-annualIncome").innerHTML = value.decimal_totalAnnualIncome
+                                    document.getElementById("aj-representativeName").innerHTML = value.varchar_representativeName
+                                    document.getElementById("aj-representativeEmail").innerHTML = value.varchar_representativeEmailAddress
+                                    document.getElementById("aj-representativeContact").innerHTML = value.varchar_representativeContact
+                                    //- document.getElementById("aj-annualIncome").innerHTML = value.decimal_totalAnnualIncome
                                     console.log("Success: " );
                                 });       
                             },

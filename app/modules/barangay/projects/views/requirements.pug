@@ -43,12 +43,12 @@ block content
 								value= req.varchar_requirementName
 							</p>
 							if(req.enum_appreqStatus == "Passed")
-								input(type="text" id="ap-requirement" name="apply_requirement" value=`${req.varchar_fileLocation}` class="middle col-sm-11 form-control ")
-								input(type="hidden" id="ap-reqstatus" name="apply_reqstatus" value="Passed" class="middle col-sm-11 form-control ")
+								input(type="text" id="ap-requirement" name="apply_requirement[]" value=`${req.varchar_fileLocation}` class="middle col-sm-11 form-control " required)
+								input(type="hidden" id="ap-reqstatus" name="apply_reqstatus" value="Passed" class="middle col-sm-11 form-control " )
 							if(req.enum_appreqStatus == "Incomplete")
-								input(type="text" id="ap-requirement" name="apply_requirement" value=`${req.varchar_fileLocation}` class="middle col-sm-11 form-control ")
+								input(type="text" id="ap-requirement" name="apply_requirement[]" value=`${req.varchar_fileLocation}` class="middle col-sm-11 form-control " required)
 								<small style="color:red;">(Please provide the information in order to submit his/her application.)</small>
-								input(type="hidden" id="ap-reqstatus" name="apply_reqstatus" value="Passed" class="middle col-sm-11 form-control ")
+								input(type="hidden" id="ap-reqstatus" name="apply_reqstatus" value="Passed" class="middle col-sm-11 form-control " )
 						</div>
 					</div>
 			</div>
@@ -59,6 +59,8 @@ block content
 		</div>
 	</div>
 
+	<script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
+	<script src="/asset_validation/dist/jquery.validate.min.js"></script>
 	script.
 
 		$(document).ready(function () {
@@ -80,5 +82,33 @@ block content
 							}                        
 						})
 			});  
+
+			//- START VALIDATIONS
+			$(function() {
+			$("#updateRequirement").validate({
+				rules: {
+				apply_requirement[]: {
+					required: true
+				},
+				action: "required"
+				},
+				messages: {
+				apply_requirement[]: {
+					required: "Please enter some data"
+				},
+				action: "Please provide some data"
+				},
+				submitHandler: function(form){
+					form.submit();
+					swal(
+						'Success!',
+						"Applicant's requirements has been Submitted!",
+						'success'
+						)
+				}
+			});
+			
+			});
+			//- END VALIDATIONS
 			
 		});
