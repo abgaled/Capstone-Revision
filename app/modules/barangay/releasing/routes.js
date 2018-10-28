@@ -183,7 +183,7 @@ router.post('/claimBenefits', (req, res) => {
     // 
         var resultss = results;
         console.log(resultss);
-        for(var i = 0; i<resultss.length;i++)
+        if(resultss.length==1)
         {
             var queryString2 = `INSERT INTO \`tbl_barangaybenefit\` 
                 (\`int_brgyreleaseID\`, 
@@ -191,15 +191,34 @@ router.post('/claimBenefits', (req, res) => {
                 \`int_itemQuantity\`)
                 VALUES
                 ("${req.body.ebrgyRel}",
-                "${resultss[i].text_benefitName}",
-                "${req.body.quantity[i]}");`;
+                "${resultss[0].text_benefitName}",
+                "${quantity}");`;
     
             db.query(queryString2, (err, results2) => {        
                 if (err) throw err;
     
             });
+        }
+        else{
 
-        }      
+            for(var i = 0; i<resultss.length;i++)
+            {
+                var queryString2 = `INSERT INTO \`tbl_barangaybenefit\` 
+                    (\`int_brgyreleaseID\`, 
+                    \`text_itemReceived\`,
+                    \`int_itemQuantity\`)
+                    VALUES
+                    ("${req.body.ebrgyRel}",
+                    "${resultss[i].text_benefitName}",
+                    "${quantity[i]}");`;
+        
+                db.query(queryString2, (err, results2) => {        
+                    if (err) throw err;
+        
+                });
+    
+            }      
+        }
         var queryString3 = `UPDATE tbl_barangayreleasing SET
         enum_barangayReleaseStatus = 'Claimed Benefit',
         date_claimedBenefit = "${now}",

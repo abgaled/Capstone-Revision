@@ -550,14 +550,12 @@ block content
             
         }
 
-        //- function getreqstat()
-        //- {
-        //-     if (document.getElementById("ap-reqstat").value === "Passed") {
-        //-         document.getElementById("ap-requirementloc").disable='true';
-        //-     } else {
-        //-         document.getElementById("ap-requirementloc").disable='false';
-        //-     }
-        //- }
+        function getreqstat()
+        {
+            if (document.getElementById("ap-reqstat").value === "Incomplete") {
+                document.getElementById("ap-requirementloc").value = '';
+            } 
+        }
 
         //- FUNCTION TO DELAY INPUTTED DATAS
             var delay = (function(){
