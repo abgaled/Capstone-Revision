@@ -14,7 +14,7 @@ block content
                         <form method="POST" action="/office/projects/createproject" class="form-horizontal form-label-left" id="create-proposal">
                             <div class="x_content">
                                 <div id="wizard" class="form_wizard wizard_horizontal">
-                                    <ul class="wizard_steps">\  
+                                    <ul class="wizard_steps">
                                         <li>
                                             <a href="#step-1">
                                                 <span class="step_no">1</span>
@@ -95,7 +95,7 @@ block content
                                                         each statement in tbl_problemstatement
                                                             <tr class="even pointer">
                                                                 <td class="a-center ">
-                                                                    input(type="checkbox" id="ap-statementid" class="ap-statementclass" name="statementsList[]" value=`${statement.int_statementID}` )
+                                                                    input(type="checkbox" id="ap-statementid" class="ap-statementclass icheckbox_flat-green" name="statementsList[]" value=`${statement.int_statementID}` )
                                                                 </td>
                                                                 td(class="  statementName")
                                                                     value= " " + statement.varchar_statementTitle+"   "
@@ -114,7 +114,9 @@ block content
                                         </form>
                                     </div>
 
+
                                     <div id="step-2">
+                                        //- <form id="step_2">
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="projectname">Project Name <span class="required">*</span>
                                             </label>
@@ -130,7 +132,6 @@ block content
                                                     </div>
                                                 </div>
                                             </div>
-                                            
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Project Category</label>
@@ -181,8 +182,10 @@ block content
                                                 </select>
                                             </div>
                                         </div>
+                                        //- </form>
                                     </div>
                                     
+
                                     <div id="step-3">
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">Select Target Beneficiary</label>
@@ -201,64 +204,11 @@ block content
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="allotedslots">Alloted Slot <span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="number" onchange="getSlot()" id="ap-allotedslots" name="allotedslots" required="required" placeholder="Number of beneficiary ..." onchange="autobudget()" class="form-control col-md-7 col-xs-12">
-                                            </div>
-                                        </div>
-                                        <hr/>
-                                        <div>
-                                            <div id="unitmeasurelist" style="display: none">
-                                                <select name="unitmeasure[]" class="form-control ap-benefitunit">
-                                                    each unit in tbl_unitmeasure
-                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="">
-                                                    <label class="control-label"> Benefits of the Project </label>
-                                                    <button style="pull-right" class="btn btn-info pull-right" id="addBenefit">Add Benefit</button>
-                                                </div>
-                                                <br/>
-                                                <div class="table-responsive">
-                                                    <table id="datatable-fixed-header expenseTable" class="table">
-                                                        <tbody>
-                                                            <tr style="min-height:10%">
-                                                                <th width="5%"></th>
-                                                                <th width="35%">Benefit</th>
-                                                                <th width="10%">Quantity</th>
-                                                                <th width="10%">Unit Measure</th>
-                                                                <th width="10%">Unit Price</th>
-                                                                <th width="20%">Amount</th>
-                                                            </tr>
-                                                            <tr class="benefit-row beneCounter">
-                                                                <th >1</th>
-                                                                <td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td>
-                                                                <td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td>
-                                                                <td>
-                                                                    <select name="unitMeasure[]" class="form-control ap-benefitunit">
-                                                                        each unit in tbl_unitmeasure
-                                                                            option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td>
-                                                                <td>
-                                                                    <input type="text" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly>
-                                                                    <input type="number" class="benefitAmount" name="benefitAmount[]" hidden>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="">
-                                                                <th ></th>
-                                                                <td colspan="4"><b style="float:right">Total Amount:</b></td>
-                                                                <td>
-                                                                    <input type="text" style="width:100%" class="form-control benefitTot" id="totBeneBudgets" readonly>
-                                                                    <input type="number" class="benefitTot" id="totBeneBudget" name="benefitbudget" hidden>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                <input type="number" onchange="getSlot()" min="0" id="ap-allotedslots" name="allotedslots" required="required" placeholder="Number of beneficiary ..." onchange="autobudget()" class="form-control col-md-7 col-xs-12">
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <div id="step-4">
                                         <div class="form-group">
@@ -271,6 +221,7 @@ block content
                                             </div>
                                         </div>
                                     </div>
+
 
                                     <div id="step-5">
                                         <div class="form-group">
@@ -341,11 +292,171 @@ block content
                                         </div>
                                     </div>
 
+
                                     <div id="step-6">
                                         <div class="form-group">
                                             <div>
-                                                <label class="control-label">Appropriate Budget per Category </label>
-                                                <div id="appropriate-budget">
+                                                <label class="control-label">Appropriated Budget</label>
+                                                <div class="" >
+                                                    <div class="col-lg-2"></div>
+                                                    <div class="col-lg-4">
+                                                        <label>
+                                                            <input type="checkbox" id="checkannual" class="icheckbox_flat-green">  From Annual Budget
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-1"></div>
+                                                    <div class="col-lg-4">
+                                                        <label>
+                                                            <input type="checkbox" id="checksponsor" class="icheckbox_flat-green">  From Sponsor
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-lg-1"></div>
+                                                </div>
+                                                <div id="appropriate-budget" style="display:none">
+                                                </div>
+                                                <div id="sponsor-detail"  style="display:none">
+                                                    <div class="spon-detail-row">
+                                                        <br/><hr/>
+                                                        <label class="control-label"> Sponsor Detail</label>
+                                                        //- <button type="button" id="btnaddsponsor" class="btn btn-info" style="float:right"> Add New Sponsor </button>
+                                                        //- <label class="col-lg-1 col-md-1 control-label">#1</label>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-3 col-md-3"></div>
+                                                            <div class="col-lg-1 col-md-1"><label class="control label">#1</label></div>
+                                                            <div class="radio-buttons">
+                                                                <div class="col-lg-2 col-md-2 ">
+                                                                    <input type="radio" class="iradio_flat-green btnradio" name="sponsortype[0]" value="new" checked> New Sponsor
+                                                                </div>
+                                                                <div class="col-lg-2 col-md-2">
+                                                                    <input type="radio" class="iradio_flat-green btnradio" name="sponsortype[0]" value="existing"> Existing Sponsor
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4"></div>
+                                                        </div>
+                                                        <div id="sponsordetail" class="spondetail-row">
+                                                            <div class="new-sponsor">
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Name </label>
+                                                                    <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                        <input type="text" class="form-control new-sponsor-name" name="newsponsorname[]">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Email Address </label>
+                                                                    <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                        <input type="text" class="form-control" name="newsponsoremailadd[]">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Contact Number </label>
+                                                                    <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                        <input type="text" class="form-control" name="newsponsorcontact[]">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Type </label>
+                                                                    <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                        <select class="form-control sponsor-type new-sponsor-type" name="newsponsortype[]">
+                                                                            <option value="">Choose</option>
+                                                                            <option value="Money">Monetary</option>
+                                                                            <option value="Material">Material</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="existing-sponsor" style="display:none">
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Name </label>
+                                                                    <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                        <select id="existingsponsor" class="form-control exist-sponsor-name" name="existsponsorname[]">
+                                                                            <option> Choose </option>
+                                                                            each sponsor in tbl_sponsordetail
+                                                                                option(value=`${sponsor.int_sponsorID}`)=sponsor.varchar_sponsorName
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Type </label>
+                                                                    <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                        <select class="form-control sponsor-type exist-sponsor-type" name="existsponsortype[]">
+                                                                            <option value="">Choose</option>
+                                                                            <option value="Money">Monetary</option>
+                                                                            <option value="Material">Material</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group sponsoramount" id="" style="display:none">
+                                                                <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Amount </label>
+                                                                <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
+                                                                    <input type="number" class="form-control" name="sponsoramount[]">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group sponsormaterial" id="" style="display:none">
+                                                                <p class="form-group" style="text-align:center"><b> Reminder: Kindly pick the sponsor on the materials it provided below </b></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                        <div>
+                                            <div id="unitmeasurelist" style="display: none">
+                                                <select name="unitmeasure[]" class="form-control ap-benefitunit">
+                                                    each unit in tbl_unitmeasure
+                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="">
+                                                    <label class="control-label"> Benefits of the Project </label>
+                                                    <button style="pull-right" class="btn btn-info pull-right" id="addBenefit">Add Benefit</button>
+                                                </div>
+                                                <br/>
+                                                <div class="table-responsive">
+                                                    <table id="datatable-fixed-header expenseTable" class="table">
+                                                        <tbody>
+                                                            <tr style="min-height:10%">
+                                                                <th width="5%"></th>
+                                                                <th width="15%">Sponsored by</th>
+                                                                <th width="30%">Benefit</th>
+                                                                <th width="10%">Quantity</th>
+                                                                <th width="10%">Unit Measure</th>
+                                                                <th width="10%">Unit Price</th>
+                                                                <th width="15%">Amount</th>
+                                                            </tr>
+                                                            <tr class="benefit-row beneCounter">
+                                                                <th >1</th>
+                                                                <td>
+                                                                    <select name="benematerialsponsor[]" class="form-control materialsponsor">
+                                                                        <option class="" value=""> N/A </option>
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td>
+                                                                <td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td>
+                                                                <td>
+                                                                    <select name="unitMeasure[]" class="form-control ap-benefitunit">
+                                                                        each unit in tbl_unitmeasure
+                                                                            option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
+                                                                    </select>
+                                                                </td>
+                                                                <td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td>
+                                                                <td>
+                                                                    <input type="text" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly>
+                                                                    <input type="number" class="benefitAmount" name="benefitAmount[]" hidden>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="">
+                                                                <th ></th>
+                                                                <td colspan="5"><b style="float:right">Total Amount:</b></td>
+                                                                <td>
+                                                                    <input type="text" style="width:100%" class="form-control benefitTot" id="totBeneBudgets" readonly>
+                                                                    <input type="number" class="benefitTot" id="totBeneBudget" name="benefitbudget" hidden>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -361,14 +472,20 @@ block content
                                                     <tbody>
                                                         <tr style="min-height:10%">
                                                             <th width="5%"></th>
-                                                            <th width="35%">Item Description</th>
+                                                            <th width="15%">Sponsored by</th>
+                                                            <th width="30%">Item Description</th>
                                                             <th width="10%">Quantity</th>
                                                             <th width="10%">Unit Measure</th>
                                                             <th width="10%">Unit Price</th>
-                                                            <th width="20%">Amount</th>
+                                                            <th width="15%">Amount</th>
                                                         </tr>
                                                         <tr class="expense-row rowCounter">
                                                             <th >1</th>
+                                                            <td>
+                                                                <select name="exmaterialsponsor[]" class="form-control materialsponsor">
+                                                                    <option class="" value=""> N/A </option>
+                                                                </select>
+                                                            </td>
                                                             <td><input type="text" style="width:100%" class="form-control" name="expenseName[]" id="expName"></td>
                                                             <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]" id="expQuan"></td>
                                                             <td>
@@ -385,6 +502,11 @@ block content
                                                         </tr>
                                                         <tr class="expense-row rowCounter">
                                                             <th >2</th>
+                                                            <td>
+                                                                <select name="exmaterialsponsor[]" class="form-control materialsponsor">
+                                                                    <option class="" value=""> N/A </option>
+                                                                </select>
+                                                            </td>
                                                             <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
                                                             <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
                                                             <td>
@@ -401,6 +523,11 @@ block content
                                                         </tr>
                                                         <tr class="expense-row rowCounter">
                                                             <th >3</th>
+                                                            <td>
+                                                                <select name="exmaterialsponsor[]" class="form-control materialsponsor">
+                                                                    <option class="" value=""> N/A </option>
+                                                                </select>
+                                                            </td>
                                                             <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
                                                             <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
                                                             <td>
@@ -417,6 +544,11 @@ block content
                                                         </tr>
                                                         <tr class="expense-row rowCounter">
                                                             <th >4</th>
+                                                            <td>
+                                                                <select name="exmaterialsponsor[]" class="form-control materialsponsor">
+                                                                    <option class="" value=""> N/A </option>
+                                                                </select>
+                                                            </td>
                                                             <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
                                                             <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
                                                             <td>
@@ -430,59 +562,10 @@ block content
                                                                 <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
                                                                 <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
                                                             </td>
-                                                        </tr>
-                                                        <tr class="expense-row rowCounter">
-                                                            <th >5</th>
-                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
-                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
-                                                            <td>
-                                                                <select name="expensemeasure[]" class="form-control">
-                                                                    each unit in tbl_unitmeasure
-                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
-                                                                </select>
-                                                            </td>
-                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
-                                                            <td>
-                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
-                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="expense-row rowCounter">
-                                                            <th >6</th>
-                                                            <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
-                                                            <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
-                                                            <td>
-                                                                <select name="expensemeasure[]" class="form-control">
-                                                                    each unit in tbl_unitmeasure
-                                                                        option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
-                                                                </select>
-                                                            </td>
-                                                            <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
-                                                            <td>
-                                                                <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
-                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
-                                                            </td>
-                                                        </tr>
-                                                        <tr class="expense-row-copy rowCounter" style="display:none">
-                                                            <div id="expenseCopy">
-                                                                <td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td>
-                                                                <td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td>
-                                                                <td>
-                                                                    <select name="expensemeasure[]" class="form-control">
-                                                                        each unit in tbl_unitmeasure
-                                                                            option(value=`${unit.char_unitSymbol}`)=unit.char_unitSymbol
-                                                                    </select>
-                                                                </td>
-                                                                <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td>
-                                                                <td>
-                                                                    <input type="text" style="width:100%" class="form-control expenseAmount" readonly>
-                                                                    <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
-                                                                </td>
-                                                            </div>
                                                         </tr>
                                                         <tr class="">
                                                             <th ></th>
-                                                            <td colspan="4"><b style="float:right">Total Budget:</b></td>
+                                                            <td colspan="5"><b style="float:right">Total Budget:</b></td>
                                                             <td>
                                                                 <input type="text" style="width:100%" class="form-control" id="totBudget" readonly>
                                                                 <input type="number" class="expenseEstimatedAmount" id="totEstBudget" name="estimatedbudget" hidden>
@@ -492,7 +575,6 @@ block content
                                                 </table>
                                             </div>
                                         </div>
-                                        //- </form>
                                     </div>
 
                                     <div id="step-7">
@@ -682,13 +764,15 @@ block content
     </div>
 
         
+    <script src="/cityadmin/vendors/jQuery-Smart-Wizard/js/jquery-1.4.2.min.js"></script>
+    <script src="/cityadmin/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
     <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/assets/jquery/jquery-3.3.1.jquery.min.js"></script>
+    //- <script src="/assets/jquery/jquery-3.3.1.jquery.min.js"></script>
     <script src="/assets/js/jquery.multi-select.js"></script>
-
+    <script src="/asset_validation/dist/jquery.validate.min.js"></script>
+    <script src="/asset_validation/dist/jquery.validate.js"></script>
             
     script.
-        
         $(document).ready(function(){
             
             var rowCounter = 6;
@@ -716,14 +800,14 @@ block content
             $(document).on('click', '#addBenefit', function(){
                 beneCounter++;
                 //- var fieldHTML = '<tr class="benefit-row beneCounter" style="position:relative"><th>'+beneCounter+'</th><td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td><td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td><td><input type="number" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly><input type="number" class="benefitAmount" name="benefitAmount[]" hidden></td></tr>';
-                var fieldHTML = '<tr class="benefit-row beneCounter"><th >'+beneCounter+'</th><td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td><td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td><td><input type="text" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly><input type="number" class="benefitAmount" name="benefitAmount[]" hidden></td></tr>';
+                var fieldHTML = '<tr class="benefit-row beneCounter"><th >'+beneCounter+'</th><td><select name="benematerialsponsor[]" class="form-control materialsponsor"><option class="" value=""> N/A </option></select></td><td><input type="text" style="width:100%" class="form-control ap-benefitname" name="benefitName[]"></td><td><input type="number" style="width:100%" class="form-control ap-benefitquantity" name="benefitQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control ap-benefiruprice" name="benefitUnitPrice[]"></td><td><input type="text" style="width:100%" class="form-control benefitAmounts" name="benefitExAmount[]" readonly><input type="number" class="benefitAmount" name="benefitAmount[]" hidden></td></tr>';
                 $('body').find('.benefit-row:last').after(fieldHTML);
             });
 
             //- ADD EXPENSE ITEM ROW
             $(document).on('click', '#addItem', function(){
                 rowCounter++;
-                var fieldHTML = '<tr class="expense-row rowCounter"><th >'+rowCounter+'</th><td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td><td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td><td><input type="text" style="width:100%" class="form-control expenseAmount" readonly><input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden></td></tr>';
+                var fieldHTML = '<tr class="expense-row rowCounter"><th >'+rowCounter+'</th><td><select name="exmaterialsponsor[]" class="form-control materialsponsor"><option class="" value=""> N/A </option></select></td><td><input type="text" style="width:100%" class="form-control" name="expenseName[]"></td><td><input type="number" style="width:100%" class="form-control quantity" name="expenseQuantity[]"></td><td>'+$('#unitmeasurelist').html()+'</td><td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]"></td><td><input type="text" style="width:100%" class="form-control expenseAmount" readonly><input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden></td></tr>';
 
                 $('body').find('.expense-row:last').after(fieldHTML);
             });
@@ -849,6 +933,9 @@ block content
                     $("#totBudget").val("PHP "+m.join("."));
 
                     document.getElementById("result-projEstimated").innerHTML = m.join(".");
+
+                    var tersting = $("#totEstBudget").val();
+                    console.log(tersting);
                 }
             });
 
@@ -911,6 +998,7 @@ block content
                 return false;
             });
 
+            //- ADD ALL PROJECT CATEGORY APPROPRIATED BUDGET
             $(document).on('keyup', '.ap-appbudgets', function() {
                 var amountValue = [];
                 var appBudgetAmount = 0;
@@ -931,6 +1019,117 @@ block content
                 $('#ap-appbudget').val("PHP "+m.join("."));
                 $('#ap-apbudget').val(appBudgetAmount);
             });
+
+            //- SHOW DIVS FOR 'FROM ANNUAL' CHECKBOX ON APPROPRIATED BUDGET
+            $('#checkannual').on('click', function() {
+                if($(this).is(':checked')) {
+                    $('#appropriate-budget').show();
+                    console.log('Checked');
+                }
+                else {
+                    $('#appropriate-budget').hide();
+                    console.log('Uncheck');
+                }
+            });
+
+            //- SHOW DIVS FOR 'FROM SPONSOR' CHECKBOX ON APPROPRIATED BUDGET
+            $(document).on('click', '#checksponsor',function() {
+                if($(this).is(':checked')) {
+                    $('#sponsor-detail').show();
+                    console.log('Checked');
+                }
+                else {
+                    $( '#sponsor-detail').hide();
+                    console.log('Uncheck');
+                }
+            });
+
+            //- SHOW DIVS FOR RADIO BUTTONS ON SPONSOR TYPE
+            //- $(document).on('change', 'input[type=radio]', function() {
+            $(document).on('click', '.btnradio', function() {
+                if($(this).val() == ('new')) {
+                    $('.new-sponsor').show();
+                    $('.existing-sponsor').hide();
+                }
+
+                if($(this).val() == ('existing')) {
+                    $('.new-sponsor').hide();
+                    $('.existing-sponsor').show();
+                }
+            });
+
+            //-  SHOW DIVS CORRESPOND THE VALUE OF SPONSOR TYPE
+            $(document).on('click', '.sponsor-type', function() {
+                var index = $(this).index();
+                console.log('=====================');
+
+                //- $('#sponsordetail').each(function() {
+                    
+                    if($(this).eq($(this).index()).val() == 'Money') {
+                        if($(this).index() === 0) {
+                            console.log('0');
+                            $('.sponsoramount').eq($(this).index()).show();
+                            $('.sponsormaterial').eq($(this).index()).hide();
+                        }
+                        else {
+                            console.log('0>')
+                            $('.sponsoramount').eq($(this).index() + 1).show();
+                            $('.sponsormaterial').eq($(this).index() + 1).hide();
+                        }
+                    }
+
+                    if($(this).eq($(this).index()).val() == 'Material') {
+                        if($(this).index() === 0) {
+                            console.log('0');
+                            $('.sponsormaterial').eq($(this).index()).show();
+                            $('.sponsoramount').eq($(this).index()).hide();
+                        }
+                        else {
+                            console.log('0>');
+                            $('.sponsormaterial').eq($(this).index() + 1).show();
+                            $('.sponsoramount').eq($(this).index() + 1).hide();
+                        }
+
+                        //- PUTTING THE NAMES OF SPONSOR/S WHO PICKED MATERIALS TO THE DROPDOWN OF SPONSORED BY
+                        var sponnamelist = [];
+                        var sponname = '<option class="" value=""> N/A </option>';
+
+                        $('.new-sponsor-name').each(function() {
+                            if($('.new-sponsor-type').eq($(this).index()).val() == 'Material') {
+                                sponnamelist.push($(this).val());
+                            }
+                        });
+
+                        $('.exist-sponsor-name').each(function() {
+                            console.log('Buster Bros');
+                            if($('.exist-sponsor-type').eq($(this).index()).val() == 'Material') {
+                                sponnamelist.push($(this).children("option").filter(":selected").text());
+                            }
+                        });
+
+                        for(var i = 0 ; i < sponnamelist.length ; i++) {
+                            sponname += "<option value='"+sponnamelist[i]+"'>"+sponnamelist[i]+"</option>";
+                        }
+                        console.log(sponname);
+
+                        $('.materialsponsor').empty();
+                        $('.materialsponsor').append(sponname);
+                    }
+                //- });
+            });
+            var afterCounter = 1;
+            
+            $('#btnaddsponsor').on('click', function() {
+                
+                var prependHTML = '<div class="form-group"> <div class="col-lg-1 col-md-1"><label class="control label">#1</label></div><div class="radio-buttons"><div class="col-lg-2 col-md-2 "><input type="radio" class="iradio_flat-green btnradio" name="sponsortype['+afterCounter+']" value="new" checked> New Sponsor</div><div class="col-lg-2 col-md-2"><input type="radio" class="iradio_flat-green btnradio" name="sponsortype['+afterCounter+']" value="existing"> Existing Sponsor</div></div><div class="col-lg-4 col-md-4"></div></div>';
+                //- var afterHTML = "<br/></br>"+$('#sponsordetail').html().find('input[type=radio]').prop('name','sponsortype['+afterCounter+']');
+                var afterHTML = "<br/></br>"+prependHTML+''+$('#sponsordetail').html();
+
+                afterCounter++;
+                $('body').find('.spondetail-row:last').after(afterHTML);
+                //- $('body').find('.radio-buttons:last').prop('name','sponsortype['+afterCounter+']');
+                
+            });
         });
 
         //- GET AND SET PROJECT NAME
@@ -950,6 +1149,7 @@ block content
         }
 
         
+        //- GET PROJECT OBJECTIVE FROM INPUT TO SUMMARY
         function getObjective() {
             var objective = document.getElementById("ap-projectobjective").value;
 
@@ -959,6 +1159,7 @@ block content
         }
 
         
+        //- GET PROJECT DESCRIPTION FROM INPUT TO SUMMARY
         function getDescription() {
             var description = document.getElementById("ap-projectdescription").value;
 
@@ -967,6 +1168,7 @@ block content
             }
         }
 
+        //- GET APPLICATION TYPE FROM INPUT TO SUMMARY
         function getAppType() {
             var appType;
 
@@ -978,6 +1180,7 @@ block content
             document.getElementById('result-projAppType').innerHTML = appType;
         }
 
+        //- GET SLOTS FROM INPUT TO SUMMARY
         function getSlot() {
             var slot = document.getElementById("ap-allotedslots").value;
 
@@ -988,7 +1191,7 @@ block content
             return slot;
         }
 
-    
+        //- GET TARGET PROJECT START APPLICATION DATE FROM INPUT TO SUMMARY AND VALIDATE THE DATES
         function getStartApp() {
             var applicationDays = new Date(document.getElementById("ap-startapp").value);
             var options = {year: 'numeric', month: 'long', day: 'numeric'};
@@ -1008,6 +1211,7 @@ block content
             $('#ap-endapp').attr('min', maxDate);
         }
 
+        //- GET TARGET PROJECT END APPLICATION DATE FROM INPUT TO SUMMARY AND VALIDATE THE DATES
         function getEndApp() {
             var applicationDays = new Date(document.getElementById("ap-endapp").value);
             var options = {year: 'numeric', month: 'long', day: 'numeric'};
@@ -1027,6 +1231,7 @@ block content
             $('#ap-startrel').attr('min', maxDate);
         }
 
+        //- GET TARGET PROJECT START RELEASING DATE FROM INPUT TO SUMMARY AND VALIDATE THE DATES
         function getStartRel() {
             var releasingday = new Date(document.getElementById("ap-startrel").value);
             var options = {year: 'numeric', month: 'long', day: 'numeric'};
@@ -1046,6 +1251,8 @@ block content
             $('#ap-endrel').attr('min', maxDate);
         }
 
+
+        //- GET TARGET PROJECT END RELEASING DATE FROM INPUT TO SUMMARY AND VALIDATE THE DATES
         function getEndRel() {
             var releasedate = new Date(document.getElementById("ap-endrel").value);
             var options = {year: 'numeric', month: 'long', day: 'numeric'};
@@ -1066,6 +1273,7 @@ block content
             $('#ap-closeproj').attr('min', maxDate);
         }
 
+        //- GET TARGET PROJECT CLOSING DATE FROM INPUT TO SUMMARY AND VALIDATE THE DATES
         function getCloseProj() {
             var applicationDays = new Date(document.getElementById("ap-closeproj").value);
             var options = {year: 'numeric', month: 'long', day: 'numeric'};
@@ -1074,6 +1282,7 @@ block content
             document.getElementById("result-closeProj").innerHTML = days;
         }
 
+        //- GET BENEFICIARY FROM INPUT TO SUMMARY
         function getBeneficiary() {
             var beneficiary = $("#ap-projectbeneficiary").children(":selected");
             var beneficiaries = beneficiary.text().split("   ");
@@ -1089,6 +1298,7 @@ block content
             }
         }
 
+        //- GET CATEGORY FROM INPUT TO SUMMARY
         function getCategory() {
             var category = $("#ap-projectcategory").children(":selected");
             var categories = category.text().split("   ");
@@ -1118,6 +1328,7 @@ block content
             }
         }
 
+        //- GET REQUIREMENT FROM INPUT TO SUMMARY
         function getRequirement() {
             var requirement = $("#ap-projectrequirement").children(":selected");
             var requirements = requirement.text().split("   ");
@@ -1133,21 +1344,7 @@ block content
             }
         }
 
-        function getLocation() {
-            var location = $("#ap-projectlocation").children(":selected");
-            var locations = location.text().split("   ");
-            var locList = "";
-
-            for(var a = 0 ; a < (locations.length-1) ; a++) {
-                locList += locations[a]+"<br>";
-            }
-
-
-            if(location!=0){
-                document.getElementById("result-projloc").innerHTML = locList;
-            }
-        }
-
+        //- SETTING THE CATEGORY/IES AND BENEFICIARY/IES OF THE INTENT STATEMENT TO THE DIVS
         $(document).ready(function() {
 
             $('.ap-statementclass').click(function() {
@@ -1260,27 +1457,7 @@ block content
             });
         });
 
-        //- function autobudget() {
-        //-     var x = document.getElementById("ap-allotedslots").value;
-        //-     var y = document.getElementById("estimatedbudget").value;
-        //-     var z = y/x;
-            
-        //-     if(x!=0)
-        //-     {
-        //-         if(x>y)
-        //-         document.getElementById("individualbudget").value = 0;
-        //-         else{
-        //-             document.getElementById("individualbudget").value = z;
-        //-         }
-        //-     }
-            
-        //-     else
-        //-         document.getElementById("individualbudget").value = 0;
-
-        //-     document.getElementById("result-projEstimated").innerHTML = y;
-        //-     document.getElementById("result-projIndividual").innerHTML = z;
-        //- }
-        
+        //- HINDI KO ALAM KUNG ANONG PURPOSE NETO
         function unhide() {
             var x = document.getElementById("daychange");
             var y = document.getElementById("releasingday").value;
@@ -1292,11 +1469,69 @@ block content
             }
         }
 
+        //- SMART WIZARD
         $(document).ready(function() {
             $('#wizard').smartWizard({
-                transitionEffect:'slideleft',
-                onLeaveStep:leaveAStepCallback,
-                onFinish:onFinishCallback,
-                enableFinishButton:true
+                //- onLeaveStep: leaveStepValidation,
+                onFinish: function() {
+                    swal({
+                        title: 'Submit Project',
+                        text: "You will submit this project.",
+                        type: 'info',
+                        //- icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, submit it!'
+                    }).then((result) => {
+                        if (result.value) {
+                            swal("Success!", "The project details has been successfully submitted", "success");
+                            $('#create-proposal').submit();
+                        }                        
+                    })
+                }
             });
+
+        //-     function leaveStepValidation(obj) {
+        //-         var step_enum = obj.attr('rel');
+        //-         return validateSteps(step_enum);
+        //-     }
+
+        //-     function validateSteps(step) {
+        //-         if(step == 1) {
+        //-             return true;
+        //-         }
+
+        //-         if(step == 2) {
+        //-         //-     $('#step_2').validate({
+        //-         //-         rules: {
+        //-         //-             ap-projectname: 'required'
+        //-         //-         },
+        //-         //-         messages: {
+        //-         //-             ap-projectname: 'Please fill this field'
+        //-         //-         },
+        //-         //-         submitHandler: function() {
+        //-         //-             alert('Validated');
+        //-         //-             return true;
+        //-         //-         }
+        //-         //-     });
+        //-             return true;
+        //-         }
+                
+        //-         if(step == 3) {
+        //-             return true;
+        //-         }
+
+        //-         if(step == 4) {
+        //-             return true;
+        //-         }
+
+        //-         if(step == 5) {
+        //-             return true;
+        //-         }
+
+        //-         if(step == 6) {
+        //-             return true;
+        //-         }
+        //-     }
         });

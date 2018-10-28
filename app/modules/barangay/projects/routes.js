@@ -1043,7 +1043,8 @@ router.post('/:int_projectID/apply/checkbrgyslots',(req,res) => {
         db.query(queryString,(err, results, fields) => {
             if (err) console.log(err);       
 
-            var allotedSlot = results[0].int_allotedSlot;
+        if(results.length>0){
+            var allotedSlot = results.int_allotedSlot;
 
             console.log("=======CHECK SLOTS======");
             // console.log(results)
@@ -1079,6 +1080,14 @@ router.post('/:int_projectID/apply/checkbrgyslots',(req,res) => {
                 
             }
             // END OF ELSE
+        }
+        else{
+            console.log("wala pang nag apply tas approved");
+                
+                var record = "none";
+                
+                return res.send({check_app:results,record:record});
+        }
     });
 });
 

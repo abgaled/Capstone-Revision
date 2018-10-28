@@ -150,21 +150,11 @@ block content
                                 <tr>
                                     <th>Category</th>
                                     <th>Budget</th>
+                                    <th>Remaining Budget</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                            each category in tbl_category
-                                <tr>
-                                    <td>
-                                        value= category.varchar_categoryName
-                                        input(type="hidden" id="categID" name="categID" required="required" value=`${category.int_categoryID}` )
-                                    </td>
-                                    <td>
-                                        <div  class="categBudget">
-                                        
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tbody id="categoryBody">
+
                             </tbody>
                         </table>
                     //- <div>
@@ -310,6 +300,7 @@ block content
             
             $('.btn-view-budget').click(function (e) {
                     e.preventDefault()
+                    $("#categoryBody").empty();
                     var Id = $(this).val();
                     console.log("================================Id(Class)")
                     console.log(Id);
@@ -339,9 +330,10 @@ block content
                                 document.getElementById("remBudget").innerHTML = "Php " +  value[0].decimal_annualRemaining.toLocaleString();
                                 for(var i=0;i<value.length;i++)
                                 {   
+                                    $("#categoryBody").append("<tr><td>"+value[i].varchar_categoryName+"</td><td>"+value[i].decimal_categBudget.toLocaleString() +" </td><td>"+value[i].decimal_categRemaining.toLocaleString() +" </td></tr>  ");
                                     console.log(i);
                                     console.log(value[i].decimal_categBudget);
-                                    $(".categBudget").html(value[i].decimal_categBudget);
+                                    //- $(".categBudget").html(value[i].decimal_categBudget);
                                 }
                                 console.log("Success: " );
                                 

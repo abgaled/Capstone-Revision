@@ -210,7 +210,40 @@ router.post('/claimBenefits', (req, res) => {
             if (err) throw err;
 
         });
-        res.redirect('/barangay/releasing');
+        var queryString4 = `SELECT * FROM tbl_projectdetail 
+        WHERE int_projectID = ${req.body.eprojectID}`
+        db.query(queryString4, (err, results4) => {        
+            if (err) throw err;
+
+            var queryString5 = `SELECT * FROM tbl_barangayreleasing br
+            JOIN tbl_barangay b ON br.int_barangayID = b.int_barangayID
+            WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
+            db.query(queryString5, (err, results5) => {        
+                if (err) throw err;
+
+                var queryString6 = `SELECT * FROM tbl_barangaybenefit bb
+                JOIN tbl_barangayreleasing br ON br.int_brgyreleaseID = bb.int_brgyreleaseID
+                WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
+                db.query(queryString6, (err, results6) => {        
+                    if (err) throw err;
+                    var dayNow = moment().format('Do');
+                    var monthNow = moment().format('MMMM');
+                    var yearNow = moment().format('YYYY');
+                    var dateNow = moment().format('DD MMMM YYYY');
+                    
+                    var dateToday = {day: dayNow, month:monthNow, year: yearNow, dateNow:dateNow};
+            
+
+                    res.render('barangay/releasing/views/claimBen', 
+                    {
+                        tbl_barangay:results5,
+                        tbl_proj:results4,
+                        tbl_benefits:results6,
+                        dateNow:dateToday
+                    });
+                });
+            });
+        });
     });
 });
 

@@ -7,22 +7,21 @@ block content
                 <div class="x_panel">
                     <div class="x-title">
                         <div class="noPrint"  id="noPRINT">
-                            //- a(href=`/budget/projects` class="btn btn-danger btn-lg pull-right fa"): span.fa.fa-times-circle  
-                            <button id="printReceiptButton" type="button" class= "btn float-right pull-right  btn-lg btn-inverse fa fa-print">&nbsp;&nbsp; Print Receipt
-                            //- <button id="signReceiptButton" type="button" class= "btn float-right btn-lg btn-inverse pull-right fa fa-pencil">&nbsp;&nbsp; Sign Receipt
+                            <button id="printReceiptButton" type="button" class= "btn float-right pull-right  btn-lg btn-inverse fa fa-print">&nbsp;&nbsp; Print Report
                         </div> 
                         <h1>Reports</h1>
                         <div class="clearfix"></div>
+                        <div id="projectTitle" class="projectTitle"></div>
                     </div>
                     <div class="x-content">
                         <form class="form-horizontal form-label-left" method="POST" action='#' id="formNxtBudget" >
-                            <div class="form-row noPrint">
-                                <div class="form-group has-feedback col-lg-4 col-md-4 col-sx-12 col-xs-12">
+                            <div class="form-row">
+                                <div class="form-group has-feedback col-lg-4 col-md-4 col-sx-12 col-xs-12" id="reportcat">
                                     <label class="control-label"> Report Search </label>
                                     <select class="form-control has-feedback-left" id="reportType">
                                         <option value="1"> Monthly Project Status Report </option>
                                         <option value="2"> Liquidation  Report </option>
-                                        <option value="3"> Monthly Budget Summary Report </option>
+                                        <option value="3"> Budget Summary Report </option>
                                     </select>
                                     <span class="fa fa-search form-control-feedback left" aria-hidden="true"></span>
                                 </div>
@@ -31,7 +30,16 @@ block content
                                 //-     <input type="text"  name="reservation" id="reservation" class="form-control has-feedback-left" value="01/01/2016 - 01/25/2016" />
                                 //-     <span class="fa fa-calendar form-control-feedback left" sria-hidden="true"></span>
                                 //- </div>
-                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12">
+                                <div class="form-group has-feedback col-lg-4 col-md-4 col-sx-12 col-xs-12" id="reportPro">
+                                    <div class="">
+                                        <label  class="control-label"> Finished Projects </label>
+                                        <select class="form-control " id="reportProject">
+                                        each project in tbl_project
+                                            option(value=`${project.int_projectID}`)=project.varchar_projectName+"   "
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12" id="reportStat">
                                     <div class="">
                                         <label  class="control-label"> Status </label>
                                         <select class="form-control " id="reportStatus">
@@ -41,9 +49,9 @@ block content
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sm-12 col-xs-12" id="reportM">
                                     <label  class="control-label"> Month </label>
-                                    <select class="form-control " id="reportMonth">
+                                    <select class="form-control reportMonth" id="reportMonth">
                                         <option value="1"> January </option>
                                         <option value="2"> February </option>
                                         <option value="3"> March </option>
@@ -58,7 +66,7 @@ block content
                                         <option value="12"> December </option>
                                     </select>
                                 </div>
-                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12">
+                                <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12" id="reportY">
                                     <div class="">
                                         <label  class="control-label"> Year </label>
                                         <select class="form-control has-feedback-left" id="reportYear">
@@ -70,11 +78,12 @@ block content
                                     </div>
                                 </div>
                                 
-                                <div class="form-group col-lg-2 col-md-2 col-sx-12 col-xs-12">
+                                <div class="form-group col-lg-2 col-md-2 col-sx-12 col-xs-12" id="btnbtn_generateReport">
                                     <div class="">
-                                        <label  class="control-label"> Action </label>
-                                        button.btn.btn-success.mb-1(id="btn_generateReport" class="btn_generateReport"): span.fa Generate Report 
+                                        <label  class="control-label"> Action </label>  
+                                        button.btn.btn-success(id="btn_generateReport" class="btn_generateReport btn-md"): span.fa Generate Report 
                                         //- <button type="submit" id="btn_generate" class="btn btn-primary float-right" position="center" style="background-color#21BA45;color:whitesmoke;border:none;">Generate Report</button>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -85,30 +94,187 @@ block content
                                 <div class="card mb-4">
                                     <div class="card-header">
                                         <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-bordered" id="datatable" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Project Name</th>
-                                                            <th>Project Rationale</th>
-                                                            <th>Alloted Slot</th>
-                                                            <th>Budget</th>
-                                                            //- <th>Available Slot</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                            </td>
-                                                            <td>
-                                                            </td>
-                                                            <td>
-                                                            </td>
-                                                            <td>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="table-responsive" id="projects">
+                                                    <table class="table table" id="" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Project Name</th>
+                                                                <th>Project Rationale</th>
+                                                                <th>Budget</th>
+                                                                <th>Alloted Slot</th>
+                                                                //- <th>Available Slot</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                            </div>
+                                            
+                                            <div class="table-responsive liquidation" id="">
+                                                .data_table2
+                                                    <table class="table " id="" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2"><center>Budget Received:</center></th>
+                                                                <th colspan="3"></th>
+                                                                <th id="budgetRec"> 
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="6">Less: Expense Paid</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><center>Expenses Item</center></th>
+                                                                <th>Unit Price</th>
+                                                                <th>QTY</th>
+                                                                <th>Amount</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="expensebody" class="expensebody">
+                                                                <tr class="tr-shadow">
+                                                                    <td class="">
+                                                                    </td>
+                                                                    <td class='' >
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>        
+                                                        </tbody>
+                                                        
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="6"></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="6">
+                                                                    <center>Sponsored
+                                                                    </center></th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><center>Expenses Item</center></th>
+                                                                <th>QTY</th>
+                                                                <th>Sponsored by</th>
+                                                                <th>Amount</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="sponsorbody" class="sponsorbody">
+                                                                <tr class="tr-shadow">
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td class='' >
+                                                                    </td>
+                                                                    <td>Php 
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>        
+                                                        </tbody>    
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Total Expense</th>
+                                                                <th colspan="4" class=""><div class="pull-right" ></div>
+                                                                </th>
+                                                                <th class="totEx" id="totEx"> 
+                                                                    
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Excess(Deficit)Cash</th>
+                                                                <th colspan="4" class=""><div class="pull-right" ></div>
+                                                                </th>
+                                                                <th><div id="deficitCash" class="deficitCash">
+
+                                                                    </div>
+                                                                    //- value= proj.decimal_actualBudget.toLocaleString()
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-responsive budgetYear" id="">
+                                                    <table class="table " id="" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2"><center>Budget This Year:</center></th>
+                                                                <th colspan="3"></th>
+                                                                <th id="yearBud"> 
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="6">Category Budget</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><center>Category</center></th>
+                                                                <th>Given Budget</th>
+                                                                <th>Remaining Budget</th>
+                                                                <th>Amount</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="categorybody" class="categorybody">
+                                                                <tr class="tr-shadow">
+                                                                    <td class="">
+                                                                    </td>
+                                                                    <td class='' >
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>        
+                                                        </tbody> 
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Total Remaining Category Budget</th>
+                                                                <th colspan="4" class=""><div class="pull-right" ></div>
+                                                                </th>
+                                                                <th class="totCat" id="totCat"> 
+                                                                    
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Excess(Deficit)Cash</th>
+                                                                <th colspan="4" class=""><div class="pull-right" ></div>
+                                                                </th>
+                                                                <th><div id="deficitBudgetCash" class="deficitBudgetCash">
+
+                                                                    </div>
+                                                                    //- value= proj.decimal_actualBudget.toLocaleString()
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                        br
+                                                        br
+                                                        br
+                                                        hr
+                                                        <thead>
+                                                            tr
+                                                                td Project Title
+                                                        </thead>
+                                                    </table>
+                                                    <div id="print" height="500px">
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -117,6 +283,7 @@ block content
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
 
@@ -125,8 +292,55 @@ block content
         script(src='/assets/js/printjs.min.js')
         script.
             $(document).ready(function () {
+                $("#reportPro").hide();
+                $(".liquidation").hide();
+                        $(".budgetYear").hide();
+                $('#reportType').change(function (e) {
+                    $("table").empty();
+                    var reportType= $('#reportType').val();
+                    console.log(reportType);
+                    if(reportType==1)
+                    {
+                        $("#reportStat").show();
+                        $("#reportPro").hide();
+                        $("#reportY").show();
+                        $("#reportM").show();
+                        $("#projectTitle").empty();
+                        $(".budgetYear").empty();
+                        
+                    }
+                    
+                    if(reportType==2)
+                    {
+                        $(".liquidation").show();
+                        $(".data_table").empty();
+                        $("#reportPro").show();
+                        $("#reportStat").hide();
+                        $("#reportY").hide();
+                        $("#reportM").hide();
+                        $("#projectTitle").empty();
+                        $("#projectTitle").show();
+                        $(".budgetYear").empty();
+                        
+                    }
+                    if(reportType==3)
+                    {
+                        $("#projectTitle").empty();
+                        $("#projectTitle").show();
+                        $(".data_table").empty();
+                        $("#reportPro").hide();
+                        $("#reportStat").hide();
+                        $("#reportM").hide();
+                        $("#reportY").show();
+                        $(".budgetYear").show();
+                        
+                    }
+                });
                 $('#btn_generateReport').click(function (e) {
-                    $("tbody").empty();
+                    $("#projectTitle").empty();
+                    $(".liquidation").empty();
+                    $(".budgetYear").empty();
+                    $("#projects").empty();
                     console.log("reportType");
                     e.preventDefault()
                     var Id = $(this).val();
@@ -143,38 +357,183 @@ block content
                     console.log(reportYear);
                     var reportStatus= $('#reportStatus').val();
                     console.log(reportStatus);
-                    ajaxGet();
+                    
+                    var reportProject= $('#reportProject').val();
+                    console.log(reportProject);
+                    
+                    if(reportType==1)
+                    {
+                        ajaxGet();
+                        $("#projects").append('<table class="table table" id="datatable" cellspacing="0"><thead><tr><th>Project Name</th><th>Project Rationale</th><th>Budget</th><th>Alloted Slot</th></tr></thead><tbody></tbody></table>');    
 
-                    function ajaxGet(){
-                    console.log("========Id");
-                    console.log("========Id");
+                        function ajaxGet(){
+                        console.log("========Id");
+                        console.log("========Id");
 
-                    $.ajax({
-                        type : "POST",
-                        url : window.location + "/reportquery",
-                        data: { rtype: reportType, rmonth:reportMonth, ryear:reportYear, rstatus:reportStatus},
-                        dataType: "json",
-                        success: function(tbl_project){
-                            $.each(tbl_project, function (index, project) {
-                                console.log(project);
-                                for(var i=0;i<project.length;i++)
-                                {
-                                    $("tbody").append("<tr><td>"+project[i].varchar_projectName+"</td><td>"+project[i].text_projectRationale+"</td><td>"+project[i].decimal_appropriatedBudget+"</td><td>"+project[i].int_allotedSlot+"</td></tr>");
-                                }
-                                console.log("Success: " );
-                            });
+                        $.ajax({
+                            type : "POST",
+                            url : window.location + "/reportquery",
+                            data: { rtype: reportType, rmonth:reportMonth, ryear:reportYear, rstatus:reportStatus},
+                            dataType: "json",
+                            success: function(tbl_project){
+                                $.each(tbl_project, function (index, project) {
+                                    console.log(project);
+                                    for(var i=0;i<project.length;i++)
+                                    {
+                                        $("tbody").append("<tr><td>"+project[i].varchar_projectName+"</td><td>"+project[i].text_projectRationale+"</td><td>"+project[i].decimal_appropriatedBudget+"</td><td>"+project[i].int_allotedSlot+"</td></tr>");
 
-                        },
-                        error : function(e) {
-                            console.log("ERROR: ", e);
+                                    }
+                                    console.log("Success: " );
+                                });
+
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });	
                         }
-                    });	
                     } 
+                    else if(reportType==2)
+                    {
+                        ajaxGet();
+                        $(".liquidation").append('<table class="table " id="" cellspacing="0"><thead><tr><th colspan="2"><center>Budget Received:</center></th><th colspan="3"></th><th id="budgetRec">  </th></tr><tr><th colspan="6">Less: Expense Paid</th></tr><tr><th><center>Expenses Item</center></th><th>Unit Price</th><th>QTY</th><th>Amount</th><th></th><th></th></tr></thead><tbody id="expensebody"><tr class="tr-shadow"><td class=""> </td><td class=""> </td><td class=""> </td><td class=""> </td><td class=""> </td><td class=""> </td></tr>        </tbody><thead><tr><th colspan="6"></th></tr><tr><th colspan="6"><center>Sponsored</center></th></tr><tr><th><center>Expenses Item</center></th><th>QTY</th><th>Sponsored by</th><th>Amount</th><th></th><th></th></tr></thead><tbody id="sponsorbody" class="sponsorbody"><tr class="tr-shadow"><td></td><td></td><td></td><td></td><td></td><td></td></tr> </tbody>    <tfoot><tr><th>Total Expense</th><th colspan="4" class=""><div class="pull-right" ></div></th> <th class="totEx" id="totEx"> </th></tr><tr><th>Excess(Deficit)Cash</th><th colspan="4" class=""><div class="pull-right" ></div></th><th><div id="deficitCash" class="deficitCash"></div></th></tr></tfoot></table>');    
+                        function ajaxGet(){
+                        console.log("========Id");
+                        console.log("========Id");
+
+                        $.ajax({
+                            type : "POST",
+                            url : window.location + "/liqreportquery",
+                            data: { rProject:reportProject},
+                            dataType: "json",
+                            success: function(tbl_project){
+                                $.each(tbl_project, function (index, project) {
+                                    console.log("Success: liq" );
+                                    console.log(project[2].length );
+                                    $("#projectTitle").append("<h4>(Project Title: "+project[0][0].varchar_projectName+")</h4>");
+                                    $("#budgetRec").append("<p>Php "+project[0][0].decimal_appropriatedBudget.toLocaleString()+"</p>");
+                                    $("#totEx").append("<p>Php "+project[0][0].decimal_actualBudget.toLocaleString()+"</p>");
+                                    var remaining = parseFloat(project[0][0].decimal_appropriatedBudget) - parseFloat(project[0][0].decimal_actualBudget)
+                                    $("#deficitCash").append("<p>Php "+remaining.toLocaleString()+"</p>");
+                                    for(var i= 0;i<project[1].length;i++)
+                                    {
+                                        console.log(project[1][i] );
+                                        $("#expensebody").append("<tr><td>"+project[1][i].text_expenseDescription+"</td><td>"+project[1][i].decimal_unitPrice +" </td><td>"+project[1][i].int_actualQuantity+" </td><td>Php "+project[1][i].decimal_actualAmount.toLocaleString()+"</td><td></td><td></td></tr>   ");
+                                    }
+                                    
+                                    for(var i= 0;i<project[2].length;i++)
+                                    {
+                                        console.log(project[2][i] );
+                                        $("#sponsorbody").append("<tr><td>"+project[2][i].text_expenseDescription+"</td><td>"+project[2][i].int_actualQuantity +" </td><td>"+project[2][i].varchar_sponsorName+" </td><td>Php "+project[2][i].decimal_sponsorBudget.toLocaleString()+"</td><td></td><td></td></tr>   ");
+                                    }
+                                    
+                                    
+                                });
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });	
+                        }
+                    }
+                    else if(reportType==3)
+                    {
+                        ajaxGet();
+                        $('.budgetYear').append('<table class="table " id="" cellspacing="0"><thead><tr><th colspan="2"><center>Budget This Year:</center></th><th colspan="3"></th><th id="yearBud"> </th></tr><tr><th colspan="5">Category Budget</th</tr> <tr><th><center>Category</center></th><th>Given Budget</th><th>Remaining Budget</th><th></th><th></th></tr></thead><tbody id="categorybody" class="categorybody"></tbody> <tfoot><tr><th>Total Category Budget</th><th colspan="4" class=""><div class="pull-right" ></div></th><th class="totCat" id="totCat"> </th></tr><tr><th>Excess(Deficit)Cash</th><th colspan="4" class=""><div class="pull-right" ></div></th><th><div id="deficitBudgetCash" class="deficitBudgetCash"></div></th></tr></tfoot></table><br><br> <hr><h3><center>Project Budget Breakdown</center></h3> <div id="printSpace" height="500px"></div>')
+
+                        $("#printSpace").hide();
+                        function ajaxGet(){
+                        console.log("========Id");
+                        console.log("========Id");
+
+                        $.ajax({
+                            type : "POST",
+                            url : window.location + "/budreportquery",
+                            data: { rYear:reportYear},
+                            dataType: "json",
+                            success: function(tbl_budget){
+                                $.each(tbl_budget, function (index, budget) {
+                                    console.log("Success: liq" );
+                                    $("#yearBud").append("<p>Php "+budget[0][0].decimal_annualBudget.toLocaleString()+"</p>");
+                                    $("#projectTitle").append("<h4>(Year: "+budget[0][0].date_budgetYear+")</h4>");
+                                    var totalRem = parseFloat(budget[0][0].decimal_annualBudget) - parseFloat(budget[2][0].totalCat);
+                                    $("#deficitBudgetCash").append("<p>Php "+totalRem.toLocaleString()+"</p>");
+                                    $("#totCat").append("<p>Php "+budget[2][0].totalCat.toLocaleString()+"</p>");
+                                    
+                                    for(var i= 0;i<budget[1].length;i++)
+                                    {
+                                        console.log(budget[1][i] );
+                                        $("#categorybody").append("<tr><td>"+budget[1][i].varchar_categoryName+"</td><td>Php "+budget[1][i].decimal_categBudget.toLocaleString() +" </td><td>Php "+budget[1][i].decimal_categRemaining.toLocaleString()+" </td><td></td><td></td></tr>   ");
+                                        //- $("#categorybody").append("<tr><td>"+budget[1][i].varchar_categoryName+"</td><td>"+budget[1][i].decimal_categBudget +" </td><td>"+budget[1][i].decimal_categRemaining+" </td><td></td><td></td></tr>   ");
+                                    }
+                                    for(var i= 0;i<budget[4].length;i++)
+                                    {
+                                        $('.budgetYear').append('<br><table style="page-break-after: always;" class="table cellspacing="0"><thead><tr><th colspan="3"> Project Title: '+budget[4][i].varchar_projectName+'</th><th id="projectStatus"></th><th></th></tr><tr><th colspan="2"> <center>Project Budget</center></th><th></th><th></th><th id ="projectBudget"> Php '+budget[4][i].decimal_appropriatedBudget.toLocaleString()+' </th></tr><tr><th>Project Category</th><th>Alloted Budget</th><th></th><th></th><th></th></tr></thead><tbody id="project'+i+'"></tbody></table>')
+                                            
+                                        for(var j= 0;j<budget[3].length;j++)
+                                        {
+                                            if(budget[4][i].int_projectID == budget[3][j].int_projectID){
+                                                $('#project'+i).append('<tr><td>'+budget[3][j].varchar_categoryName+'</td><td>Php '+budget[3][j].decimal_allotedBudget.toLocaleString()+'</td><td></td><td></td><td></td></tr>')
+                                            }
+                                            
+                                        }
+                                    }
+
+                                    
+                                    
+
+                                    
+                                    
+                                });
+
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                            }
+                        });	
+                        }
+
+                    }
+
 
                 });
                  $('#printReceiptButton').click(function(){
-                    $('.noPrint').attr('style', 'display:none;')
+                    var reportType= $('#reportType').val();
+                    console.log(reportType);
+                    //- $('#noPrint').attr('style', 'display:none;')
+                        $("#printReceiptButton").hide();
+                        $("#reportPro").hide();
+                        $("#btnbtn_generateReport").hide();
+                        $("#reportStat").hide();
+                        $("#reportM").hide();
+                        $("#reportY").hide();
+                        $("#reportcat").hide();
                     javascript:window.print()
-                    $('.noPrint').attr('style', 'display:show;')
+                    //- $('noPrint').attr('style', 'display:show;')
+                    if(reportType==1){
+                        $("#btnbtn_generateReport").show();
+                        $("#reportStat").show();
+                        $("#reportcat").show();
+                        $("#reportPro").hide();
+                        $("#reportY").show();
+                        $("#reportM").show();
+                        $("#printReceiptButton").show();
+                    }
+                    if(reportType==2){
+                        $("#btnbtn_generateReport").show();
+                        $("#reportcat").show();
+                        $("#reportPro").show();
+                        $("#printReceiptButton").show();
+                    }
+                    if(reportType==3){
+                        $("#btnbtn_generateReport").show();
+                        $("#reportStat").hide();
+                        $("#reportcat").show();
+                        $("#reportPro").hide();
+                        $("#reportY").show();
+                        $("#reportM").hide();
+                        $("#printReceiptButton").show();
+                    }
+                    
                 });
             });

@@ -148,6 +148,7 @@ router.post('/annualbudget/budgetdetails',(req,res) => {
         return res.send({tbl_budget:results});
     });
 });
+
 router.post('/annualbudget/ajaxbudgetdetails',(req,res) => {
     console.log('=================================');
     console.log('BARANGAY: PROJECTS-AJAX GET DETAILS (POST)');
@@ -157,6 +158,7 @@ router.post('/annualbudget/ajaxbudgetdetails',(req,res) => {
     
     var queryString = `SELECT * FROM tbl_categorybudget cb
     JOIN tbl_annualbudget ab ON ab.int_budgetID = cb.int_budgetID
+    JOIN tbl_category c ON cb.int_categoryID = c.int_categoryID
     WHERE cb.int_budgetID = "${req.body.ajBudgetID}"`
 
 

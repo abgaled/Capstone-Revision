@@ -137,6 +137,12 @@ block content
 
                     console.log(record.record)
                 }
+                if (record.record == "none"){
+                    console.log("Success: True" );
+                    document.getElementById("labelslots").innerHTML = "<small style='color:black;'>At the moment there are no approved applications.</small>"
+
+                    console.log(record.record)
+                }
                 else{
                     console.log("Success: False" );
                     console.log(record.record)
