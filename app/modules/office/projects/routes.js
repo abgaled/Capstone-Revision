@@ -2195,6 +2195,7 @@ router.post('/createproject',(req, res) => {
     var beneUnit = req.body.unitMeasure;
     var beneUPrice = req.body.benefitUnitPrice;
     var beneAmount = req.body.benefitAmount;
+    console.log(beneSponsor);
     console.log(beneName);
     console.log(beneQuantity);
     console.log(beneUnit);
@@ -2584,6 +2585,179 @@ router.post('/createproject',(req, res) => {
                 }  
             }
 
+            // INSERT PROJECT ESTIMATED EXPENSES
+            console.log("==============INSERT PROJECT ESTIMATED EXPENSES====================");
+
+
+            console.log(expName);
+            console.log(expName.length);
+
+            for (var q = 0; q < (expName.length - 1); q++) {
+                if (expName[q] === '' && expQuantity[q] == '' && expUPrice[q] == '' && expAmount[q] == '') {
+                    console.log("continue lang");
+                }
+
+                else {
+                    var insertExpense = `INSERT INTO \`tbl_expense\`
+                        (
+                            \`text_expenseDescription\`,
+                            \`int_estimatedQuantity\`,
+                            \`decimal_unitPrice\`,
+                            \`decimal_estimatedAmount\`,
+                            \`int_projectID\`
+                        )
+                        
+                        VALUES
+                        (
+                            "${expName[q]}",
+                            "${expQuantity[q]}",
+                            "${expUPrice[q]}",
+                            "${expAmount[q]}",
+                            "${toproject.int_projectID}"
+                        )`;
+
+                    db.query(insertExpense, (err, inserResult, fields) => {
+                        if (err) console.log(err);
+                    });
+                    console.log('Exp Sponsor:  ' + expSponsor[q]);
+
+                    if (expSponsor[q] != '') {
+                        console.log('May sponsor ung expenseID:  ' + q);
+
+                        var getSponsor = `SELECT int_sponsorID
+                                FROM tbl_sponsordetail
+                                WHERE varchar_sponsorName = "${expSponsor[q]}"`;
+
+                        console.log(`SELECT int_sponsorID
+                                FROM tbl_sponsordetail
+                                WHERE varchar_sponsorName = "${expSponsor[p]}"`);
+
+                        db.query(getSponsor, (err, inserResult, fields) => {
+                            if (err) console.log(err);
+
+                            console.log('EXPENSE SPONSOR ID RESULT:  ' + inserResult[0]);
+                            console.log(p + ') EXPENSE SPONSOR ID:  ' + inserResult[0].int_sponsorID);
+
+                            var filteredArr = expName.filter(function (el) { return el != '' });
+                            console.log(filteredArr);
+                            // console.log(`SELECT int_expenseID FROM tbl_expense WHERE text_expenseDescription IN (${filteredArr}) AND int_projectID = ${toproject.int_projectID}`);
+
+                            // var insertedID = `SELECT int_expenseID FROM tbl_expense ORDER BY int_expenseID DESC LIMIT 0,1`;
+                            var insertedID = `SELECT int_expenseID 
+                                FROM tbl_expense
+                                WHERE text_expenseDescription IN (${filteredArr}) AND int_projectID = ${toproject.int_projectID}`;
+
+                            db.query(insertedID, (err, insertedResult, fields) => {
+                                if (err) console.log(err);
+
+                                console.log(insertedResult.int_expenseID);
+
+                                var updateSponsor = `UPDATE tbl_expense
+                                        SET int_sponsorID = ${inserResult[0].int_sponsorID}
+                                        WHERE int_expenseID = ${insertedResult[0].int_expenseID}`;
+
+                                console.log(`UPDATE tbl_expense
+                                        SET int_sponsorID = ${inserResult[0].int_sponsorID}
+                                        WHERE int_expenseID = ${insertedResult[0].int_expenseID}`);
+
+                                db.query(updateSponsor, (err, insertedResult, fields) => {
+                                    if (err) console.log(err);
+                                });
+                            });
+                        });
+                    }
+
+                    else {
+                        console.log('No Sponsor detected');
+                    }
+                }
+            }
+
+            // INSERT PROJECT BENEFIT
+            console.log("==============INSERT PROJECT BENEFIT====================");
+
+
+            console.log(beneName);
+            console.log(beneName.length);
+
+            for (var p = 0; p < (beneName.length); p++) {
+                if (beneName[q] === '' && beneQuantity[q] == '') {
+                    console.log("continue lang");
+                }
+
+                else {
+                    var insertBenefits = `INSERT INTO \`tbl_applicantbenefit\`
+                        (
+                            \`text_benefitName\`,
+                            \`int_benefitQuantity\`,
+                            \`int_projectID\`,
+                            \`char_itemUnit\`
+                        )
+                        
+                        VALUES
+                        (
+                            "${beneName[p]}",
+                            "${beneQuantity[p]}",
+                            "${toproject.int_projectID}",
+                            "${beneUnit[p]}"
+                        )`;
+
+                    console.log(`INSERT INTO \`tbl_applicantbenefit\`
+                        (
+                            \`text_benefitName\`,
+                            \`int_benefitQuantity\`,
+                            \`int_projectID\`,
+                            \`char_itemUnit\`
+                        )
+                        
+                        VALUES
+                        (
+                            "${beneName[p]}",
+                            "${beneQuantity[p]}",
+                            "${toproject.int_projectID}",
+                            "${beneUnit[p]}"
+                        )`);
+
+                    db.query(insertBenefits, (err, inserResult, fields) => {
+                        if (err) throw err;
+                    });
+
+                    if (beneSponsor[p] != '') {
+                        var getSponsor = `SELECT int_sponsorID
+                            FROM tbl_sponsordetail
+                            WHERE varchar_sponsorName = "${beneSponsor[p]}"`;
+
+                        console.log(`SELECT int_sponsorID
+                            FROM tbl_sponsordetail
+                            WHERE varchar_sponsorName = "${beneSponsor[p]}"`);
+
+
+                        db.query(getSponsor, (err, inserResult, fields) => {
+                            if (err) throw err;
+
+                            console.log('SPONSOR ID RESULT:  ' + inserResult[0]);
+                            console.log(p + ') SPONSOR ID:  ' + inserResult[0].int_sponsorID);
+
+                            var insertedID = `SELECT int_appbeneID FROM tbl_applicantbenefit ORDER BY int_appbeneID DESC LIMIT 0,1`;
+
+                            db.query(insertedID, (err, insertedResult, fields) => {
+                                if (err) throw err;
+                                console.log(insertedResult[0].int_appbeneID);
+
+                                var updateSponsor = `UPDATE tbl_applicantbenefit
+                                    SET int_sponsorID = ${inserResult[0].int_sponsorID}
+                                    WHERE int_appbeneID = ${insertedResult[0].int_appbeneID}`;
+
+                                db.query(updateSponsor, (err, insertedResult, fields) => {
+                                    if (err) throw err;
+                                });
+                            });
+                        });
+                    }
+                }
+            }
+
+           
             // INSERT PROJECT REQUIREMENT
             console.log("==============INSERT PROJECT REQUIREMENT====================");
             
@@ -2632,201 +2806,12 @@ router.post('/createproject',(req, res) => {
 
             db.query(insertAppType, (err, inserResult, fields) => {        
                 if (err) throw err;
+
+                res.redirect('/office/projects');
             });
-
-            // INSERT PROJECT BENEFIT
-            console.log("==============INSERT PROJECT BENEFIT====================");
-            
-
-            console.log(beneName);
-            console.log(beneName.length);
-
-
-            
-            for(var p = 0 ; p < (beneName.length) ; p++ ) 
-            {
-                if (beneName[q] === '' && beneQuantity[q] == '') {
-                    console.log("continue lang");
-                }
-                
-                else if (beneSponsor[p] != '') {
-                    
-                    var getSponsor = `SELECT int_sponsorID
-                        FROM tbl_sponsordetail
-                        WHERE varchar_sponsorName = "${beneSponsor[p]}"`;
-
-                    db.query(getSponsor, (err, inserResult, fields) => {
-                        if (err) throw err;
-
-                        var insertBenefits = `INSERT INTO \`tbl_applicantbenefit\`
-                            (
-                                \`text_benefitName\`,
-                                \`int_benefitQuantity\`,
-                                \`int_projectID\`,
-                                \`int_sponsorID\`,
-                                \`char_itemUnit\`
-                            )
-                            
-                            VALUES
-                            (
-                                "${beneName[p]}",
-                                "${beneQuantity[p]}",
-                                "${toproject.int_projectID}",
-                                "${inserResult[0].int_sponsorID}",
-                                "${beneUnit[p]}"
-                            )`;
-
-                        db.query(insertBenefits, (err, inserResult, fields) => {
-                            if (err) throw err;
-                        });
-                    });
-                }
-
-                else {
-                    var insertBenefits = `INSERT INTO \`tbl_applicantbenefit\`
-                        (
-                            \`text_benefitName\`,
-                            \`int_benefitQuantity\`,
-                            \`int_projectID\`,
-                            \`char_itemUnit\`
-                        )
-                        
-                        VALUES
-                        (
-                            "${beneName[p]}",
-                            "${beneQuantity[p]}",
-                            "${toproject.int_projectID}",
-                            "${beneUnit[p]}"
-                        )`;
-                    
-                        console.log(`INSERT INTO \`tbl_applicantbenefit\`
-                        (
-                            \`text_benefitName\`,
-                            \`int_benefitQuantity\`,
-                            \`int_projectID\`,
-                            \`char_itemUnit\`
-                        )
-                        
-                        VALUES
-                        (
-                            "${beneName[p]}",
-                            "${beneQuantity[p]}",
-                            "${toproject.int_projectID}",
-                            "${beneUnit[p]}"
-                        )`);
-
-                    db.query(insertBenefits, (err, inserResult, fields) => {
-                        if (err) throw err;
-                    });
-                }
-            }
-
-            // INSERT PROJECT ESTIMATED EXPENSES
-            console.log("==============INSERT PROJECT ESTIMATED EXPENSES====================");
-            
-
-            console.log(expName);
-            console.log(expName.length);
-
-
-            for(var q = 0 ; q < (expName.length-1) ; q++ ) 
-            {
-                if(expSponsor[q] != '') {
-                    if( expName[q] === '' && expQuantity[q] == '' && expUPrice[q] == '' && expAmount[q] == '' ){
-                        console.log("continue lang");
-                    }
-
-                    else {
-                        var getSponsor = `SELECT int_sponsorID
-                            FROM tbl_sponsordetail
-                            WHERE varchar_sponsorName = "${expSponsor[q]}"`;
-
-                        db.query(getSponsor, (err, inserResult, fields) => {
-                            if (err) throw err;
-                            
-                            console.log('Result Sponsor ID:   '+inserResult[0].int_sponsorID);
-
-                            var insertExpense = `INSERT INTO \`tbl_expense\`
-                                (
-                                    \`text_expenseDescription\`,
-                                    \`int_estimatedQuantity\`,
-                                    \`decimal_unitPrice\`,
-                                    \`int_sponsorID\`,
-                                    \`decimal_estimatedAmount\`,
-                                    \`int_projectID\`
-                                )
-                                
-                                VALUES
-                                (
-                                    "${expName[q]}",
-                                    "${expQuantity[q]}",
-                                    "${expUPrice[q]}",
-                                    "${inserResult[0].int_sponsorID}",
-                                    "${expAmount[q]}",
-                                    "${toproject.int_projectID}"
-                                )`;
-                            
-                            console.log(`INSERT INTO \`tbl_expense\`
-                                (
-                                    \`text_expenseDescription\`,
-                                    \`int_estimatedQuantity\`,
-                                    \`decimal_unitPrice\`,
-                                    \`int_sponsorID\`,
-                                    \`decimal_estimatedAmount\`,
-                                    \`int_projectID\`
-                                )
-                                
-                                VALUES
-                                (
-                                    "${expName[q]}",
-                                    "${expQuantity[q]}",
-                                    "${expUPrice[q]}",
-                                    "${inserResult[0].int_sponsorID}",
-                                    "${expAmount[q]}",
-                                    "${toproject.int_projectID}"
-                                )`);
-                            db.query(insertExpense, (err, inserResult, fields) => {        
-                                if (err) throw err;
-                            });
-                        });
-                    }
-                }
-
-                else {
-                    if( expName[q] === '' && expQuantity[q] == '' && expUPrice[q] == '' && expAmount[q] == '' ){
-                        console.log("continue lang");
-                    }
-
-                    else {
-                        var insertExpense = `INSERT INTO \`tbl_expense\`
-                            (
-                                \`text_expenseDescription\`,
-                                \`int_estimatedQuantity\`,
-                                \`decimal_unitPrice\`,
-                                \`decimal_estimatedAmount\`,
-                                \`int_projectID\`
-                            )
-                            
-                            VALUES
-                            (
-                                "${expName[q]}",
-                                "${expQuantity[q]}",
-                                "${expUPrice[q]}",
-                                "${expAmount[q]}",
-                                "${toproject.int_projectID}"
-                            )`;
-                            
-                        db.query(insertExpense, (err, inserResult, fields) => {        
-                            if (err) throw err;
-
-                        });
-                    }
-                }
-            }
         });
     });
     
-    res.redirect('/office/projects');
 });
 
 

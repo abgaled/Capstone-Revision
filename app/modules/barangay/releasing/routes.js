@@ -233,18 +233,20 @@ router.post('/claimBenefits', (req, res) => {
         WHERE int_projectID = ${req.body.eprojectID}`
         db.query(queryString4, (err, results4) => {        
             if (err) throw err;
-
+            console.log(results4);
             var queryString5 = `SELECT * FROM tbl_barangayreleasing br
             JOIN tbl_barangay b ON br.int_barangayID = b.int_barangayID
             WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
             db.query(queryString5, (err, results5) => {        
                 if (err) throw err;
+                console.log(results5);
 
                 var queryString6 = `SELECT * FROM tbl_barangaybenefit bb
                 JOIN tbl_barangayreleasing br ON br.int_brgyreleaseID = bb.int_brgyreleaseID
                 WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
                 db.query(queryString6, (err, results6) => {        
                     if (err) throw err;
+                    console.log(results6);
                     var dayNow = moment().format('Do');
                     var monthNow = moment().format('MMMM');
                     var yearNow = moment().format('YYYY');

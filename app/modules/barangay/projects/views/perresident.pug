@@ -58,11 +58,11 @@ block content
                                     <div class="form-row">
                                         <div class="form-group col-md-4 col-sm-12">
                                             <label for="ap-fname" class="form-control-label"><strong>First</strong> Name:<span style="color:red;"> *</span></label>
-                                                <input type="text" id="ap-fname" onchange="getfname()" name="apply_fname" placeholder="Applicant's First name ..." class="names col-sm-11 form-control ">
+                                                <input type="text" id="ap-fname" onchange="getfname()" name="apply_fname" placeholder="Applicant's First name ..." class="names col-sm-11 form-control " required>
                                         </div>
                                         <div class="form-group col-md-4 col-sm-12">
                                             <label for="ap-lname" class="form-control-label"><strong>Last</strong> Name:<span style="color:red;"> *</span></label>
-                                                <input type="text" id="ap-lname" onchange="getlname()" name="apply_lname" placeholder="Applicant's Last name ..." class="names col-sm-11 form-control ">
+                                                <input type="text" id="ap-lname" onchange="getlname()" name="apply_lname" placeholder="Applicant's Last name ..." class="names col-sm-11 form-control " required>
                                         </div>
                                         <div class="form-group col-md-4 col-sm-12">
                                             <label for="ap-mname" class="form-control-label"><strong>Middle</strong> Name</label>
@@ -73,7 +73,7 @@ block content
                                         <div class="form-group col-md-2 col-sm-12">
                                             <label for="ap-birthdate" class="form-control-label" id="label-birthdate"><strong>Birthdate:</strong><span style="color:red;"> *</span></label>
                                                 <span id="bday-invalid" style="color:red;"></span>
-                                                <input type="date" id="ap-birthdate" onkeyup="keyBirthdate()" name="apply_birthdate" placeholder="Birthdate" class="col-sm-11 form-control ">
+                                                <input type="date" id="ap-birthdate" onkeyup="keyBirthdate()" name="apply_birthdate" placeholder="Birthdate" class="col-sm-11 form-control " required>
                                         </div>
                                         <div class="form-group col-md-2 col-sm-12">
                                             <label for="ap-birthdate" class="form-control-label"><strong>Age:</strong></label>
@@ -81,15 +81,15 @@ block content
                                         </div>
                                         <div class="form-group col-md-3 col-sm-12">
                                             <label for="ap-number" class="form-control-label"><strong>Contact Number:</strong><span style="color:red;"> *</span></label>
-                                                <input type="text" id="ap-number" onchange="getcontact()" name="apply_contact" data-inputmask="'mask' : '(+63) 999-999-9999'" class="col-sm-11 form-control ">
+                                                <input type="text" id="ap-number" onchange="getcontact()" name="apply_contact" data-inputmask="'mask' : '(+63) 999-999-9999'" class="col-sm-11 form-control " required>
                                         </div>
                                         <div class="form-group col-md-3 col-sm-12">
                                             <label for="ap-email" class="form-control-label"><strong>Email Address:</strong><span style="color:red;"> *</span></label>
-                                                <input type="email" id="ap-email" onchange="getemail()" onkeyup="getemail()" name="apply_emailaddress" placeholder="(ex: abc@gmail.com)" class="col-sm-11 form-control ">
+                                                <input type="email" id="ap-email" onchange="getemail()" onkeyup="getemail()" name="apply_emailaddress" placeholder="(ex: abc@gmail.com)" class="col-sm-11 form-control " required>
                                         </div>
                                         <div class="form-group col-md-2 col-sm-12">
                                             <label for="ap-idvalid" class="form-control-label"><strong>ID No:</strong><small>(Any valid ID)</small><span style="color:red;"> *</span></label>
-                                                <input type="text" id="ap-idvalid" onchange="getidvalid()" name="apply_idvalid" placeholder="Type here ..." class="col-sm-11 form-control ">
+                                                <input type="text" id="ap-idvalid" onchange="getidvalid()" name="apply_idvalid" placeholder="Type here ..." class="col-sm-11 form-control " required>
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -109,7 +109,7 @@ block content
                                         
                                         <div class="form-group col-md-2 col-sm-12">
                                             <label for="ap-yrres" class="form-control-label"><strong>Year of Residency:</strong><span style="color:red;"> *</span></label>
-                                                <input type="number" min="1000" max="2018" step="1" id="ap-yrres" onchange="getyrres()" onkeyup="keyYrRes()" name="apply_yrres" placeholder="(ex. 20xx, 2010)" class="col-sm-11 form-control ">
+                                                <input type="number" min="1000" max="2018" step="1" id="ap-yrres" onchange="getyrres()" onkeyup="keyYrRes()" name="apply_yrres" placeholder="(ex. 20xx, 2010)" class="col-sm-11 form-control " required>
                                         </div>
                                         <div class="form-group col-md-2 col-sm-12">
                                             <label for="ap-yrres" class="form-control-label"><strong>Computed Years:</strong></label>
@@ -117,7 +117,7 @@ block content
                                         </div>
                                         <div class="form-group col-md-2 col-sm-12">
                                             <label for="ap-civilstat" class="form-control-label"><strong>Civil Status:</strong><span style="color:red;"> *</span></label>
-                                            <select class="form-control" id="ap-civilstat" name="apply_civilstat" onchange="getcivilstat()">
+                                            <select class="form-control" id="ap-civilstat" name="apply_civilstat" onchange="getcivilstat()" required>
                                                 <option disabled="disabled" selected="selected">Choose..</option>
                                                 <option value="Single">Single</option>
                                                 <option value="Married">Married</option>
@@ -127,7 +127,7 @@ block content
                                         </div>
                                          <div class="form-group col-md-4 col-sm-12">
                                             <label for="ap-address" class="form-control-label"><strong>Address:</strong><span style="color:red;"> *</span></label>
-                                                <input type="text" id="ap-address" onchange="getaddress()" name="apply_address" placeholder="Type here ..." class="col-sm-11 form-control ">
+                                                <input type="text" id="ap-address" onchange="getaddress()" name="apply_address" placeholder="Type here ..." class="col-sm-11 form-control " required>
                                         </div>
                                     </div>
                                 </div>
@@ -269,38 +269,75 @@ block content
     </div>
 
     <script src="/newassets/vendor/jquery-3.2.1.min.js"></script>
-    <script src="/asset_validation/dist/jquery.validate.min.js"></script>
+    //- <script src="/cityadmin/vendors/jQuery-SmartWizard/js/jquery-1.4.2.min.js"></script>
     <script src="/cityadmin/vendors/jQuery-SmartWizard/js/jquery.smartWizard.js"></script>
-    <script src="/cityadmin/vendors/jQuery-SmartWizard/js/jquery-1.4.2.min.js"></script>
+    <script src="/asset_validation/dist/jquery.validate.min.js"></script>
 
     //- SCRIPT FOR TABS
     script.
-        
-        //- SWEET ALERT CONFIRM SUBMIT
-                $('#regForm').on('submit',function (e) {
-                    var form = $(this).parents('form');
-                    e.preventDefault(); //prevent submit
-                    
-                        swal({
-                        title: 'Are you sure?',
-                        text: "You will submit this application.",
-                        type: 'info',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, submit it!'
-                        }).then((result) => {
-                        if (result.value) {
-                            $('##regForm').submit();
-                            swal(
-                            'Success!',
-                            'Statement of Problem has been Submitted!',
-                            'success'
-                            )
-                        }
-                        })
-                });
-        //- END OF SWEET ALERT
+        $(document).ready(function () {
+            //- SWEET ALERT CONFIRM SUBMIT
+            $('#regForm').on('submit',function (e) {
+                var form = $(this).parents('form');
+                e.preventDefault(); //prevent submit
+                
+                    swal({
+                    title: 'Are you sure?',
+                    text: "You will submit this application.",
+                    type: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, submit it!'
+                    }).then((result) => {
+                    if (result.value) {
+                        $('#regForm').submit();
+                        swal(
+                        'Success!',
+                        'This application has been registered!',
+                        'success'
+                        )
+                    }
+                    })
+            });
+            //- END OF SWEET ALERT
+
+            //- START VALIDATIONS
+            $(function() {
+            $("#regForm").validate({
+                rules: {
+                apply_fname: {
+                    required: true
+                },
+                apply_lname:{
+                    required: true
+                },
+                action: "required"
+                },
+                messages: {
+                apply_fname: {
+                    required: "Please enter some data"
+                },
+                apply_lname: {
+                    required: "Please enter some data"
+                },
+                action: "Please provide some data"
+                },
+                submitHandler: function(form, event){
+                    event.preventDefault();
+                    form.submit();
+                    swal(
+                        'Success!',
+                        'This application has been registered!',
+                        'success'
+                        )
+                }
+            });
+            
+            });
+            //- END VALIDATIONS
+        });
+
 
         //- SCRIPT FOR SUMMARY OF APPLICATION
         function getlname() {
@@ -550,12 +587,20 @@ block content
             
         }
 
-        function getreqstat()
-        {
-            if (document.getElementById("ap-reqstat").value === "Incomplete") {
-                document.getElementById("ap-requirementloc").value = '';
-            } 
-        }
+        //- function getreqstat()
+        //- {
+            //- var reqlocinc = document.getElementsByClassName("apply_reqstat");
+            //- console.log(reqlocinc[1].value)
+
+            //- //- for(var j = 0; j < reqlocinc.length < j++){
+
+            //-     if (reqlocinc == "Incomplete") {
+            //-         console.log("DITO SA INC")
+            //-         document.getElementById("ap-reqLoc").value = '';
+            //-     } 
+            //- //- }
+           
+        //- }
 
         //- FUNCTION TO DELAY INPUTTED DATAS
             var delay = (function(){

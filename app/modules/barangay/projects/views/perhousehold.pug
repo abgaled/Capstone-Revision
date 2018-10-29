@@ -245,13 +245,13 @@ block content
 
                 for(var i = 0 ; i < contrib.length ; i++) {
 
-                    totalAmount += contrib[i];
+                    totalAmount += parseFloat(contrib[i]);
                     console.log(totalAmount);
 
                     parseFinancial = parseInt($('.financial-contributor').val())
                     console.log("Parse Financial Contribution");
                     console.log(parseFinancial); 
-                    parse = parseInt($(totalAmount).val())
+                    //- parse = parseInt($(totalAmount).val())
                     console.log(totalAmount)
 
                     $("#totalIncome").val(totalAmount);

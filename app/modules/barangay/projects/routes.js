@@ -1044,7 +1044,7 @@ router.post('/:int_projectID/apply/checkbrgyslots',(req,res) => {
             if (err) console.log(err);       
 
         if(results.length>0){
-            var allotedSlot = results.int_allotedSlot;
+            var allotedSlot = results[0].int_allotedSlot;
 
             console.log("=======CHECK SLOTS======");
             // console.log(results)

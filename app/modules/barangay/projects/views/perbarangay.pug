@@ -143,7 +143,7 @@ block content
 
                     console.log(record.record)
                 }
-                else{
+                if (record.record == false){
                     console.log("Success: False" );
                     console.log(record.record)
                     document.getElementById("labelslots").innerHTML = "<small style='color:black;'>Requested Slots are still available.</small>"
