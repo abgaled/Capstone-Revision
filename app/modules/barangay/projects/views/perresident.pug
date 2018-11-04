@@ -323,8 +323,8 @@ block content
                 },
                 action: "Please provide some data"
                 },
-                submitHandler: function(form, event){
-                    event.preventDefault();
+                submitHandler: function(form){
+                    //- event.preventDefault();
                     form.submit();
                     swal(
                         'Success!',

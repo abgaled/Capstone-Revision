@@ -16,14 +16,18 @@ block content
                         </small>  
                             </br>
                             </br>
+                            each slot in remSlot
+                                p Remaining Slots #{slot.slots}
                         </center>
                         <div>
                             input(type="hidden" value=`${proj.int_projectID}` id="int_projectID" name="int_projectID")
                             //- button.btn.btn-info.mb-1.btn-s(id="btn-view-project"  style="float:left;" class="btn-view-project" value= proj.int_projectID): span.fa.fa-eye View Project Details
-                            <div class="text-center">
-                                button.btn.btn-primary.btn-s.fa(id="addben"  value= appID.int_applicationID class=""): span.fa.fa-plus ADD Beneficiary
+                            
+                            each slot in remSlot
+                                if slot.slots != 0
+                                    button.btn.btn-primary.btn-s.fa(id="addben"  value= appID.int_applicationID class=""): span.fa.fa-plus ADD Beneficiary
                             a(href=`/barangay/releasing/` id="" style="float:right;" class="btn btn-dark btn-s "): span.fa.fa-arrow-circle-left  Back
-                            </div>
+                            
                             </br>
                             </br>
                         </div>

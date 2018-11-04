@@ -22,277 +22,282 @@ block content
                                     <form id="formLiquidate" method="POST" action='/office/projects/sendliquidation' class="formLiquidate" name="formLiquidate">
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                input(type="hidden" value=`${proj.int_projectID}` id="int_projectID" name="int_projectID" class="int_projectID")
-                                                <table class="table table-bordered" id="datatable" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="2"></th>
-                                                            <th colspan="2" class="text-center">Estimated</th>
-                                                            <th colspan="2" class="text-center">Actual</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Expenses Description</th>
-                                                            <th>Unit Price</th>
-                                                            <th>QTY</th>
-                                                            <th>Amount</th>
-                                                            <th>QTY</th>
-                                                            <th>Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        each exp in tbl_expenses
-                                                            <tr class="tr-shadow">
-                                                                input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
-                                                                <td>
-                                                                    value=exp.text_expenseDescription
-                                                                </td>
-                                                                <td class='' >Php #{exp.decimal_unitPrice.toLocaleString()} 
-                                                                    input(type="hidden" value=`${exp.decimal_unitPrice}` id="decimal_unitPrice" name="decimal_unitPrice" class="decimal_unitPrice")
-                                                                </td>
-                                                                <td>
-                                                                    value= exp.int_estimatedQuantity
-                                                                </td>
-                                                                <td>Php 
-                                                                    if exp.decimal_estimatedAmount != null
-                                                                        value= exp.decimal_estimatedAmount.toLocaleString()
-                                                                </td>
-                                                                <td>
-                                                                    if exp.text_expenseDescription == "Benefit Expense"
-                                                                        if proj.enum_applicationType == "Barangay"
-                                                                            each bbcount in tbl_barcount
-                                                                                input(type="number" readonly value=`${bbcount.barCount}` id="Unit_Quantity" name="Unit_Quantity" class="Unit_Quantity form-control")
-                                                                        if proj.enum_applicationType == "Resident" || proj.enum_applicationType == "Household"
-                                                                            each app in tbl_appCount
-                                                                                input(type="number" readonly value=`${app.appCount}` id="Unit_Quantity" name="Unit_Quantity" class="Unit_Quantity form-control")
-                                                                    else
-                                                                        <input type="number"  value=`${app.appCount}`  id="Unit_Quantity" name="Unit_Quantity" class="Unit_Quantity form-control" required placeholder="Enter Quantity">                                                                        
-                                                                </td>
-                                                                <td>
+                                            input(type="hidden" value=`${proj.int_projectID}` id="int_projectID" name="int_projectID" class="int_projectID")
+                                            each cat in resCat
+                                                if cat.catSUM == 0
+                                                    h3
+                                                        center (Sponsored)
+                                                if cat.catSUM != 0
+                                                    <table class="table table-bordered" id="datatable" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2"></th>
+                                                                <th colspan="2" class="text-center">Estimated</th>
+                                                                <th colspan="2" class="text-center">Actual</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Expenses Description</th>
+                                                                <th>Unit Price</th>
+                                                                <th>QTY</th>
+                                                                <th>Amount</th>
+                                                                <th>QTY</th>
+                                                                <th>Amount</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            each exp in tbl_expenses
+                                                                <tr class="tr-shadow">
+                                                                    input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
+                                                                    <td>
+                                                                        value=exp.text_expenseDescription
+                                                                    </td>
+                                                                    <td class='' >Php #{exp.decimal_unitPrice.toLocaleString()} 
+                                                                        input(type="hidden" value=`${exp.decimal_unitPrice}` id="decimal_unitPrice" name="decimal_unitPrice" class="decimal_unitPrice")
+                                                                    </td>
+                                                                    <td>
+                                                                        value= exp.int_estimatedQuantity
+                                                                    </td>
+                                                                    <td>Php 
+                                                                        if exp.decimal_estimatedAmount != null
+                                                                            value= exp.decimal_estimatedAmount.toLocaleString()
+                                                                    </td>
+                                                                    <td>
+                                                                        if exp.text_expenseDescription == "Benefit Expense"
+                                                                            if proj.enum_applicationType == "Barangay"
+                                                                                each bbcount in tbl_barcount
+                                                                                    input(type="number" readonly value=`${bbcount.barCount}` id="Unit_Quantity" name="Unit_Quantity" class="Unit_Quantity form-control")
+                                                                            if proj.enum_applicationType == "Resident" || proj.enum_applicationType == "Household"
+                                                                                each app in tbl_appCount
+                                                                                    input(type="number" readonly value=`${app.appCount}` id="Unit_Quantity" name="Unit_Quantity" class="Unit_Quantity form-control")
+                                                                        else
+                                                                            <input type="number"  value=`${app.appCount}`  id="Unit_Quantity" name="Unit_Quantity" class="Unit_Quantity form-control" required placeholder="Enter Quantity">                                                                        
+                                                                    </td>
+                                                                    <td>
+                                                                        <div id="" class=" ">
+                                                                            <input type="text" readonly id="total_amountDis" name="total_amountDis" class="total_amountDis form-control" required placeholder="Amount">
+                                                                            <input type="hidden" readonly id="total_amount" name="total_amount" class="total_amount form-control" required placeholder="Amount">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>        
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th colspan="2"</th>
+                                                                <th colspan="1" class=""><div class="pull-right" >Total Estimatation: </div>
+                                                                </th>
+                                                                <th>Php 
+                                                                each tot in totalest
+                                                                    if tot.total_estimatedexpense != null
+                                                                        value=tot.total_estimatedexpense.toLocaleString()
+                                                                </th>
+                                                                <th colspan="1" class=""><div class="pull-right" >Total Amount: </div>
+                                                                </th>
+                                                                <th>
                                                                     <div id="" class=" ">
-                                                                        <input type="text" readonly id="total_amountDis" name="total_amountDis" class="total_amountDis form-control" required placeholder="Amount">
-                                                                        <input type="hidden" readonly id="total_amount" name="total_amount" class="total_amount form-control" required placeholder="Amount">
+                                                                        <input type="text" readonly id="totalamountDis" name="totalamountDis" class="totalamountDis form-control" required placeholder="Amount">
+                                                                        <input type="hidden" readonly id="totalamount" name="totalamount" class="totalamount form-control" required placeholder="Amount">
                                                                     </div>
-                                                                </td>
-                                                            </tr>        
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th colspan="2"</th>
-                                                            <th colspan="1" class=""><div class="pull-right" >Total Estimatation: </div>
-                                                            </th>
-                                                            <th>Php 
-                                                            each tot in totalest
-                                                                if tot.total_estimatedexpense != null
-                                                                    value=tot.total_estimatedexpense.toLocaleString()
-                                                            </th>
-                                                            <th colspan="1" class=""><div class="pull-right" >Total Amount: </div>
-                                                            </th>
-                                                            <th>
-                                                                <div id="" class=" ">
-                                                                    <input type="text" readonly id="totalamountDis" name="totalamountDis" class="totalamountDis form-control" required placeholder="Amount">
-                                                                    <input type="hidden" readonly id="totalamount" name="totalamount" class="totalamount form-control" required placeholder="Amount">
-                                                                </div>
-                                                            </th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                                <table class="table table-bordered" id="datatable" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="4" class="text-center">Additional Expense (INCASE)</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="1">Expenses Description</th>
-                                                            <th>Unit Price</th>
-                                                            <th>QTY</th>
-                                                            <th>Total</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>    
-                                                        <tr class="tr-shadow">
-                                                            <td >
-                                                                <input type="text"   id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
-                                                            </td>  
-                                                            <td>
-                                                                <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
-                                                                <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
-                                                            </td>  
-                                                        </tr>   
-                                                        <tr class="tr-shadow">
-                                                            <td >
-                                                                <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number"  min="0"  id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
-                                                            </td>  
-                                                            <td>
-                                                                <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
-                                                                <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
-                                                            </td>  
-                                                        </tr>   
-                                                        <tr class="tr-shadow">
-                                                            <td >
-                                                                <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number"  min="0"  id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
-                                                            </td>  
-                                                            <td>
-                                                                <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
-                                                                <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
-                                                            </td>  
-                                                        </tr>   
-                                                        <tr class="tr-shadow">
-                                                            <td >
-                                                                <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number" min="0"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
-                                                            </td>  
-                                                            <td>
-                                                                <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
-                                                                <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
-                                                            </td>  
-                                                        </tr>   
-                                                        <tr class="tr-shadow">
-                                                            <td >
-                                                                <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number" min="0"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
-                                                            </td>  
-                                                            
-                                                            <td>
-                                                                <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
-                                                            </td>  
-                                                            <td>
-                                                                <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
-                                                                <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
-                                                            </td>  
-                                                        </tr>   
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th colspan="3" class=""><div class="pull-right" >Total Amount: </div>
-                                                            </th>
-                                                            <th>
-                                                                <div id="" class=" ">
-                                                                    <input type="text" readonly id="totalAddAmountDis" name="totalAddAmountDis" class="totalAddAmountDis form-control" required placeholder="Amount">
-                                                                    <input type="hidden" readonly id="totalAddAmount" name="totalAddAmount" class="totalAddAmount form-control" required placeholder="Amount">
-                                                                </div>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="4" class="">
-                                                                <div class="form-group">
-                                                                    <div class="col-md-3">
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                    <table class="table table-bordered" id="datatable" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="4" class="text-center">Additional Expense (INCASE)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="1">Expenses Description</th>
+                                                                <th>Unit Price</th>
+                                                                <th>QTY</th>
+                                                                <th>Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>    
+                                                            <tr class="tr-shadow">
+                                                                <td >
+                                                                    <input type="text"   id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                </td>  
+                                                                <td>
+                                                                    <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
+                                                                    <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
+                                                                </td>  
+                                                            </tr>   
+                                                            <tr class="tr-shadow">
+                                                                <td >
+                                                                    <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number"  min="0"  id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                </td>  
+                                                                <td>
+                                                                    <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
+                                                                    <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
+                                                                </td>  
+                                                            </tr>   
+                                                            <tr class="tr-shadow">
+                                                                <td >
+                                                                    <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number"  min="0"   id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number"  min="0"  id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                </td>  
+                                                                <td>
+                                                                    <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
+                                                                    <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
+                                                                </td>  
+                                                            </tr>   
+                                                            <tr class="tr-shadow">
+                                                                <td >
+                                                                    <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number" min="0"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                </td>  
+                                                                <td>
+                                                                    <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
+                                                                    <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
+                                                                </td>  
+                                                            </tr>   
+                                                            <tr class="tr-shadow">
+                                                                <td >
+                                                                    <input type="text"    id="addEx_desc" name="addEx_desc" class="addEx_desc form-control"  placeholder="Enter Description...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number" min="0"    id="addUnit_Price" name="addUnit_Price" class="addUnit_Price form-control"  placeholder="Enter Unit Price...">                                                                        
+                                                                </td>  
+                                                                
+                                                                <td>
+                                                                    <input type="number" min="0"   id="addQuanity" name="addQuanity" class="addQuanity form-control"  placeholder="Enter Quantity...">                                                                        
+                                                                </td>  
+                                                                <td>
+                                                                    <input type="hidden"  readonly id="addAmount" name="addAmount" class="addAmount form-control"  placeholder="">   
+                                                                    <input type="text"  readonly id="addAmountDis" name="addAmountDis" class="addAmountDis form-control"  placeholder="">                                                                        
+                                                                </td>  
+                                                            </tr>   
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th colspan="3" class=""><div class="pull-right" >Total Amount: </div>
+                                                                </th>
+                                                                <th>
+                                                                    <div id="" class=" ">
+                                                                        <input type="text" readonly id="totalAddAmountDis" name="totalAddAmountDis" class="totalAddAmountDis form-control" required placeholder="Amount">
+                                                                        <input type="hidden" readonly id="totalAddAmount" name="totalAddAmount" class="totalAddAmount form-control" required placeholder="Amount">
                                                                     </div>
-                                                                    <label class="control-label col-md-2" for="first-name">Total Budget:
-                                                                    </label>
-                                                                    <div class="col-md-5 " id="">
-                                                                        input(type="hidden"  readonly value=`${proj.decimal_appropriatedBudget}` id="decimal_appropriatedBudget" name="decimal_appropriatedBudget" class="decimal_appropriatedBudget form-control col-md-3 col-xs-12")
-                                                                        input(type="text"  readonly value=`${"Php " + proj.decimal_appropriatedBudget.toLocaleString()}` id="decimal_appropriatedBudgetDis" name="decimal_appropriatedBudgetDis" class="decimal_appropriatedBudgetDis form-control col-md-3 col-xs-12")
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="4" class="">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-3">
+                                                                        </div>
+                                                                        <label class="control-label col-md-2" for="first-name">Total Budget:
+                                                                        </label>
+                                                                        <div class="col-md-5 " id="">
+                                                                            input(type="hidden"  readonly value=`${proj.decimal_appropriatedBudget}` id="decimal_appropriatedBudget" name="decimal_appropriatedBudget" class="decimal_appropriatedBudget form-control col-md-3 col-xs-12")
+                                                                            input(type="text"  readonly value=`${"Php " + proj.decimal_appropriatedBudget.toLocaleString()}` id="decimal_appropriatedBudgetDis" name="decimal_appropriatedBudgetDis" class="decimal_appropriatedBudgetDis form-control col-md-3 col-xs-12")
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-3">
+                                                                        </div>
+                                                                        <label class="control-label col-md-2" for="first-name">Total Expense:
+                                                                        </label>
+                                                                        <div class="col-md-5 totalExpense" id="totalExpense">
+                                                                            <input type="hidden" readonly id="ovtotalExpense" name="ovtotalExpense" class="ovtotalExpense  form-control col-md-7 col-xs-12" required placeholder="Amount">
+                                                                            <input type="text" readonly id="ovtotalExpenseDis" name="ovtotalExpenseDis" class="ovtotalExpenseDis  form-control col-md-7 col-xs-12" required placeholder="Amount">
+                                                                        </div>
                                                                     </div>
-                                                                    <label class="control-label col-md-2" for="first-name">Total Expense:
-                                                                    </label>
-                                                                    <div class="col-md-5 totalExpense" id="totalExpense">
-                                                                        <input type="hidden" readonly id="ovtotalExpense" name="ovtotalExpense" class="ovtotalExpense  form-control col-md-7 col-xs-12" required placeholder="Amount">
-                                                                        <input type="text" readonly id="ovtotalExpenseDis" name="ovtotalExpenseDis" class="ovtotalExpenseDis  form-control col-md-7 col-xs-12" required placeholder="Amount">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-3">
+                                                                        </div>
+                                                                        <label class="control-label col-md-2 allign-right" for="first-name">Remaining Budget <br/>(Total Budget - Total Expense)
+                                                                        </label>
+                                                                        <div class="col-md-5 totalExpense" id="totalExpense">
+                                                                            <input type="hidden" readonly id="ovRemainingBudget" name="ovRemainingBudget" class="ovRemainingBudget  form-control col-md-7 col-xs-12" required placeholder="Amount">
+                                                                            <input type="text" readonly id="ovRemainingBudgetDis" name="ovRemainingBudgetDis" class="ovRemainingBudgetDis  form-control col-md-7 col-xs-12" required placeholder="Amount">
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-md-3">
-                                                                    </div>
-                                                                    <label class="control-label col-md-2 allign-right" for="first-name">Remaining Budget <br/>(Total Budget - Total Expense)
-                                                                    </label>
-                                                                    <div class="col-md-5 totalExpense" id="totalExpense">
-                                                                        <input type="hidden" readonly id="ovRemainingBudget" name="ovRemainingBudget" class="ovRemainingBudget  form-control col-md-7 col-xs-12" required placeholder="Amount">
-                                                                        <input type="text" readonly id="ovRemainingBudgetDis" name="ovRemainingBudgetDis" class="ovRemainingBudgetDis  form-control col-md-7 col-xs-12" required placeholder="Amount">
-                                                                    </div>
-                                                                </div>
-                                                            </th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                                <table class="table table-bordered" id="datatable" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="1" rowspan="" class="">
-                                                                <center class=""> Category
-                                                                </center>
-                                                            </th>
-                                                            <th colspan="1" rowspan="" class=""> Category Budget (project budget)
-                                                            </th>
-                                                            <th colspan="1" rowspan="" class=""> Category Budget Percentage
-                                                            </th>
-                                                            <th colspan="1" rowspan="" class=""> Divided Remaining Budget (Base on percentage)
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th colspan="1" rowspan="" class="">
-                                                            each cat5 in categPerc.catID
-                                                                input(type="hidden"  readonly value=`${cat5}` id="categoryID" name="categoryID" class="categoryID form-control")
-                                                            each cat in categPerc.catName
-                                                                <center class="">
-                                                                    input(type="text"  readonly value=`${cat}` id="perc" name="perc" class="perc form-control")
-                                                                </center>
-                                                            </th>
-                                                            <th colspan="1" rowspan="" class="">
-                                                            each cat3 in categPerc.catAllBud
-                                                                <center class="">
-                                                                    input(type="text" readonly value=`Php ${cat3}` id="perc" name="perc" class="perc form-control")
-                                                                </center>
-                                                            </th>
-                                                            <th colspan="1" rowspan="" class="">
-                                                            each cat2 in categPerc.percentage
-                                                                <center class="">
-                                                                    input(type="text" readonly value=`${cat2}` id="categoryPercentage" name="categoryPercentage" class="categoryPercentage form-control")
-                                                                </center>
-                                                            </th>
-                                                            <th colspan="1" rowspan="" class="">
-                                                            each cat2 in categPerc.percentage
-                                                                <center class="">
-                                                                    <input type="text" readonly id="remainingCatDis" name="remainingCatDis" class="remainingCatDis  form-control" required placeholder="Amount">
-                                                                    <input type="hidden" readonly id="remainingCat" name="remainingCat" class="remainingCat  form-control" required placeholder="Amount">
-                                                                </center>
-                                                            </th>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                                </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                    <table class="table table-bordered" id="datatable" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="1" rowspan="" class="">
+                                                                    <center class=""> Category
+                                                                    </center>
+                                                                </th>
+                                                                <th colspan="1" rowspan="" class=""> Category Budget (project budget)
+                                                                </th>
+                                                                <th colspan="1" rowspan="" class=""> Category Budget Percentage
+                                                                </th>
+                                                                <th colspan="1" rowspan="" class=""> Divided Remaining Budget (Base on percentage)
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th colspan="1" rowspan="" class="">
+                                                                each cat5 in categPerc.catID
+                                                                    input(type="hidden"  readonly value=`${cat5}` id="categoryID" name="categoryID" class="categoryID form-control")
+                                                                each cat in categPerc.catName
+                                                                    <center class="">
+                                                                        input(type="text"  readonly value=`${cat}` id="perc" name="perc" class="perc form-control")
+                                                                    </center>
+                                                                </th>
+                                                                <th colspan="1" rowspan="" class="">
+                                                                each cat3 in categPerc.catAllBud
+                                                                    <center class="">
+                                                                        input(type="text" readonly value=`Php ${cat3}` id="perc" name="perc" class="perc form-control")
+                                                                    </center>
+                                                                </th>
+                                                                <th colspan="1" rowspan="" class="">
+                                                                each cat2 in categPerc.percentage
+                                                                    <center class="">
+                                                                        input(type="text" readonly value=`${cat2}` id="categoryPercentage" name="categoryPercentage" class="categoryPercentage form-control")
+                                                                    </center>
+                                                                </th>
+                                                                <th colspan="1" rowspan="" class="">
+                                                                each cat2 in categPerc.percentage
+                                                                    <center class="">
+                                                                        <input type="text" readonly id="remainingCatDis" name="remainingCatDis" class="remainingCatDis  form-control" required placeholder="Amount">
+                                                                        <input type="hidden" readonly id="remainingCat" name="remainingCat" class="remainingCat  form-control" required placeholder="Amount">
+                                                                    </center>
+                                                                </th>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
                                                 
                                                 <table class="table table-bordered" id="datatable" cellspacing="0">
                                                     <thead>
@@ -318,6 +323,35 @@ block content
                                                             th 
                                                                 if sponsor.decimal_sponsorBudget != null
                                                                     p Php #{sponsor.decimal_sponsorBudget.toLocaleString()}
+                                                    each sponsor3 in tbl_sponsor3
+                                                        tr 
+                                                            th #{sponsor3.text_benefitName} (Benefits)
+                                                            th #{sponsor3.int_benefitQuantity}
+                                                            th #{sponsor3.varchar_sponsorName}
+                                                            th 
+                                                                if sponsor3.decimal_sponsorBudget != null
+                                                                    p Php #{sponsor3.decimal_sponsorBudget.toLocaleString()}
+                                                                else
+                                                                    center -----
+                                                    each sponsor2 in tbl_sponsor2
+                                                        tr 
+                                                            th Monetary
+                                                            th #{sponsor2.int_estimatedQuantity}
+                                                                if sponsor2.int_estimatedQuantity != null
+                                                                else
+                                                                    center -----
+                                                            th #{sponsor2.varchar_sponsorName}
+                                                            th 
+                                                                if sponsor2.decimal_sponsorBudget != null
+                                                                    p Php #{sponsor2.decimal_sponsorBudget.toLocaleString()}
+                                                    //- each sponsor3 in tbl_sponsor3
+                                                    //-     tr 
+                                                    //-         th #{sponsor3.text_expenseDescription}
+                                                    //-         th #{sponsor3.int_estimatedQuantity}
+                                                    //-         th #{sponsor3.varchar_sponsorName}
+                                                    //-         th 
+                                                    //-             if sponsor3.decimal_sponsorBudget != null
+                                                    //-                 p Php #{sponsor3.decimal_sponsorBudget.toLocaleString()}
                                                     </tbody>
                                                 </table>
                                             button.btn.btn-success.mb-1.pull-right(id="submit-liq" class="submit-liq"): span.fa.fa-plus Submit Liquidated Expense
@@ -514,7 +548,6 @@ block content
                 });
                 $('.submit-liq').on('click',function (e) {
                         rem = $('.ovRemainingBudget').val()
-                        e.preventDefault();
                         if(rem<0)
                         {
                             swal("Ooppss!", "Expenses is over than budget!", "warning");

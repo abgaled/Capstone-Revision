@@ -301,13 +301,13 @@ block content
                                                     <div class="col-lg-2"></div>
                                                     <div class="col-lg-4">
                                                         <label>
-                                                            <input type="checkbox" id="checkannual" class="icheckbox_flat-green">  From Annual Budget
+                                                            <input type="checkbox" id="checkannual" class="icheckbox_flat-green" name="fromwhom" value="annual">  From Annual Budget
                                                         </label>
                                                     </div>
                                                     <div class="col-lg-1"></div>
                                                     <div class="col-lg-4">
                                                         <label>
-                                                            <input type="checkbox" id="checksponsor" class="icheckbox_flat-green">  From Sponsor
+                                                            <input type="checkbox" id="checksponsor" class="icheckbox_flat-green" name="fromwhom" value="sponsor">  From Sponsor
                                                         </label>
                                                     </div>
                                                     <div class="col-lg-1"></div>
@@ -325,10 +325,10 @@ block content
                                                             <div class="col-lg-1 col-md-1"><label class="control label">#1</label></div>
                                                             <div class="radio-buttons">
                                                                 <div class="col-lg-2 col-md-2 ">
-                                                                    <input type="radio" class="iradio_flat-green btnradio" name="sponsortype[0]" value="new" checked> New Sponsor
+                                                                    <input type="radio" class="iradio_flat-green btnradio" name="sponsortype" value="new" checked> New Sponsor
                                                                 </div>
                                                                 <div class="col-lg-2 col-md-2">
-                                                                    <input type="radio" class="iradio_flat-green btnradio" name="sponsortype[0]" value="existing"> Existing Sponsor
+                                                                    <input type="radio" class="iradio_flat-green btnradio" name="sponsortype" value="existing"> Existing Sponsor
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-4 col-md-4"></div>
@@ -338,25 +338,25 @@ block content
                                                                 <div class="form-group">
                                                                     <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Name </label>
                                                                     <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                        <input type="text" class="form-control new-sponsor-name" name="newsponsorname[]">
+                                                                        <input type="text" class="form-control new-sponsor-name" name="newsponsorname">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Email Address </label>
                                                                     <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                        <input type="text" class="form-control" name="newsponsoremailadd[]">
+                                                                        <input type="text" class="form-control" name="newsponsoremailadd">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Contact Number </label>
                                                                     <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                        <input type="text" class="form-control" name="newsponsorcontact[]">
+                                                                        <input type="text" class="form-control" name="newsponsorcontact">
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Type </label>
                                                                     <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                        <select class="form-control sponsor-type new-sponsor-type" name="newsponsortype[]">
+                                                                        <select class="form-control sponsor-type new-sponsor-type" name="newsponsortype">
                                                                             <option value="">Choose</option>
                                                                             <option value="Money">Monetary</option>
                                                                             <option value="Material">Material</option>
@@ -368,7 +368,7 @@ block content
                                                                 <div class="form-group">
                                                                     <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Name </label>
                                                                     <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                        <select id="existingsponsor" class="form-control exist-sponsor-name" name="existsponsorname[]">
+                                                                        <select id="existingsponsor" class="form-control exist-sponsor-name" name="existsponsorname">
                                                                             <option> Choose </option>
                                                                             each sponsor in tbl_sponsordetail
                                                                                 option(value=`${sponsor.int_sponsorID}`)=sponsor.varchar_sponsorName
@@ -378,7 +378,7 @@ block content
                                                                 <div class="form-group">
                                                                     <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Type </label>
                                                                     <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                        <select class="form-control sponsor-type exist-sponsor-type" name="existsponsortype[]">
+                                                                        <select class="form-control sponsor-type exist-sponsor-type" name="existsponsortype">
                                                                             <option value="">Choose</option>
                                                                             <option value="Money">Monetary</option>
                                                                             <option value="Material">Material</option>
@@ -389,7 +389,7 @@ block content
                                                             <div class="form-group sponsoramount" id="" style="display:none">
                                                                 <label class="control-label col-lg-3 col-md-3 col-sm-10 col-xs-10"> Amount </label>
                                                                 <div class=" col-lg-7 col-md-7 col-sm-10 col-xs-10">
-                                                                    <input type="number" class="form-control" name="sponsoramount[]">
+                                                                    <input type="number" class="form-control" name="sponsoramount">
                                                                 </div>
                                                             </div>
                                                             <div class="form-group sponsormaterial" id="" style="display:none">
@@ -497,7 +497,7 @@ block content
                                                             <td><input type="number" style="width:100%" class="form-control unitP" name="expenseUnitPrice[]" id="expUPrice"></td>
                                                             <td>
                                                                 <input type="text" style="width:100%" class="form-control expenseAmount" id="expAmount" readonly>
-                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" hidden>
+                                                                <input type="number" class="expenseEstimatedAmount" name="expenseAmount[]" id="estAmountRow" hidden>
                                                             </td>
                                                         </tr>
                                                         <tr class="expense-row rowCounter">
@@ -986,7 +986,9 @@ block content
                 $('#expName').val('Benefit Expense');
                 $('#expQuan').val(beneSlot);
                 $('#expUnit').val('pc');
+                $("#totEstBudget").val(benefitAmount);
                 $('#expUPrice').val(benefitAmount);
+                $('#estAmountRow').val(beneSlot*benefitAmount);
                 $('#expAmount').val("PHP "+o.join("."));
                 $('#totBudget').val("PHP "+o.join("."));
             });
@@ -1037,6 +1039,8 @@ block content
                 if($(this).is(':checked')) {
                     $('#sponsor-detail').show();
                     console.log('Checked');
+                    $('#ap-apbudget').val(0);
+                    $('.ap-appbudgets').val(0);
                 }
                 else {
                     $( '#sponsor-detail').hide();
@@ -1320,7 +1324,7 @@ block content
                 appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>"+appcateg[b]+"</label><div class='col-md-7 col-sm-9 col-xs-9'><input type='number' name='appCategBudget[]' class='form-control ap-appbudgets'></div></div>";
             }
 
-            appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>Total Appropriate Budget</label><div class='col-md-7 col-sm-9 col-xs-9'><input type='number' id='ap-apbudget' name='appropriatedBudget' hidden><input type='text' class='form-control' id='ap-appbudget' name='' readonly></div></div>";
+            appBudget += "<div class='form-group'><label class='control-label col-md-3 col-sm-3 col-xs-3'>Total Appropriate Budget</label><div class='col-md-7 col-sm-9 col-xs-9'><input type='number' id='ap-apbudget' name='appropriatedBudget' value='0' hidden><input type='text' class='form-control' id='ap-appbudget' name='' readonly></div></div>";
 
             if(category!=0){
                 document.getElementById("result-projCategory").innerHTML = categList;

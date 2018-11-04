@@ -930,14 +930,21 @@ router.get('/:int_projectID/viewbarangay',(req, res) => {
                         console.log(results4)
     
                         var resultAPP = results4[0];
-    
-                            res.render('barangay/releasing/views/viewbarbeneficiary', 
-                            {
-                                tbl_project:results,
-                                notifications:notifications,
-                                tbl_beneficiary:resBAR,
-                                appID:resultAPP
-                            });
+                        
+                        var queryString6 =`SELECT (SELECT int_slot FROM tbl_barangayapplication WHERE int_applicationID = "${resultAPP.int_applicationID}") - COUNT(*) AS slots FROM tbl_barangaybeneficiary WHERE int_applicationID = "${resultAPP.int_applicationID}"`
+                            
+                                db.query(queryString6,(err, results6) => {
+                                    console.log(results6)
+                                    if (err) console.log(err);
+                                    res.render('barangay/releasing/views/viewbarbeneficiary', 
+                                    {
+                                        tbl_project:results,
+                                        notifications:notifications,
+                                        tbl_beneficiary:resBAR,
+                                        appID:resultAPP,
+                                        remSlot:results6
+                                    });
+                                });
                         });
                 });
             });
