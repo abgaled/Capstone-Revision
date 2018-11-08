@@ -378,27 +378,120 @@ router.get('/:int_projectID/liquidation',(req, res) => {
                                 var categoryPercentage = {percentage:percent , catName:categoryName , catID:categoryID , catAllBud:categoryAllotedBudget};
                                 console.log(categoryPercentage)
                                 var queryStringSPONSOR =`SELECT * FROM tbl_expense ex
-                                    JOIN tbl_projectsponsor ps ON ex.int_sponsorID = ps.int_sponsorID
                                     JOIN tbl_sponsordetail sd ON ex.int_sponsorID = sd.int_sponsorID
                                     WHERE ex.int_projectID = "${req.params.int_projectID}"
                                     AND ex.int_sponsorID IS NOT NULL`
+                                    var queryStringSPONSOR2 =`SELECT * FROM tbl_projectsponsor ex
+                                    JOIN tbl_sponsordetail sd ON ex.int_sponsorID = sd.int_sponsorID
+                                    WHERE ex.int_projectID = "${req.params.int_projectID}"`
+
+                                    var queryStringSPONSOR3 =`SELECT * FROM tbl_applicantbenefit ex
+                                    JOIN tbl_sponsordetail sd ON ex.int_sponsorID = sd.int_sponsorID
+                                    WHERE ex.int_projectID = "${req.params.int_projectID}"
+                                    AND ex.int_sponsorID IS NOT NULL`
+
+                                    var queryStringSUM=`SELECT (SELECT COUNT(*) FROM tbl_applicantbenefit WHERE int_sponsorID IS NOT NULL AND int_projectID = "${req.params.int_projectID}")AS appCount,
+                                    (SELECT COUNT(*) FROM tbl_projectsponsor WHERE int_projectID = "${req.params.int_projectID}")AS proSponCount, COUNT(*)AS expCount
+                                    FROM tbl_expense WHERE int_sponsorID IS NOT NULL AND int_projectID = "${req.params.int_projectID}"`
+
+                                    var queryStringSUMcat =`SELECT SUM(decimal_allotedBudget) AS catSUM FROM tbl_projectcategory
+                                    WHERE int_projectID = "${req.params.int_projectID}"`
                                     db.query(queryStringSPONSOR, (err, resultsSPONSOR, fields) => {
                                         console.log(resultsSPONSOR)
                                         db.query(queryUserBudget, (err, resultsUSER, fields) => {
                                             console.log(resultsUSER)
-                                        res.render('budget/projects/views/liquidation',
-                                        {
-                                            tbl_expenses:results1,
-                                            tbl_project:results2,
-                                            totalest:results3,
-                                            total:results4,
-                                            tbl_rembal:results6,
-                                            tbl_appCount:results7,
-                                            categPerc:categoryPercentage,
-                                            tbl_sponsor:resultsSPONSOR,
-                                            tbl_user:resultsUSER
-                                        });
-                                });
+                                            
+                                            db.query(queryStringSPONSOR2, (err, resultsSPONSOR2, fields) => {
+                                                console.log("resultsSPONSOR2")
+                                                console.log(resultsSPONSOR2)
+                                                
+                                                db.query(queryStringSUM, (err, resultSum, fields) => {
+                                                    console.log(resultSum)
+
+                                                    db.query(queryStringSUMcat, (err, resultCat, fields) => {
+                                                        console.log(resultCat)
+                                                        var spon = resultsSPONSOR;
+                                                        console.log(spon)
+                                                        if(spon != 0)
+                                                        {
+                                                            console.log("not null")
+                                                            if(spon[0].text_expenseDescription == "Benefit Expense")
+                                                            {
+                                                                console.log("Benefit")
+                                                                var resultsSPONSOR3 = 0;
+                                                                console.log(resultsSPONSOR3)
+                                                                res.render('budget/projects/views/liquidation',
+                                                                {
+                                                                    tbl_expenses:results1,
+                                                                    tbl_project:results2,
+                                                                    totalest:results3,
+                                                                    total:results4,
+                                                                    tbl_rembal:results6,
+                                                                    tbl_appCount:results7,
+                                                                    categPerc:categoryPercentage,
+                                                                    tbl_sponsor:resultsSPONSOR,
+                                                                    tbl_user:resultsUSER,
+                                                                    tbl_sponsor2:resultsSPONSOR2,
+                                                                    tbl_sponsor3:resultsSPONSOR3,
+                                                                    resCat:resultCat,
+                                                                    resSum:resultSum
+                                                                });
+                                                            }
+                                                            else
+                                                            {
+                                                                console.log("not Benefit")
+                                                                db.query(queryStringSPONSOR3, (err, resultsSPONSOR3, fields) => {
+                                                                    console.log("resultsSPONSOR3")
+                                                                    console.log(resultsSPONSOR3)
+                                                                    res.render('budget/projects/views/liquidation',
+                                                                    {
+                                                                        tbl_expenses:results1,
+                                                                        tbl_project:results2,
+                                                                        totalest:results3,
+                                                                        total:results4,
+                                                                        tbl_rembal:results6,
+                                                                        tbl_appCount:results7,
+                                                                        categPerc:categoryPercentage,
+                                                                        tbl_sponsor:resultsSPONSOR,
+                                                                        tbl_user:resultsUSER,
+                                                                        tbl_sponsor2:resultsSPONSOR2,
+                                                                        tbl_sponsor3:resultsSPONSOR3,
+                                                                        resCat:resultCat,
+                                                                        resSum:resultSum
+                                                                    });
+
+                                                                });
+                                                            }
+                                                                
+                                                        }
+                                                        else
+                                                        {
+                                                            console.log("null")
+                                                            db.query(queryStringSPONSOR3, (err, resultsSPONSOR3, fields) => {
+                                                                console.log("resultsSPONSOR3")
+                                                                console.log(resultsSPONSOR3)
+                                                                res.render('budget/projects/views/liquidation',
+                                                                {
+                                                                    tbl_expenses:results1,
+                                                                    tbl_project:results2,
+                                                                    totalest:results3,
+                                                                    total:results4,
+                                                                    tbl_rembal:results6,
+                                                                    tbl_appCount:results7,
+                                                                    categPerc:categoryPercentage,
+                                                                    tbl_sponsor:resultsSPONSOR,
+                                                                    tbl_user:resultsUSER,
+                                                                    tbl_sponsor2:resultsSPONSOR2,
+                                                                    tbl_sponsor3:resultsSPONSOR3,
+                                                                    resCat:resultCat,
+                                                                    resSum:resultSum
+                                                                });
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                    });
                                 });
                             });
                         });

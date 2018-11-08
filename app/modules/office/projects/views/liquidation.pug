@@ -321,8 +321,8 @@ block content
                                                             th #{sponsor.int_estimatedQuantity}
                                                             th #{sponsor.varchar_sponsorName}
                                                             th 
-                                                                if sponsor.decimal_sponsorBudget != null
-                                                                    p Php #{sponsor.decimal_sponsorBudget.toLocaleString()}
+                                                                if sponsor.decimal_estimatedAmount != null
+                                                                    p Php #{sponsor.decimal_estimatedAmount.toLocaleString()}
                                                     each sponsor3 in tbl_sponsor3
                                                         tr 
                                                             th #{sponsor3.text_benefitName} (Benefits)

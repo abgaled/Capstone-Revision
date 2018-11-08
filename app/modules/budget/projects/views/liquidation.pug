@@ -63,113 +63,165 @@
                                 <div class="card-header">
                                         <div class="card-body">
                                             <div class="table-responsive">
-                                                input(type="hidden" value=`${proj.int_projectID}` id="int_projectID" name="int_projectID" class="int_projectID")
-                                                <table class="table " id="" cellspacing="0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="2"><center>Budget Received:</center></th>
-                                                            <th colspan="3"></th>
-                                                            <th>Php 
-                                                                value= proj.decimal_appropriatedBudget.toLocaleString()
-                                                                input(type="hidden" value=`${proj.decimal_appropriatedBudget}` id="decimal_appropriatedBudget" name="decimal_appropriatedBudget" class="decimal_appropriatedBudget")
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="6">Less: Expense Paid</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th><center>Expenses Item</center></th>
-                                                            <th>Unit Price</th>
-                                                            <th>QTY</th>
-                                                            <th>Amount</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        each exp in tbl_expenses
-                                                            <tr class="tr-shadow">
-                                                                input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
-                                                                <td>
-                                                                    value=exp.text_expenseDescription
-                                                                </td>
-                                                                <td class='' >Php #{exp.decimal_unitPrice.toLocaleString()} 
-                                                                    input(type="hidden" value=`${exp.decimal_unitPrice}` id="decimal_unitPrice" name="decimal_unitPrice" class="decimal_unitPrice")
-                                                                </td>
-                                                                <td>
-                                                                    value= exp.int_actualQuantity
-                                                                </td>
-                                                                <td>Php 
-                                                                    value= exp.decimal_actualAmount.toLocaleString()
-                                                                </td>
-                                                                <td>
-                                                                </td>
-                                                                <td>
-                                                                </td>
-                                                            </tr>        
-                                                    </tbody>
-                                                    
-                                                    <thead>
-                                                        <tr>
-                                                            <th colspan="6"></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="6">
-                                                                <center>Sponsored
-                                                                </center></th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th><center>Expenses Item</center></th>
-                                                            <th>QTY</th>
-                                                            <th>Sponsored by</th>
-                                                            <th>Amount</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        each exp in tbl_sponsor
-                                                            <tr class="tr-shadow">
-                                                                input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
-                                                                <td>
-                                                                    value=exp.text_expenseDescription
-                                                                </td>
-                                                                <td>
-                                                                    value= exp.int_actualQuantity
-                                                                </td>
-                                                                <td class='' > #{exp.varchar_sponsorName} 
-                                                                </td>
-                                                                <td>Php 
-                                                                    value= exp.decimal_actualAmount.toLocaleString()
-                                                                </td>
-                                                                <td>
-                                                                </td>
-                                                                <td>
-                                                                </td>
-                                                            </tr>        
-                                                    </tbody>    
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th>Total Expense</th>
-                                                            <th colspan="4" class=""><div class="pull-right" ></div>
-                                                            </th>
-                                                            <th>Php 
-                                                                value= proj.decimal_actualBudget.toLocaleString()
-                                                                input(type="hidden" value=`${proj.decimal_actualBudget}` id="decimal_actualBudget" name="decimal_actualBudget" class="decimal_actualBudget")
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Excess(Deficit)Cash</th>
-                                                            <th colspan="4" class=""><div class="pull-right" ></div>
-                                                            </th>
-                                                            <th><div id="deficitCash" class="deficitCash">
+                                            input(type="hidden" value=`${proj.int_projectID}` id="int_projectID" name="int_projectID" class="int_projectID")
+                                            each cat in resCat
+                                                if cat.catSUM != 0
+                                                    <table class="table " id="" cellspacing="0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th colspan="2"><center>Budget Received:</center></th>
+                                                                <th colspan="3"></th>
+                                                                <th>Php 
+                                                                    if proj.decimal_appropriatedBudget != null
+                                                                        value= proj.decimal_appropriatedBudget.toLocaleString()
+                                                                    input(type="hidden" value=`${proj.decimal_appropriatedBudget}` id="decimal_appropriatedBudget" name="decimal_appropriatedBudget" class="decimal_appropriatedBudget")
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="6">Less: Expense Paid</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th><center>Expenses Item</center></th>
+                                                                <th>Unit Price</th>
+                                                                <th>QTY</th>
+                                                                <th>Amount</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            each exp in tbl_expenses
+                                                                <tr class="tr-shadow">
+                                                                    input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
+                                                                    <td>
+                                                                        value=exp.text_expenseDescription
+                                                                    </td>
+                                                                    <td class='' >Php #{exp.decimal_unitPrice.toLocaleString()} 
+                                                                        input(type="hidden" value=`${exp.decimal_unitPrice}` id="decimal_unitPrice" name="decimal_unitPrice" class="decimal_unitPrice")
+                                                                    </td>
+                                                                    <td>
+                                                                        value= exp.int_actualQuantity
+                                                                    </td>
+                                                                    <td>Php 
+                                                                    if exp.decimal_actualAmount != null
+                                                                        value= exp.decimal_actualAmount.toLocaleString()
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                    <td>
+                                                                    </td>
+                                                                </tr>        
+                                                        </tbody>  
+                                                        <tfoot>
+                                                            <tr>
+                                                                <th>Total Expense</th>
+                                                                <th colspan="4" class=""><div class="pull-right" ></div>
+                                                                </th>
+                                                                <th>Php 
+                                                                    if proj.decimal_actualBudget != null
+                                                                        value= proj.decimal_actualBudget.toLocaleString()
+                                                                    input(type="hidden" value=`${proj.decimal_actualBudget}` id="decimal_actualBudget" name="decimal_actualBudget" class="decimal_actualBudget")
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>Excess(Deficit)Cash</th>
+                                                                <th colspan="4" class=""><div class="pull-right" ></div>
+                                                                </th>
+                                                                <th><div id="deficitCash" class="deficitCash">
 
-                                                                </div>
-                                                                //- value= proj.decimal_actualBudget.toLocaleString()
-                                                            </th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
+                                                                    </div>
+                                                                    //- value= proj.decimal_actualBudget.toLocaleString()
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="6"></th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                each sum in resSum
+                                                    if (sum.appCount + sum.expCount + sum.proSponCount) != 0
+                                                        <table class="table " id="" cellspacing="0">
+                                                            
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="6">
+                                                                        <center>Sponsored
+                                                                        </center></th>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><center>Expenses Item</center></th>
+                                                                    <th>QTY</th>
+                                                                    <th>Sponsored by</th>
+                                                                    <th>Amount</th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                each exp in tbl_sponsor
+                                                                    <tr class="tr-shadow">
+                                                                        input(type="hidden" value=`${exp.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
+                                                                        <td>
+                                                                            value=exp.text_expenseDescription
+                                                                        </td>
+                                                                        <td>
+                                                                            value= exp.int_estimatedQuantity
+                                                                        </td>
+                                                                        <td class='' > #{exp.varchar_sponsorName} 
+                                                                        </td>
+                                                                        <td>Php 
+                                                                        if exp.decimal_estimatedAmount != null
+                                                                            value= exp.decimal_estimatedAmount.toLocaleString()
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                    </tr>  
+                                                                    
+                                                                each exp2 in tbl_sponsor2
+                                                                    <tr class="tr-shadow">
+                                                                        input(type="hidden" value=`${exp2.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
+                                                                        <td>Monetary
+                                                                        </td>
+                                                                        <td>-----
+                                                                        </td>
+                                                                        <td class='' > #{exp2.varchar_sponsorName} 
+                                                                        </td>
+                                                                        <td>
+                                                                        if exp2.decimal_sponsorBudget != null
+                                                                            p Php #{exp2.decimal_sponsorBudget.toLocaleString()}
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                    </tr> 
+                                                                    
+                                                                each exp3 in tbl_sponsor3
+                                                                    <tr class="tr-shadow">
+                                                                        input(type="hidden" value=`${exp3.int_expenseID}` id="int_expenseID" name="int_expenseID" class="int_expenseID")
+                                                                        <td>
+                                                                            #{exp3.text_benefitName} (Benefits)
+                                                                        </td>
+                                                                        <td>
+                                                                            value= exp3.int_benefitQuantity
+                                                                        </td>
+                                                                        <td class='' > #{exp3.varchar_sponsorName} 
+                                                                        </td>
+                                                                        <td>Php 
+                                                                        if exp3.decimal_actualAmount != null
+                                                                            value= exp3.decimal_actualAmount.toLocaleString()
+                                                                        else
+                                                                            center -----
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                        <td>
+                                                                        </td>
+                                                                    </tr>       
+                                                            </tbody> 
+                                                        </table>
                                             </div>
                                         </div>
                                         .m-h-50
