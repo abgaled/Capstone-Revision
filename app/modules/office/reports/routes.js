@@ -20,6 +20,19 @@ router.get('/',(req, res) => {
     console.log('=================================');
     console.log('OFFICE: REPORTS');
     console.log('=================================');
+    console.log(y);
+    var years=[];
+    var yearcount=y+10;
+    for(var i = 1; i<=10;i++){
+        years.push({y:yearcount-i});
+    }
+    yearcount=y;
+    for(var i = 1; i<39;i++){
+        years.push({y:yearcount-i});
+    }
+    var yearnow=[];
+    yearnow.push(y);
+    console.log(years);
     var queryString1 =`SELECT *
             FROM tbl_projectdetail WHERE enum_projectStatus="Finished"`
     db.query(queryString1, (err, results1, fields) => {
@@ -28,7 +41,9 @@ router.get('/',(req, res) => {
 
         return res.render('office/reports/views/reports',
         {
-            tbl_project:results1
+            tbl_project:results1,
+            years:years,
+            yearnow:yearnow
         });
     });
 });

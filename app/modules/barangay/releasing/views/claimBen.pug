@@ -65,8 +65,8 @@ block content
                             .row
                                 .col-md-12
                                     p(style='margin-left:55px') &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Barangay <strong><u>#{ben.varchar_barangayName} </u></strong>have received the following benefits:
-                                    each benefits in tbl_benefits
-                                        p(style='margin-left:85px') &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;- #{benefits.int_itemQuantity} pc/s of #{benefits.text_itemReceived}
+                                    each bene in benefits
+                                        p(style='margin-left:85px') &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;- #{bene.quan} pc/s of #{bene.it}
                             .m-h-50
                             .row
                                 .col-md-12

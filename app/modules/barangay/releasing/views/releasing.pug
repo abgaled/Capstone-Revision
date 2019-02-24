@@ -304,7 +304,7 @@ block content
                                 console.log(value.length);
                                 for(var i = 0; i<value.length; i++) 
                                 {
-                                    $(".claimedBenefits").append('<div class="form-group col-md-8 col-sm-8 col-xs-12"><input type="text" id="benefitsD" name="benefitsD" readonly required value="'+value[i].text_benefitName+'" class="form-control col-md-6 col-xs-12" placeholder="Enter item.." ></div><div class="form-group col-md-2 col-sm-2 col-xs-12"><input type="number" class="form-control col-md-6 col-xs-12" placeholder="Quantity" required id="quantity" name="quantity"></div>');
+                                    $(".claimedBenefits").append('<div class="form-group col-md-8 col-sm-8 col-xs-12"><input type="text" id="benefitsD" name="benefitsD" readonly required value="'+value[i].text_benefitName+'" class="form-control col-md-6 col-xs-12" placeholder="Enter item.." ></div><div class="form-group col-md-2 col-sm-2 col-xs-12"><input type="number" class="form-control col-md-6 col-xs-12" placeholder="Quantity" required id="quantity" name="quantity" min=0></div>');
                                 }
                                 console.log("Success: " );
                             });
@@ -386,14 +386,13 @@ block content
                     console.log(tbl_project1)
 
                     $.each(tbl_project1, function (index, value) {
-                        console.log(value);
-                        if(value.enum_projectStatus == "Releasing"){
-                            if(value.date_targetStartRelease != currdate){
-                                $('#startreleaseModal').modal('show');
-                                document.getElementById("aj-projectDate").innerHTML = value.date_targetStartRelease
-                                document.getElementById("aj-current_date").innerHTML = currdate
-                                document.getElementById("current_date").value = currentdate
-                            }
+                            if(value.enum_projectStatus == "Releasing"){
+                                if(value.date_targetStartRelease != currdate){
+                                    $('#startreleaseModal').modal('show');
+                                    document.getElementById("aj-projectDate").innerHTML = value.date_targetStartRelease
+                                    document.getElementById("aj-current_date").innerHTML = currdate
+                                    document.getElementById("current_date").value = currentdate
+                                }
                                 else
                                 {
                                     swal({
@@ -537,32 +536,32 @@ block content
                     }                        
                     })
             });  
-            //- START VALIDATION
-            $(function() {
-                $("#formstartreason").validate({
-                    rules: {
-                    projectReason: {
-                        required: true,
-                    },
-                    action: "required"
-                    },
-                    messages: {
-                    projectReason: {
-                        required: "Please enter some data",
-                    },
-                    action: "Please provide some data"
-                    },
-                    submitHandler: function(form){
-                        form.submit();
-                        swal(
-                            'Success!',
-                            'Realsing is now open!',
-                            'success'
-                            )
-                    }
-                });
+            //- //- START VALIDATION
+            //- $(function() {
+            //-     $("#formstartreason").validate({
+            //-         rules: {
+            //-         projectReason: {
+            //-             required: true,
+            //-         },
+            //-         action: "required"
+            //-         },
+            //-         messages: {
+            //-         projectReason: {
+            //-             required: "Please enter some data",
+            //-         },
+            //-         action: "Please provide some data"
+            //-         },
+            //-         submitHandler: function(form){
+            //-             form.submit();
+            //-             swal(
+            //-                 'Success!',
+            //-                 'Realsing is now open!',
+            //-                 'success'
+            //-                 )
+            //-         }
+            //-     });
                           
-            });
+            //- });
         });
         
     script(src='/assets/js/signaturePad.js')

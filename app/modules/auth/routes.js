@@ -5,9 +5,39 @@ var logoutRouter = express.Router();
 var authMiddleware = require('./middlewares/auth');
 var db = require('../../lib/database')();
 
+//- SCRIPT FOR CURRENT DATE
+var n =  new Date();
+var y = n.getFullYear();
+var m = n.getMonth() + 1;
+var d = n.getDate();
+var hr = n.getHours();
+var min = n.getMinutes();
+var sec = n.getSeconds();
+var now = y +"-"+ m +"-"+ d; 
 
 homepage.get('/',authMiddleware.noAuthed,(req, res) => {
-    res.render('auth/views/index1');
+    db.query(`SELECT * FROM tbl_city WHERE int_cityID = 1`, (err, cityinfo) => {
+        console.log("==========city info")
+        console.log(cityinfo[0])
+        db.query(`SELECT * FROM tbl_projectdetail WHERE enum_projectStatus="Ongoing" ORDER BY int_projectID DESC`, (err, ongoingproj) => {
+            
+            if(ongoingproj.length === 0){
+                var ongoingproj = 0;    
+            }
+
+            db.query(`SELECT * FROM tbl_projectdetail WHERE enum_projectStatus="Finished" ORDER BY int_projectID DESC`, (err, finishedproj) => {
+                
+                if(finishedproj.length === 0){
+                    var finishedproj = 0;
+                }
+                
+                    res.render('auth/views/index',{
+                        cityinfo:cityinfo,
+                        ongoingproj:ongoingproj,
+                        finishedproj:finishedproj});
+            });
+        });
+    });
 });
 
 homepage.post('/', (req, res) =>{

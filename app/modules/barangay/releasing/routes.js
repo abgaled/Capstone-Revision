@@ -162,107 +162,62 @@ router.post('/claimBenefits', (req, res) => {
     console.log('=================================');
     console.log('BARANGAY: claimBenefits ');
     console.log('=================================');
+    var item = [];
+    var quantity = [];
+    var benefits = [];
     resultIndex = `${req.body.eprojectID}`;
-    var item = `${req.body.benefitsD}`;
-    var quantity = `${req.body.quantity}`;
-
-    console.log(req.body.ebrgyRel);
-    console.log(req.body.receiverName);
-    console.log(req.body.eprojectID);
-    console.log(req.body.item);
-    console.log(req.body.quantity);
-
-    var queryString = `SELECT * FROM tbl_applicantbenefit 
-        WHERE int_projectID = ${req.body.eprojectID}`
-    db.query(queryString, (err, results) => {        
-        if (err) throw err;
-    // var queryString1 = `UPDATE tbl_projectdetail SET
-    // enum_projectStatus = 'Releasing',
-    // date_actualStartRelease = "${currentDate}"
-    // WHERE int_projectID = ${req.body.int_projectID}`
-    // 
-        var resultss = results;
-        console.log(resultss);
-        if(resultss.length==1)
-        {
-            var queryString2 = `INSERT INTO \`tbl_barangaybenefit\` 
-                (\`int_brgyreleaseID\`, 
-                \`text_itemReceived\`,
-                \`int_itemQuantity\`)
-                VALUES
-                ("${req.body.ebrgyRel}",
-                "${resultss[0].text_benefitName}",
-                "${quantity}");`;
-    
-            db.query(queryString2, (err, results2) => {        
-                if (err) throw err;
-    
-            });
-        }
-        else{
-
-            for(var i = 0; i<resultss.length;i++)
-            {
-                var queryString2 = `INSERT INTO \`tbl_barangaybenefit\` 
-                    (\`int_brgyreleaseID\`, 
-                    \`text_itemReceived\`,
-                    \`int_itemQuantity\`)
-                    VALUES
-                    ("${req.body.ebrgyRel}",
-                    "${resultss[i].text_benefitName}",
-                    "${quantity[i]}");`;
-        
-                db.query(queryString2, (err, results2) => {        
-                    if (err) throw err;
-        
-                });
-    
-            }      
-        }
-        var queryString3 = `UPDATE tbl_barangayreleasing SET
-        enum_barangayReleaseStatus = 'Claimed Benefit',
-        date_claimedBenefit = "${now}",
-        varchar_receiversName="${req.body.receiverName}"
-        WHERE int_brgyreleaseID = ${req.body.ebrgyRel}`
-        
-        db.query(queryString3, (err, results3) => {        
-            if (err) throw err;
-
+    for(var se in req.body.benefitsD){
+        item.push(req.body.benefitsD[se]);
+        quantity.push(req.body.quantity[se]);
+    }
+    for(var i = 0; i<item.length;i++)
+    {            
+        var queryString2 = `INSERT INTO \`tbl_barangaybenefit\` 
+        (\`int_brgyreleaseID\`, 
+        \`text_itemReceived\`,
+        \`int_itemQuantity\`)
+        VALUES
+        ("${req.body.ebrgyRel}",
+        "${item[i]}",
+        "${quantity[i]}");`;        
+        db.query(queryString2, (err, results2) => {        
+            if (err) throw err;        
         });
-        var queryString4 = `SELECT * FROM tbl_projectdetail 
-        WHERE int_projectID = ${req.body.eprojectID}`
-        db.query(queryString4, (err, results4) => {        
+        benefits.push({it:item[i], quan:quantity[i]});
+    }    
+    // var queryString3 = `UPDATE tbl_barangayreleasing SET
+    // enum_barangayReleaseStatus = 'Claimed Benefit',
+    // date_claimedBenefit = "${now}",
+    // varchar_receiversName="${req.body.receiverName}"
+    // WHERE int_brgyreleaseID = ${req.body.ebrgyRel}`        
+    // db.query(queryString3, (err, results3) => {        
+    //     if (err) throw err;
+    // });
+        
+    var queryString4 = `SELECT * FROM tbl_projectdetail 
+    WHERE int_projectID = ${req.body.eprojectID}`
+    db.query(queryString4, (err, results4) => {        
+        if (err) throw err;
+
+        var queryString5 = `SELECT * FROM tbl_barangayreleasing br
+        JOIN tbl_barangay b ON br.int_barangayID = b.int_barangayID
+        WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
+        db.query(queryString5, (err, results5) => {        
             if (err) throw err;
-            console.log(results4);
-            var queryString5 = `SELECT * FROM tbl_barangayreleasing br
-            JOIN tbl_barangay b ON br.int_barangayID = b.int_barangayID
-            WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
-            db.query(queryString5, (err, results5) => {        
-                if (err) throw err;
-                console.log(results5);
 
-                var queryString6 = `SELECT * FROM tbl_barangaybenefit bb
-                JOIN tbl_barangayreleasing br ON br.int_brgyreleaseID = bb.int_brgyreleaseID
-                WHERE br.int_brgyreleaseID = ${req.body.ebrgyRel}`
-                db.query(queryString6, (err, results6) => {        
-                    if (err) throw err;
-                    console.log(results6);
-                    var dayNow = moment().format('Do');
-                    var monthNow = moment().format('MMMM');
-                    var yearNow = moment().format('YYYY');
-                    var dateNow = moment().format('DD MMMM YYYY');
+            var dayNow = moment().format('Do');
+            var monthNow = moment().format('MMMM');
+            var yearNow = moment().format('YYYY');
+            var dateNow = moment().format('DD MMMM YYYY');
                     
-                    var dateToday = {day: dayNow, month:monthNow, year: yearNow, dateNow:dateNow};
+            var dateToday = {day: dayNow, month:monthNow, year: yearNow, dateNow:dateNow};
             
-
-                    res.render('barangay/releasing/views/claimBen', 
-                    {
-                        tbl_barangay:results5,
-                        tbl_proj:results4,
-                        tbl_benefits:results6,
-                        dateNow:dateToday
-                    });
-                });
+            res.render('barangay/releasing/views/claimBen', 
+            {
+                tbl_barangay:results5,
+                tbl_proj:results4,
+                benefits:benefits,
+                dateNow:dateToday
             });
         });
     });
@@ -274,9 +229,6 @@ router.post('/openlatereleasing', (req, res) => {
     console.log('=================================');
     resultIndex = `${req.body.projectID}`;
 
-    console.log(resultIndex);
-
-    console.log(req.session.barangay.int_userID)
 
     var queryuser =`SELECT * FROM tbl_user us
     JOIN tbl_officialsaccount oa ON us.int_userID = oa.int_userID

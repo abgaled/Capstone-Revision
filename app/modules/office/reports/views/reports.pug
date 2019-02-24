@@ -69,11 +69,13 @@ block content
                                 <div class="form-group has-feedback col-lg-2 col-md-2 col-sx-12 col-xs-12" id="reportY">
                                     <div class="">
                                         <label  class="control-label"> Year </label>
-                                        <select class="form-control has-feedback-left" id="reportYear">
-                                            <option value="2018"> 2018 </option>
-                                            <option value="2017"> 2017 </option>
-                                            <option value="2016"> 2016 </option>
-                                        </select>
+                                            select(class="form-control has-feedback-left" id="reportYear")
+                                                each year in years
+                                                    each ynow in yearnow
+                                                        if ynow == year.y
+                                                            option(value=`${year.y}` selected=true)=year.y+"   "
+                                                        else
+                                                            option(value=`${year.y}`)=year.y+"   "
                                         <span class="fa fa-calendar form-control-feedback left" sria-hidden="true"></span>
                                     </div>
                                 </div>
